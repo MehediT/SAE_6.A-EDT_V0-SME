@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
 import bcrypt
 from flask_migrate import Migrate
+from functools import wraps
 
 
 
@@ -24,6 +25,19 @@ db = SQLAlchemy(app)
 jwt = JWTManager(app)
 migrate = Migrate(app, db)
 
+
+# Fonction de vérification du rôle
+def role_required(roles):
+    def decorator(fn):
+        @wraps(fn)
+        def wrapper(*args, **kwargs):
+            current_user = get_user_by_id(get_jwt_identity())
+            if current_user.role in roles:
+                return fn(*args, **kwargs)
+            else:
+                return jsonify(message="Accès refusé. Rôle insuffisant."), 403
+        return wrapper
+    return decorator
 
 @app.route('/user', methods=['POST'])
 def register():
@@ -58,23 +72,22 @@ def login():
         # Vérifiez le nom d'utilisateur et le mot de passe (par exemple, dans une base de données)
         # Si la vérification est réussie, générez un jeton d'accès JWT
         if (user.check_password(password)):
-            access_token = create_access_token(identity=identifier)
+            additional_claims = {'role': user.role}
+            access_token = create_access_token(identity=user.id, additional_claims=additional_claims)
             return {'access_token': access_token}, 200
     else:
         return {'message': 'Authentification échouée'}, 401
     
 @app.route('/test', methods=['GET'])
 @jwt_required()
+@role_required(roles=['ROLE_ADMIN'])
 def ressource_protégée():
     current_user = get_jwt_identity()
     return {'message': 'Ceci est une ressource protégée', 'user': current_user}
 
-
-
-
-
-
 class User(db.Model):
+    __tablename__= "user"
+
     id = db.Column(db.Integer, primary_key=True)
     identifier = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
@@ -102,6 +115,9 @@ class User(db.Model):
 
 def get_user_by_identifier(identifier):
     user = User.query.filter_by(identifier=identifier).first()
+    return user
+def get_user_by_id(id):
+    user = User.query.filter_by(id=id).first()
     return user
 
 
