@@ -42,27 +42,50 @@ class TeacherService:
 
     @staticmethod
     def get_initial(name, lastname):
-        namelist=name.split(" ")
-        lastnamelist=lastname.split(" ")
+        if " " in name:
+            namelist=name.split(" ")
+        elif "-" in name:
+            namelist=name.split("-")
+        else:
+            namelist=name.split("")
+        if len(namelist)>=2:
+            for c in namelist:
+                c=c.split("")
+
+        if " " in lastname:
+            lastnamelist=lastname.split(" ")
+        elif "-" in lastname:
+            lastnamelist=lastname.split("-")
+        else:
+            lastnamelist=lastname.split("")
+        if len(lastnamelist)>=2:
+            for c in lastnamelist:
+                c=c.split("")
+
         initial=""
         indexChar = 0
-        for c in namelist:
-            initial+=c[indexChar]
-        for c in lastnamelist:
-            initial+=c[indexChar] 
+
+        initial+=name[indexChar].upper()
+        initial+=lastname[indexChar].upper()
         
         initialExist = TeacherService.get_by_initial(initial_name=initial)
 
         while initialExist is not None:
+
             indexChar+=1
             initial = ""
 
             for c in namelist:
                 for i in range(indexChar):
-                    initial+=c[i]
-            for c in lastnamelist:
-                initial+=c[0]
+                    initial+=c[i].upper()
             
             initialExist = TeacherService.get_by_initial(initial=initial)
+
+            if initialExist is not None:
+                for c in lastnamelist:
+                    for i in range(indexChar):
+                        initial+=c[i].upper()
+
+                initialExist = TeacherService.get_by_initial(initial=initial)
         
         return "CG"
