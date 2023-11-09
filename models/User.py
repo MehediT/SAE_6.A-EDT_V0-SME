@@ -13,6 +13,8 @@ class User(db.Model):
     role = db.Column(db.String(64), nullable=False)
     name = db.Column(db.String(64), nullable=False)
     lastname = db.Column(db.String(64), nullable=False)
+    
+    teacher = db.relationship('Teacher', backref='user', lazy=True)
 
 
     def __init__(self, identifier, password, role, name, lastname):
