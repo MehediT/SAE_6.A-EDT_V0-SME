@@ -1,0 +1,28 @@
+name: Docker Build Frontend
+
+on:
+  push:
+    branches:
+      - develop
+      - feature/docker
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      IMAGE_NAME: courroux_backend
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Environment Variables
+        run: |
+          export $(grep -v '^#' .env | xargs)
+
+      - name: Build and Push Backend Image
+        run: |
+          docker build -t $IMAGE_NAME .
+          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+          docker push $IMAGE_NAME
