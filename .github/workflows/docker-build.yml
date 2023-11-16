@@ -4,14 +4,13 @@ on:
   push:
     branches:
       - develop
-      - feature/docker
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     env:
-      IMAGE_NAME: cgrosjeanfr/courroux_bac
+      IMAGE_NAME: cgrosjeanfr/courroux_backend:latest
 
     steps:
       - name: Checkout Repository
