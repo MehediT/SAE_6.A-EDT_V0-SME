@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      IMAGE_NAME: cgrosjeanfr/courroux_backend
+      IMAGE_NAME: cgrosjeanfr/courroux_bac
 
     steps:
       - name: Checkout Repository

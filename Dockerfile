@@ -8,9 +8,6 @@ WORKDIR /app
 COPY . /app
 
 # Installez les dépendances de votre projet
-# RUN apk add --no-cache gcc musl-dev && \
-#     pip install --no-cache-dir -r requirements.txt && \
-#     apk del gcc musl-dev
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Définissez une variable d'environnement pour Flask
