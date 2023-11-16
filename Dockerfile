@@ -1,5 +1,5 @@
-# Utilisez une image de base Python
-FROM python:3.11.4
+# Utilisez une image Alpine avec Python
+FROM python:3.11.4-alpine
 
 # Définissez un répertoire de travail dans le conteneur
 WORKDIR /app
@@ -8,10 +8,10 @@ WORKDIR /app
 COPY . /app
 
 # Installez les dépendances de votre projet
-RUN pip install -r requirements.txt
-
-# Exposez le port que votre application Flask utilise (par défaut, c'est 5000)
-EXPOSE 5000
+# RUN apk add --no-cache gcc musl-dev && \
+#     pip install --no-cache-dir -r requirements.txt && \
+#     apk del gcc musl-dev
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Définissez une variable d'environnement pour Flask
 ENV FLASK_APP=app.py

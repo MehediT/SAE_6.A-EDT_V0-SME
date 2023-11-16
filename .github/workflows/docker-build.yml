@@ -1,4 +1,4 @@
-name: Docker Build Frontend
+name: Docker Build Backend
 
 on:
   push:
@@ -11,15 +11,11 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      IMAGE_NAME: courroux_backend
+      IMAGE_NAME: cgrosjeanfr/courroux_backend
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-
-      - name: Set up Environment Variables
-        run: |
-          export $(grep -v '^#' .env | xargs)
 
       - name: Build and Push Backend Image
         run: |
