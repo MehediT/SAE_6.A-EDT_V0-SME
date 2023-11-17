@@ -1,5 +1,4 @@
 from database.config import db
-from models.Cours import Cours
 
 class Salle(db.Model):
     __tablename__= "salle"

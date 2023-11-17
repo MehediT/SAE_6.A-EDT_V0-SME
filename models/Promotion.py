@@ -1,5 +1,4 @@
 from database.config import db
-from models.Cours import Cours
 
 class Promotion(db.Model):
     __tablename__= "promotion"
@@ -8,6 +7,10 @@ class Promotion(db.Model):
     niveau = db.Column(db.Integer, nullable=False)
     cours = db.relationship('Cours', backref='promotion_name', lazy='dynamic')
     groupes = db.relationship('Groupe', backref='from_promotion', lazy='dynamic')
+    etudGrp = db.relationship('EtudiantGroupe', backref='promotions_groupes', lazy='dynamic')
+    ressources = db.relationship('Ressources', backref='promo_ressources', lazy='dynamic')
+    respEdt_Promo = db.relationship('RespEDTPromo', backref='promos_of_respEdt', lazy='dynamic')
 
-    def __init__(self, name):
+    def __init__(self, name, niveau):
         self.name = name
+        self.niveau = niveau
