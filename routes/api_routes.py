@@ -23,10 +23,10 @@ def role_required(roles):
     return decorator
     
 
-    
+
 @api_bp.route('/test', methods=['GET'])
 @jwt_required()
 @role_required(roles=['ROLE_ADMIN'])
 def ressource_protégée():
     current_user = get_jwt_identity()
-    return {'message': 'Ceci est une ressource protégée', 'user': current_user}
+    return {'message': 'Ceci est une ressource protégée', 'user': current_user},200

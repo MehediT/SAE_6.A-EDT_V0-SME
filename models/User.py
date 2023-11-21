@@ -8,10 +8,17 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     identifier = db.Column(db.String(80), unique=True, nullable=False)
+    absence = db.relationship('Absence', backref='idUser', lazy='dynamic')
     password = db.Column(db.String(120), nullable=False)
     role = db.Column(db.String(64), nullable=False)
     name = db.Column(db.String(64), nullable=False)
     lastname = db.Column(db.String(64), nullable=False)
+    
+    enseignant = db.relationship('Enseignant', backref='user', lazy=True)
+    etudiantGroupe = db.relationship('EtudiantGroupe', backref='etudiant_appartient_groupe', lazy='dynamic')
+    managed_promo_respEdt = db.relationship('RespEDTPromo', backref='what_access_respEdt', lazy='dynamic')
+
+
 
 
     def __init__(self, identifier, password, role, name, lastname):
