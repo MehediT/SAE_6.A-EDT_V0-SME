@@ -16,7 +16,7 @@ def create_teacher():
     lastname = request.json.get('lastname')
 
     try:
-        # Créez un nouveau cours
+        # Créer un enseignant
         EnseignantService.create_teacher(identifier, password, name, lastname)
 
         return jsonify({'message': 'Nouveau enseignant ajouté avec succès'}),200
@@ -28,7 +28,7 @@ def create_teacher():
 @user_bp.route('/teacher/getAll', methods=['GET'])
 def get_all_teacher():
     try:
-        # Créez un nouveau cours
+        # Récupérer tous les enseignants
         EnseignantService.get_all_teachers()
         return jsonify({'message': 'Tous les enseignants sont envoyés avec succès'}),200
     except Exception as e:
@@ -39,7 +39,7 @@ def get_all_teacher():
 @user_bp.route('/teacher/getById', methods=['GET'])
 def get_by_id():
     try:
-        # Créez un nouveau cours
+        # Récupérer un enseignant avec son ID
         EnseignantService.get_by_id()
         return jsonify({'message': 'lenseignant a bien été envoyé avec succès'}),200
     except Exception as e:
@@ -52,7 +52,7 @@ def get_by_id():
 def delete_teacher():
     teacher = request.json.get('identifier')
     try:
-        # Créez un nouveau cours
+        # Supprimer un enseignant
         EnseignantService.delete_teacher(teacher)
         return jsonify({'message': 'lenseignant a bien été supprimé avec succès'}),200
     except Exception as e:
