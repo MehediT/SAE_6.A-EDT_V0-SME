@@ -54,7 +54,7 @@ def justify_absence():
     try:
         # Justifier l'absence d'un étudiant
         AbsenceService.justify_absence(idEtudiant,idCours)
-        return jsonify({'message': 'Tous les enseignants sont envoyés avec succès'}),200
+        return jsonify({'message': 'La justification a été faite avec succès'}),200
     except Exception as e:
         # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
         # db.session.rollback()
@@ -63,7 +63,7 @@ def justify_absence():
 
 
 
-@absence_bp.route('/absence/delete', methods=['POST'])
+@absence_bp.route('/absence/delete', methods=['DELETE'])
 def delete_absence():
     
     idEtudiant = request.json.get('idEtudiant')
@@ -72,7 +72,7 @@ def delete_absence():
     try:
         # Supprimer l'absence d'un étudiant
         AbsenceService.delete_absence(idEtudiant,idCours)
-        return jsonify({'message': 'Tous les enseignants sont envoyés avec succès'}),200
+        return jsonify({'message': 'Absence supprimer avec succès'}),200
     except Exception as e:
         # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
         # db.session.rollback()
