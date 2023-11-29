@@ -20,7 +20,7 @@ class Cours(db.Model):
     groupe = db.Column(db.Integer, db.ForeignKey('groupe.id'), nullable=False)
     salle = db.Column(db.String(64), db.ForeignKey("salle.nom"))
     appelEffectue = db.Column(db.Boolean, nullable=True)
-    absences = db.relationship('Absence', backref='idCour', lazy='dynamic')
+    absences = db.relationship('Absence', backref='cours', lazy='dynamic')
 
     def __init__(self, date, heureDebut, heureFin, enseignant_initial, ressource, promotion, groupe, salle, appelEffectue):
         self.date = date

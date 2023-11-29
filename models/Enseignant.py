@@ -9,7 +9,7 @@ class Enseignant(db.Model):
     nb_heures_previsionnelles = db.Column(db.Integer, nullable=True)
     nb_heure_faites = db.Column(db.Integer, nullable=False)
     disponibilite = db.relationship('Disponibilite', backref='disponibilite_enseignant', lazy='dynamic')
-    cours = db.relationship('Cours', backref='enseignant', lazy='dynamic')
+    cours = db.relationship('Cours', backref='enseignant_id', lazy='dynamic')
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
