@@ -9,10 +9,11 @@ from utils.jwt import configure_jwt, jwt
 
 
 
+load_dotenv()
 
 def create_app():
     
-    load_dotenv()
+    
     app = Flask(__name__)
 
     configure_database(app)

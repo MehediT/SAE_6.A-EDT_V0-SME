@@ -15,6 +15,7 @@ ENV FLASK_APP=app.py
 
 # Indiquez à Flask de fonctionner en mode de développement (facultatif)
 ENV FLASK_ENV=development
+ENV DATABASE_URL=mysql+mysqlconnector://courroux:root@db/courroux 
 
 # Commande pour démarrer votre application Flask
 CMD ["flask", "run", "--host=0.0.0.0"]
