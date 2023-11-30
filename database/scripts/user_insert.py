@@ -31,10 +31,18 @@ dataUsers = [
 
   {
     'id' : 4,
-    'userIdentifier' : 'onur_genc',
+    'userIdentifier' : 'ismael_argence',
     'password' : 'ismael1234',
     'name' : 'Ismael',
     'lastname' : 'Argence'
+  },
+
+  {
+    'id' : 5,
+    'userIdentifier' : 'onur_genc',
+    'password' : 'onur1234',
+    'name' : 'Onur',
+    'lastname' : 'Genc'
   },
 
 ]

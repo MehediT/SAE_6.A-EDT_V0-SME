@@ -5,12 +5,12 @@ from services.PromotionService import PromotionService
 
 dataPromotions = [
   {
-    'name' : 'BUT INFO S5',
+    'name' : 'BUT INFO',
     'niveau' : 3
   },
 
   {
-    'name' : 'BUT GACO S5',
+    'name' : 'BUT GACO',
     'niveau' : 3
   }
 
@@ -20,4 +20,4 @@ for promotion in dataPromotions:
     name = dataPromotions["name"]
     niveau = dataPromotions["niveau"]
 
-    
+    PromotionService.create_promo(name,niveau)
