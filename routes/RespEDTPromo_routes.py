@@ -24,7 +24,7 @@ def create_respedt_promo():
     except Exception as e:
         # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
         # db.session.rollback()
-        return jsonify({'error': str(e)}),403
+        return jsonify({'error': str(e)}),404
     
 
 

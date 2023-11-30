@@ -15,3 +15,12 @@ class Salle(db.Model):
         self.ordi = ordi
         self.tableauNumerique = tableauNumerique
         self.videoProjecteur = videoProjecteur
+
+
+    def to_dict(self):
+        return {
+            'nom': self.nom,
+            'ordi': self.ordi,
+            'tableauNumerique': self.tableauNumerique,
+            'videoProjecteur': self.videoProjecteur
+        }

@@ -4,8 +4,8 @@ from models.Salle import Salle
 class SalleService:
 
     @staticmethod
-    def create_salle(nom, ordi, tableauNumerique, videoProj):
-        salle = Salle(nom=nom, ordi=ordi, tableauNumerique=tableauNumerique, videoProjecteur=videoProj)
+    def create_salle(name, ordi, tableauNumerique, videoProj):
+        salle = Salle(name=name, ordi=ordi, tableauNumerique=tableauNumerique, videoProjecteur=videoProj)
 
         db.session.add(salle)
         db.session.commit()
@@ -29,3 +29,13 @@ class SalleService:
         salle = SalleService.get_salle_by_name(nom)
         db.session.delete(salle)
         db.session.commit()
+        return salle
+    
+    @staticmethod
+    def update_salle(name, ordi, tableauNumerique, videoProj):
+        salle = SalleService.get_salle_by_name(name)
+        salle.ordi = ordi
+        salle.tableauNumerique = tableauNumerique
+        salle.videoProjecteur = videoProj
+        db.session.commit()
+        return salle
