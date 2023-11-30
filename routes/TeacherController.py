@@ -60,7 +60,7 @@ def delete_teacher(id):
 def update_teacher(id):
     data = request.json
     try:
-        teacher = TeacherService.update_teacher(id, data)
+        teacher = TeacherService.update_teacher(id, **data)
         if not teacher:
             return jsonify({'error': 'Teacher not found'}),403
         
