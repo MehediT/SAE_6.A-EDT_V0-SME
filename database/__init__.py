@@ -1,1 +1,1 @@
-from .config import db, configure_database
+from .config import db, configure_database, insert_data

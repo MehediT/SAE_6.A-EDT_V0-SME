@@ -1,1 +1,1 @@
-import user_insert
+import database.scripts.user_insert
