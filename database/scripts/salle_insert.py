@@ -16,7 +16,7 @@ dataSalles = [
   {
   'nom' : 'B1-09',
   'ordi' : 20,
-  'tableau numerique' : 0,
+  'tableauNumerique' : 0,
   'videoProjecteur' : 1
   }
 
