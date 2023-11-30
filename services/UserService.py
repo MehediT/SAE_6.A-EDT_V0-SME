@@ -34,3 +34,11 @@ class UserService:
     def delete_user(user):
         db.session.delete(user)
         db.session.commit()
+
+    @staticmethod
+    def update_user(id, name, lastname):
+        user = User.query.get(id)
+        user.name = name
+        user.lastname = lastname
+        db.session.commit()
+        return user
