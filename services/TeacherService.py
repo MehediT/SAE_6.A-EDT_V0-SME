@@ -35,10 +35,11 @@ class TeacherService:
     
 
     @staticmethod
-    def update_teacher(id, data):
+    def update_teacher(id, name: str, lastname: str, role: str, **kwargs):
         teacher = Teacher.query.get(id)
-        teacher.name = data['name']
-        teacher.lastname = data['lastname']
+        teacher.name = name
+        teacher.lastname = lastname
+        teacher.role = role
 
 
         db.session.commit()
