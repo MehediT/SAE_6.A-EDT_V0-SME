@@ -17,7 +17,7 @@ dataPromotions = [
 ]
 
 for promotion in dataPromotions:
-    name = dataPromotions["name"]
+    nom = dataPromotions["name"]
     niveau = dataPromotions["niveau"]
 
-    PromotionService.create_promo(name,niveau)
+    PromotionService.create_promo(nom,niveau)

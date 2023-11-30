@@ -6,14 +6,14 @@ from services.RessourcesService import RessourcesService
 dataRessources = [
 
   {
-    'initial' : 'R5.A.08',
-    'name' : 'Qualité de dev',
+    'initial' : 'R5A08',
+    'name' : 'Qualite de dev',
     'promotion' : 'BUT INFO'
   },
 
   {
-    'initial' : 'R5.A.12',
-    'name' : 'Modélisations',
+    'initial' : 'R5A12',
+    'name' : 'Modelisations',
     'promotion' : 'BUT INFO'
   }
 ]
