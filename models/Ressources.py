@@ -9,20 +9,18 @@ class Ressources(db.Model):
     promo = db.Column(db.String(64), db.ForeignKey('promotion.name'))
     cours = db.relationship('Cours', backref='ressource_initial', lazy='dynamic')
 
-    def __init__(self, name):
+    def __init__(self, name, initial, promo):
         self.name=name
-        self.initial = Ressources.set_initial(name)
+        self.initial = initial
+        self.promo = promo
 
-    def set_initial(name):
-        namelist = name.split(" ")
-        initial=""
+    
 
-        if namelist.length>1:
-            for c in namelist:
-                initial+=c[0]
-        else:
-            initial+=name[0]+name[1]
-
-        return initial
+    def to_dict(self):
+        return {
+            'initial': self.initial,
+            'name': self.name,
+            'promo': self.promo
+        }
 
     

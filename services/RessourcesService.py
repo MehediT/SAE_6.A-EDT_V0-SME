@@ -4,18 +4,18 @@ from models.Ressources import Ressources
 class RessourcesService:
 
     @staticmethod
-    def create_resource(name):
-        resource = Ressources(name)
-        db.session.add(resource)
+    def create_resource(name, initial, promo):
+        ressource = Ressources(name, initial, promo)
+        db.session.add(ressource)
         db.session.commit()
-        return resource
+        return ressource
+    
+    def get_resource_by_initial(initial):
+        return Ressources.query.filter_by(initial=initial).first()
     
     @staticmethod
     def get_all_ressources():
-        ressources = Ressources.query.order_by(Ressources.name).all()
-
-        ressources = row_to_dict(ressources)
-
+        ressources = Ressources.query.all()
         return ressources
     
     @staticmethod
@@ -24,19 +24,13 @@ class RessourcesService:
     
     @staticmethod
     def delete_ressource(initial):
-        resource = Ressources.query.filter_by(initial=intial).first()
-        if resource is not None:
-            db.session.delete(resource)
-            db.session.commit
-        else:
-            print("Cette ressource n'existe pas.")
-
-    def row_to_dict(row: Row) -> dict:
-        """Converts a SQLAlchemy Row object to a Python dictionary."""
-
-        try:
-            columns = row.__table__.columns
-        except AttributeError:
-            columns = []
-
-        return {col.name: getattr(row, col.name) for col in columns}
+        resource = Ressources.query.filter_by(initial=initial).first()
+        return resource
+    
+    @staticmethod
+    def update_ressource(name, initial, promo):
+        ressource = Ressources.query.filter_by(initial=initial).first()
+        ressource.name = name
+        ressource.promo = promo
+        db.session.commit()
+        return ressource
