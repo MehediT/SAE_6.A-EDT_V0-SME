@@ -7,9 +7,8 @@ from flask_jwt_extended import (jwt_required, create_access_token, get_jwt_ident
 
 user_bp = Blueprint('teacher', __name__)
 
-
-@user_bp.route('/teacher/create', methods=['POST'])
-def create_teacher():
+@user_bp.route('/user/create', methods=['POST'])
+def create_user():
     identifier = request.json.get('identifier')
     password = request.json.get('password')
     name = request.json.get('name')
@@ -17,35 +16,78 @@ def create_teacher():
 
     try:
         # Créer un enseignant
-        EnseignantService.create_teacher(identifier, password, name, lastname)
+        UserService.create_user(identifier, password, name, lastname)
 
-        return jsonify({'message': 'Nouveau enseignant ajouté avec succès'}),200
+        return jsonify({'message': 'Nouveau user ajouté avec succès'}),200
     except Exception as e:
         # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
         # db.session.rollback()
         return jsonify({'error': str(e)}),403
     
-@user_bp.route('/teacher/getAll', methods=['GET'])
-def get_all_teacher():
+
+@user_bp.route('/users', methods=['GET'])
+def get_all_user():
     try:
-        # Récupérer tous les enseignants
-        EnseignantService.get_all_teachers()
-        return jsonify({'message': 'Tous les enseignants sont envoyés avec succès'}),200
+        users = UserService.get_all_users()
+        users_dict = [user.to_dict() for user in users]
+        return jsonify([users_dict]),200
     except Exception as e:
         # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
         # db.session.rollback()
         return jsonify({'error': str(e)}),403
     
-@user_bp.route('/teacher/getById', methods=['GET'])
+
+@user_bp.route('/user/getById', methods=['GET'])
 def get_by_id():
     try:
+        id = request.json.get('id')
         # Récupérer un enseignant avec son ID
-        EnseignantService.get_by_id()
+        UserService.get_by_id(id)
+        return jsonify({'message': 'le user a bien été envoyé avec succès'}),200
+    except Exception as e:
+        # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
+        # db.session.rollback()
+        return jsonify({'error': str(e)}),403
+    
+
+@user_bp.route('/user/delete', methods=['DELETE'])
+def delete_user():
+    user = request.json.get('identifier')
+    try:
+        # Supprimer un enseignant
+        UserService.delete_user(user)
+        return jsonify({'message': 'lenseignant a bien été supprimé avec succès'}),200
+    except Exception as e:
+        # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
+        # db.session.rollback()
+        return jsonify({'error': str(e)}),403
+
+
+
+@user_bp.route('/teachers', methods=['GET'])
+def get_all_teacher():
+    try:
+        teachers = EnseignantService.get_all_teachers()
+        teachers_dict = [teacher.to_dict() for teacher in teachers]
+        # Récupérer tous les enseignants
+        return jsonify([teachers_dict]),200
+    except Exception as e:
+        # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
+        # db.session.rollback()
+        return jsonify({'error': str(e)}),403
+    
+    
+@user_bp.route('/teacher/<id>', methods=['GET'])
+def get_by_idTeacher(id):
+    try:
+        # Récupérer un enseignant avec son ID
+        EnseignantService.get_by_id(id)
         return jsonify({'message': 'lenseignant a bien été envoyé avec succès'}),200
     except Exception as e:
         # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
         # db.session.rollback()
         return jsonify({'error': str(e)}),403
+    
     
 
 @user_bp.route('/teacher/delete', methods=['DELETE'])
@@ -59,3 +101,4 @@ def delete_teacher():
         # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
         # db.session.rollback()
         return jsonify({'error': str(e)}),403
+    
