@@ -5,7 +5,7 @@ class Disponibilite(db.Model):
   __tablename__ = "disponibilité"
 
   id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-  enseignant = db.Column(db.String(15), db.ForeignKey('enseignant.initial'))
+  enseignant = db.Column(db.String(15), db.ForeignKey('teacher.initial'))
   disponible = db.Column(db.Boolean, nullable=False)
   date_debut_disponibilite = db.Column(db.DateTime, nullable=False)
   date_fin_disponibilite = db.Column(db.DateTime, nullable=False)

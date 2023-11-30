@@ -2,7 +2,6 @@ from flask import Blueprint
 from flask_jwt_extended import (create_access_token)
 from flask import Flask, request, jsonify
 from services.UserService import UserService
-from services.EnseignantService import EnseignantService
 from models.User import User
 
 
@@ -45,20 +44,3 @@ def login():
     else:
         return {'message': 'Authentification échouée'}, 401
     
-
-@auth_bp.route('/teacher', methods=['POST'])
-def register_teacher():
-    identifier = request.json.get('identifier')
-    password = request.json.get('password')
-    name = request.json.get('name')
-    lastname = request.json.get('lastname')
-
-    try:
-        # Créez un nouvel utilisateur
-        EnseignantService.create_teacher(identifier=identifier, password=password, name=name, lastname=lastname)
-
-        return jsonify({'message': 'Nouvel enseignant ajouté avec succès'}),200
-    except Exception as e:
-        # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
-        # db.session.rollback()
-        return jsonify({'error': str(e)}),403
