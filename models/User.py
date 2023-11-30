@@ -14,14 +14,13 @@ class User(db.Model):
     name = db.Column(db.String(64), nullable=False)
     lastname = db.Column(db.String(64), nullable=False)
     
-    enseignant = db.relationship('Enseignant', backref='user', lazy=True)
     etudiantGroupe = db.relationship('EtudiantGroupe', backref='etudiant_appartient_groupe', lazy='dynamic')
     managed_promo_respEdt = db.relationship('RespEDTPromo', backref='what_access_respEdt', lazy='dynamic')
 
 
 
 
-    def __init__(self, identifier, password, role, name, lastname):
+    def __init__(self, identifier, password, role, name, lastname, **kwargs):
         self.identifier = identifier
         self.role = role
         self.name = name

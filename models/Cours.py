@@ -3,7 +3,7 @@ from models.Ressources import Ressources
 from models.Promotion import Promotion
 from models.Groupe import Groupe
 from models.Salle import Salle
-from models.Enseignant import Enseignant
+from models.Teacher import Teacher
 
 
 class Cours(db.Model):
@@ -14,7 +14,7 @@ class Cours(db.Model):
     date = db.Column(db.Date, nullable=False)
     heureDebut = db.Column(db.Time, nullable=False)
     heureFin = db.Column(db.Time, nullable=False)
-    enseignant = db.Column(db.String(15), db.ForeignKey('enseignant.initial'))
+    enseignant = db.Column(db.String(15), db.ForeignKey('teacher.initial'))
     ressource = db.Column(db.String(64), db.ForeignKey('ressources.initial'))
     promotion = db.Column(db.String(64), db.ForeignKey('promotion.name'))
     groupe = db.Column(db.Integer, db.ForeignKey('groupe.id'), nullable=False)
