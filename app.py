@@ -5,7 +5,7 @@ from routes import register_routes
 from database import configure_database, db 
 from utils.jwt import configure_jwt, jwt 
 
-# from flask_cors import CORS
+from flask_cors import CORS
 
 
 
@@ -22,7 +22,7 @@ def create_app():
     migrate = Migrate(app, db)
     app.debug = True
 
-    # CORS(app, resources={r"/*": {"origins": "*"}})    
+    CORS(app, resources={r"/*": {"origins": "*"}})    
     register_routes(app)
 
     return app
