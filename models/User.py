@@ -15,7 +15,6 @@ class User(db.Model):
     lastname = db.Column(db.String(64), nullable=False)
     
     etudiantGroupe = db.relationship('EtudiantGroupe', backref='etudiant_appartient_groupe', lazy='dynamic')
-    managed_promo_respEdt = db.relationship('RespEDTPromo', backref='what_access_respEdt', lazy='dynamic')
 
 
 

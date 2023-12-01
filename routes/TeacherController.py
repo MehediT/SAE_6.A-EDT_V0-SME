@@ -11,7 +11,7 @@ def get_all_teacher():
         teachers = TeacherService.get_all_teachers()
         teachers_dict = [teacher.to_dict() for teacher in teachers]
         # Récupérer tous les enseignants
-        return jsonify([teachers_dict]),200
+        return jsonify(teachers_dict),200
     except Exception as e:
         # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
         # db.session.rollback()
@@ -26,7 +26,7 @@ def get_by_idTeacher(id):
         if not teacher:
             return jsonify({'error': 'Teacher not found'}),403
 
-        return jsonify([teacher.to_dict()]),200
+        return jsonify(teacher.to_dict()),200
     except Exception as e:
         # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
         # db.session.rollback()
