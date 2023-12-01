@@ -20,8 +20,7 @@ class Teacher(Staff):
         print("here")
         return {
             'id': self.id,
-            'initial': self.initial,
-            'user' :super().to_dict()
+            'staff' :super().to_dict()
         }
 
     

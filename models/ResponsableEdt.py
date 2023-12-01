@@ -19,5 +19,5 @@ class ResponsableEdt(Staff):
   def to_dict(self):
     return {
         'id': self.id,
-        'user':super().to_dict(),
+        'staff':super().to_dict(),
     }
