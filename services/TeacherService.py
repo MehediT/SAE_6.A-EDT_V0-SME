@@ -14,7 +14,7 @@ class TeacherService:
 
     @staticmethod
     def create_teacher(data):
-        initial = "PB"
+        initial = TeacherService.get_initial(data.get("name"),data.get("lastname"))
         teacher = Teacher(initial=initial, **data)
         db.session.add(teacher)
         db.session.commit()
@@ -45,52 +45,35 @@ class TeacherService:
         db.session.commit()
         return teacher
 
-    # @staticmethod
-    # def get_initial(name, lastname):
-    #     if " " in name:
-    #         namelist=name.split(" ")
-    #     elif "-" in name:
-    #         namelist=name.split("-")
-    #     else:
-    #         namelist=name.split("")
-    #     if len(namelist)>=2:
-    #         for c in namelist:
-    #             c=c.split("")
+    @staticmethod
+    def get_initial(name, lastname):
+        def get_initial_from_part(part, index):
+            return part[:index].upper()
 
-    #     if " " in lastname:
-    #         lastnamelist=lastname.split(" ")
-    #     elif "-" in lastname:
-    #         lastnamelist=lastname.split("-")
-    #     else:
-    #         lastnamelist=lastname.split("")
-    #     if len(lastnamelist)>=2:
-    #         for c in lastnamelist:
-    #             c=c.split("")
+        initial = get_initial_from_part(name, 1) + get_initial_from_part(lastname, 1)
+        initialExist = TeacherService.get_by_initial(initial_name=initial)
 
-    #     initial=""
-    #     indexChar = 0
+        indexChar = 2
 
-    #     initial+=name[indexChar].upper()
-    #     initial+=lastname[indexChar].upper()
-        
-    #     initialExist = EnseignantService.get_by_initial(initial_name=initial)
+        while initialExist is not None:
+            initial = ""
 
-    #     while initialExist is not None:
+            for part in [name, lastname]:
+                if indexChar <= len(part):
+                    initial += part[:indexChar].upper()
 
-    #         indexChar+=1
-    #         initial = ""
+            initialExist = TeacherService.get_by_initial(initial_name=initial)
+            indexChar += 1
 
-    #         for c in namelist:
-    #             for i in range(indexChar):
-    #                 initial+=c[i].upper()
-            
-    #         initialExist = EnseignantService.get_by_initial(initial=initial)
+        return initial
 
-    #         if initialExist is not None:
-    #             for c in lastnamelist:
-    #                 for i in range(indexChar):
-    #                     initial+=c[i].upper()
 
-    #             initialExist = EnseignantService.get_by_initial(initial=initial)
-        
-    #     return initial
+    @staticmethod
+    def get_by_initial(initial_name):
+        teachers = TeacherService.get_all_teachers()
+
+        for teacher in teachers:
+            if teacher.initial == initial_name:
+                return teacher.name
+                
+        return None
