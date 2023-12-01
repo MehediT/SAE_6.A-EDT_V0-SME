@@ -12,7 +12,7 @@ def get_all_rooms():
         salles = SalleService.get_all_salles()   
 
         salles_dict = [salle.to_dict() for salle in salles]
-        return jsonify([salles_dict]),200
+        return jsonify(salles_dict),200
     except Exception as e:
         # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
         # db.session.rollback()
