@@ -12,7 +12,7 @@ class StudentService:
 
     @staticmethod
     def create_student(data):
-        student = Student(data)
+        student = Student(**data)
         db.session.add(student)
         db.session.commit()
         return student
