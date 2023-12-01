@@ -13,11 +13,9 @@ class Teacher(Staff):
 
     def __init__(self,role="ROLE_TEACHER", **kwargs):
         super().__init__(role=role,**kwargs)
-        self.id = super().id
 
 
     def to_dict(self):
-        print("here")
         return {
             'id': self.id_teacher,
             'staff' :super().to_dict()
