@@ -1,12 +1,12 @@
 from database.config import db
-from models.User import User
+from models.Staff import Staff
 
 from models.Promotion import Promotion
 
-class ResponsableEdt(User):
+class ResponsableEdt(Staff):
   __tablename__ = "responsable_edt"
 
-  id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), primary_key=True)
+  id = db.Column(db.Integer, db.ForeignKey('staff.id', ondelete='CASCADE'), primary_key=True)
   promotions = db.relationship('Promotion', backref='responsable_edt', lazy='dynamic')
   
 

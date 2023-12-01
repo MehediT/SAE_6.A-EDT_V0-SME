@@ -14,7 +14,7 @@ class Cours(db.Model):
     date = db.Column(db.Date, nullable=False)
     heureDebut = db.Column(db.Time, nullable=False)
     heureFin = db.Column(db.Time, nullable=False)
-    enseignant = db.Column(db.String(15), db.ForeignKey('teacher.initial'))
+    enseignant = db.Column(db.String(15), db.ForeignKey('staff.initial'))
     ressource = db.Column(db.String(64), db.ForeignKey('ressources.initial'))
     promotion = db.Column(db.String(64), db.ForeignKey('promotion.name'))
     groupe = db.Column(db.Integer, db.ForeignKey('groupe.id'), nullable=False)
