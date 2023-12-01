@@ -14,8 +14,7 @@ class TeacherService:
 
     @staticmethod
     def create_teacher(data):
-        initial = TeacherService.get_initial(data.get("name"),data.get("lastname"))
-        teacher = Teacher(initial=initial, **data)
+        teacher = Teacher(**data)
         db.session.add(teacher)
         db.session.commit()
 
@@ -45,35 +44,4 @@ class TeacherService:
         db.session.commit()
         return teacher
 
-    @staticmethod
-    def get_initial(name, lastname):
-        def get_initial_from_part(part, index):
-            return part[:index].upper()
 
-        initial = get_initial_from_part(name, 1) + get_initial_from_part(lastname, 1)
-        initialExist = TeacherService.get_by_initial(initial_name=initial)
-
-        indexChar = 2
-
-        while initialExist is not None:
-            initial = ""
-
-            for part in [name, lastname]:
-                if indexChar <= len(part):
-                    initial += part[:indexChar].upper()
-
-            initialExist = TeacherService.get_by_initial(initial_name=initial)
-            indexChar += 1
-
-        return initial
-
-
-    @staticmethod
-    def get_by_initial(initial_name):
-        teachers = TeacherService.get_all_teachers()
-
-        for teacher in teachers:
-            if teacher.initial == initial_name:
-                return teacher.name
-                
-        return None
