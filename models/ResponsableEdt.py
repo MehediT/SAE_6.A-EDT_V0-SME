@@ -5,8 +5,8 @@ from models.Promotion import Promotion
 
 class ResponsableEdt(Staff):
   __tablename__ = "responsable_edt"
-
-  id = db.Column(db.Integer, db.ForeignKey('staff.id', ondelete='CASCADE'), primary_key=True)
+  id_resp = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
+  id_user = db.Column(db.Integer, db.ForeignKey('staff.id', ondelete='CASCADE'), primary_key=True)
   promotions = db.relationship('Promotion', backref='responsable_edt', lazy='dynamic')
   
 
@@ -18,6 +18,6 @@ class ResponsableEdt(Staff):
 
   def to_dict(self):
     return {
-        'id': self.id,
+        'id': self.id_resp,
         'staff':super().to_dict(),
     }

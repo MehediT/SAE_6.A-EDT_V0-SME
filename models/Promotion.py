@@ -9,7 +9,7 @@ class Promotion(db.Model):
     groupes = db.relationship('Groupe', backref='from_promotion', lazy='dynamic')
     etudGrp = db.relationship('EtudiantGroupe', backref='promotions_groupes', lazy='dynamic')
     ressources = db.relationship('Ressources', backref='promo_ressources', lazy='dynamic')
-    id_resp = db.Column(db.Integer, db.ForeignKey('responsable_edt.id'))
+    id_resp = db.Column(db.BigInteger, db.ForeignKey('responsable_edt.id_resp'))
 
     # respEdt_Promo = db.relationship('ReponsableEdt', backref='promos_of_respEdt', lazy='dynamic')
 
