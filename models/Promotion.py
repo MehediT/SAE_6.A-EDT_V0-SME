@@ -9,15 +9,19 @@ class Promotion(db.Model):
     groupes = db.relationship('Groupe', backref='from_promotion', lazy='dynamic')
     etudGrp = db.relationship('EtudiantGroupe', backref='promotions_groupes', lazy='dynamic')
     ressources = db.relationship('Ressources', backref='promo_ressources', lazy='dynamic')
-    respEdt_Promo = db.relationship('RespEDTPromo', backref='promos_of_respEdt', lazy='dynamic')
+    id_resp = db.Column(db.Integer, db.ForeignKey('responsable_edt.id'))
 
-    def __init__(self, name, niveau, **kwargs):
+    # respEdt_Promo = db.relationship('ReponsableEdt', backref='promos_of_respEdt', lazy='dynamic')
+
+    def __init__(self, name, niveau, id_resp, **kwargs):
         self.name = name
         self.niveau = niveau
+        self.id_resp = id_resp
 
 
     def to_dict(self):
         return {
             'name': self.name,
-            'niveau': self.niveau
+            'niveau': self.niveau,
+            "id_resp": self.id_resp,
         }
