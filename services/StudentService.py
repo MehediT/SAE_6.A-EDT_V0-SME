@@ -20,18 +20,18 @@ class StudentService:
     
     @staticmethod
     def get_by_id(id):
-        return Student.query.get(id)
+        return Student.query.filter_by(id_student=id).first()
 
     @staticmethod
     def delete_student(id):
-        student = Student.query.get(id)
+        student = Student.query.filter_by(id_student=id).first()
         db.session.delete(student)
         db.session.commit()
         return student
 
     @staticmethod
     def update_student(id, name, lastname):
-        student = Student.query.get(id)
+        student = Student.query.filter_by(id_student=id).first()
         student.name = name
         student.lastname = lastname
         db.session.commit()

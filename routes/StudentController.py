@@ -34,7 +34,7 @@ def get_by_student(id):
     
 
 @student_bp.route('/student', methods=['POST'])
-def create_teacher():
+def create_student():
     data = request.json
     try:
         student = StudentService.create_student(data)
@@ -45,7 +45,7 @@ def create_teacher():
 
 
 @student_bp.route('/student/<id>', methods=['DELETE'])
-def delete_teacher(id):
+def delete_student(id):
     try:
         student = StudentService.delete_student(id)
         if not student:
@@ -57,7 +57,7 @@ def delete_teacher(id):
         return jsonify({'error': str(e)}),403
     
 @student_bp.route('/student/<id>', methods=['PUT'])
-def update_teacher(id):
+def update_student(id):
     data = request.json
     try:
         student = StudentService.update_student(id, **data)

@@ -9,8 +9,7 @@ class ResponsableEdtService():
 
     @staticmethod
     def create_responsable_edt(data):
-        initial = "PB"
-        responsable_edt = ResponsableEdt(initial=initial, **data)
+        responsable_edt = ResponsableEdt(**data)
         db.session.add(responsable_edt)
         db.session.commit()
 
@@ -18,12 +17,12 @@ class ResponsableEdtService():
     
     @staticmethod
     def get_by_id(id):
-        return ResponsableEdt.query.get(id)
+        return ResponsableEdt.query.filter_by(id_resp=id).first()
     
 
     @staticmethod
     def delete_responsable_edt(id):
-        responsable_edt = ResponsableEdt.query.get(id)
+        responsable_edt = ResponsableEdt.query.filter_by(id_resp=id).first()
         db.session.delete(responsable_edt)
         db.session.commit()
         return responsable_edt
@@ -31,7 +30,7 @@ class ResponsableEdtService():
 
     @staticmethod
     def update_responsableEdt(id, name: str, lastname: str, **kwargs):
-        responsable_edt = ResponsableEdt.query.get(id)
+        responsable_edt = ResponsableEdt.query.filter_by(id_resp=id).first()
         responsable_edt.name = name
         responsable_edt.lastname = lastname
 

@@ -22,12 +22,12 @@ class TeacherService:
     
     @staticmethod
     def get_by_id(id):
-        return Teacher.query.get(id)
+        return Teacher.query.filter_by(id_teacher=id).first()
     
 
     @staticmethod
     def delete_teacher(id):
-        teacher = Teacher.query.get(id)
+        teacher = Teacher.query.filter_by(id_teacher=id).first()
         db.session.delete(teacher)
         db.session.commit()
         return teacher
@@ -35,7 +35,7 @@ class TeacherService:
 
     @staticmethod
     def update_teacher(id, name: str, lastname: str, **kwargs):
-        teacher = Teacher.query.get(id)
+        teacher = Teacher.query.filter_by(id_teacher=id).first()
         teacher.name = name
         teacher.lastname = lastname
         # teacher.role = role
