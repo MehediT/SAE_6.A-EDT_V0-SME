@@ -10,9 +10,9 @@ class Student(User):
     # absence = db.relationship('Absence', backref='idUser', lazy='dynamic')
 
 
-    def __init__(self,role="ROLE_STUDENT", **kwargs):
+    def __init__(self,INE, role="ROLE_STUDENT", **kwargs):
         super().__init__(role=role,**kwargs)
-        self.id_user = super().id
+        self.INE = INE
 
 
     def to_dict(self):
