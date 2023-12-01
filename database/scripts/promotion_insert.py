@@ -6,18 +6,17 @@ from services.PromotionService import PromotionService
 dataPromotions = [
   {
     'name' : 'BUT INFO',
-    'niveau' : 3
+    'niveau' : 3,
+    'id_resp' : 1
   },
 
   {
     'name' : 'BUT GACO',
-    'niveau' : 3
+    'niveau' : 3,
+    'id_resp' : 2
   }
 
 ]
 
 for promotion in dataPromotions:
-    nom = dataPromotions["name"]
-    niveau = dataPromotions["niveau"]
-
-    PromotionService.create_promo(nom,niveau)
+    PromotionService.create_promo(promotion)

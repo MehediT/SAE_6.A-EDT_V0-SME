@@ -1,30 +1,28 @@
-from models.RespEDTPromo import RespEDTPromo
+from models.ResponsableEdt import ResponsableEdt
 from database.config import db 
-from services.RespEDTPromoService import RespEDTPromoService
+from services.ResponsableEdtService import ResponsableEdtService
 
 
 dataRespEDT = [
 
   {
-    'id' : 1,
-    'respEDT' : 'philippe_bonnot',
-    'promotion' : 'BUT INFO'
+      'name' : 'Philippe',
+      'lastname' : 'Bonnot',
+      'identifier' : 'philippe_bonnot1',
+      'password' : 'philippe1234'
   },
 
   {
-    'id' : 2,
-    'respEDT' : 'mec_random',
-    'promotion' : 'BUT GACO'
+      'name' : 'Sandrine',
+      'lastname' : 'Bonjour',
+      'identifier' : 'sandrine_bonjour',
+      'password' : 'sandrine1234'
   }
 ]
 
 
 for resp in dataRespEDT:
-    id = resp["id"]
-    promo = resp["promotion"]
-    respEDT = resp["respEDT"]
-
-    RespEDTPromoService.create_respedt_promo(id,promo)
+    ResponsableEdtService.create_responsable_edt(resp)
 
 
     
