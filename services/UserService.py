@@ -11,7 +11,7 @@ class UserService:
         return User.query.all()
 
     @staticmethod
-    def create_user(identifier, password, name, lastname, role="ROLE_STUDENT"):
+    def create_user(identifier, password, name, lastname, role):
         user = User(identifier=identifier, password=password, role=role, name=name, lastname=lastname)
         db.session.add(user)
         db.session.commit()
