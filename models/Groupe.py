@@ -5,6 +5,7 @@ class Groupe(db.Model):
     __tablename__= "groupe"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id_group_parent = db.Column(db.Integer, db.ForeignKey('groupe.id'), nullable=True)
     promotion = db.Column(db.String(64), db.ForeignKey('promotion.name'))
     groupeTd = db.Column(db.String(64), nullable=False)
     groupeTp = db.Column(db.String(64), nullable=True)
