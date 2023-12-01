@@ -1,27 +1,29 @@
+from models.Groupe import Groupe
 from database.config import db
 
-class Promotion(db.Model):
+class Promotion(Groupe):
     __tablename__= "promotion"
 
-    name = db.Column(db.String(64), primary_key=True)
-    niveau = db.Column(db.Integer, nullable=False)
-    cours = db.relationship('Cours', backref='promotion_name', lazy='dynamic')
-    groupes = db.relationship('Groupe', backref='from_promotion', lazy='dynamic')
-    etudGrp = db.relationship('EtudiantGroupe', backref='promotions_groupes', lazy='dynamic')
+    id_promo = db.Column(db.Integer, primary_key=True)
+    id_groupe = db.Column(db.Integer, db.ForeignKey('groupe.id', ondelete='CASCADE'), nullable=False)
     ressources = db.relationship('Ressources', backref='promo_ressources', lazy='dynamic')
-    id_resp = db.Column(db.BigInteger, db.ForeignKey('responsable_edt.id_resp'))
+    niveau = db.Column(db.Integer, nullable=False)
 
-    # respEdt_Promo = db.relationship('ReponsableEdt', backref='promos_of_respEdt', lazy='dynamic')
 
-    def __init__(self, name, niveau, id_resp, **kwargs):
-        self.name = name
+
+    
+
+    # cours = db.relationship('Cours', backref='groupe_assigne_cour', lazy='dynamic')
+
+    def __init__(self,niveau,  id_group_parent = None, **kwargs):
+        super().__init__(id_group_parent=id_group_parent, **kwargs)
         self.niveau = niveau
-        self.id_resp = id_resp
-
 
     def to_dict(self):
         return {
-            'name': self.name,
+            'id': self.id_promo,
             'niveau': self.niveau,
-            "id_resp": self.id_resp,
+            'group': super().to_dict(),
         }
+        
+        

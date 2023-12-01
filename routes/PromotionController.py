@@ -18,11 +18,11 @@ def get_all_promotions():
         return jsonify({'error': str(e)}),403
     
 @promotion_bp.route('/promotion/<name>', methods=['GET'])
-def get_promotion_by_name(name):
+def get_promotion_by_id(name):
 
     try:
         # Récupérer toutes les abscences d'un étudiant
-        promotion = PromotionService.get_promo_by_name(name)   
+        promotion = PromotionService.get_promo_by_id(name)   
 
         if not promotion:
             return jsonify({'error': 'Promotion not found'}),404
