@@ -8,7 +8,7 @@ package_name = os.path.basename(os.path.dirname(__file__))
 
 # Liste des fichiers .py dans le dossier des modèles
 model_files = [
-    filename[:-3] for filename in os.listdir(os.path.dirname(__file__)) if filename.endswith('.py') and filename != '__init__.py'
+    filename[:-3] for filename in os.listdir(os.path.dirname(__file__)) if filename.endswith('.py') and filename != '__init__.py' and filename != 'test.py'
 ]
 
 # Importez dynamiquement tous les modèles
@@ -18,3 +18,5 @@ for model_file in model_files:
     models[model_file] = getattr(model_module, model_file)
 
 # Vous pouvez maintenant accéder à tous les modèles en utilisant le dictionnaire "models"
+
+import models.relations
