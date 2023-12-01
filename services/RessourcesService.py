@@ -4,8 +4,8 @@ from models.Ressources import Ressources
 class RessourcesService:
 
     @staticmethod
-    def create_resource(name, initial, promo):
-        ressource = Ressources(name, initial, promo)
+    def create_resource(data):
+        ressource = Ressources(**data)
         db.session.add(ressource)
         db.session.commit()
         return ressource

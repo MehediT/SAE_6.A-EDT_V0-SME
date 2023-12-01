@@ -8,20 +8,16 @@ dataRessources = [
   {
     'initial' : 'R5A08',
     'name' : 'Qualite de dev',
-    'promotion' : 'BUT INFO'
+    'promo' : 'BUT INFO'
   },
 
   {
     'initial' : 'R5A12',
     'name' : 'Modelisations',
-    'promotion' : 'BUT INFO'
+    'promo' : 'BUT INFO'
   }
 ]
 
 
 for ressource in dataRessources:
-    initial = dataRessources["initial"]
-    name = dataRessources["name"]
-    promo = dataRessources["promotion"]
-
-    RessourcesService.create_resource(name,initial,promo)
+    RessourcesService.create_resource(ressource)
