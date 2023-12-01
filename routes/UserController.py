@@ -6,7 +6,7 @@ from flask_jwt_extended import (jwt_required, create_access_token, get_jwt_ident
 
 user_bp = Blueprint('user', __name__)
 
-@user_bp.route('/user/create', methods=['POST'])
+@user_bp.route('/user', methods=['POST'])
 def create_user():
     identifier = request.json.get('identifier')
     password = request.json.get('password')
@@ -14,13 +14,9 @@ def create_user():
     lastname = request.json.get('lastname')
 
     try:
-        # Créer un enseignant
         user = UserService.create_user(identifier, password, name, lastname)
-
         return jsonify(user.to_dict()),200
     except Exception as e:
-        # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
-        # db.session.rollback()
         return jsonify({'error': str(e)}),403 
     
 
@@ -31,8 +27,6 @@ def get_all_user():
         users_dict = [user.to_dict() for user in users]
         return jsonify([users_dict]),200
     except Exception as e:
-        # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
-        # db.session.rollback()
         return jsonify({'error': str(e)}),403
     
 
@@ -40,10 +34,10 @@ def get_all_user():
 def get_by_idUser(id):
     try:
         user = UserService.get_by_id(id)
+        if not user:
+            return jsonify({'error': 'User not found'}),403  
         return jsonify(user.to_dict()),200
     except Exception as e:
-        # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
-        # db.session.rollback()
         return jsonify({'error': str(e)}),403
     
 
@@ -52,10 +46,10 @@ def delete_user(id):
     try:
         user = UserService.get_by_id(id)
         UserService.delete_user(user)
+        if not user:
+            return jsonify({'error': 'User not found'}),403  
         return jsonify(user.to_dict()),200
     except Exception as e:
-        # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
-        # db.session.rollback()
         return jsonify({'error': str(e)}),403
     
 
@@ -65,8 +59,8 @@ def update_user(id):
     lastname = request.json.get('lastname')
     try:
         user = UserService.update_user(id, name, lastname)
+        if not user:
+            return jsonify({'error': 'User not found'}),403  
         return jsonify(user.to_dict()),200
     except Exception as e:
-        # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
-        # db.session.rollback()
         return jsonify({'error': str(e)}),403

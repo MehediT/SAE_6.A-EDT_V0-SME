@@ -6,10 +6,8 @@ class GroupeService:
     @staticmethod
     def create_groupe(idGroupe, promo):
         groupe = Groupe(idGroupe=idGroupe, promotion=promo)
-
         db.session.add(groupe)
         db.session.commit()
-
         return groupe
     
     @staticmethod
@@ -31,5 +29,12 @@ class GroupeService:
         db.session.delete(groupe)
         db.session.commit()
 
-        
+    @staticmethod
+    def update_groupe(id, promo, groupeTd, groupeTp):
+        groupe = Groupe.query.get(id)
+        groupe.promo = promo
+        groupe.groupeTd = groupeTd
+        groupe.groupeTp = groupeTp
+        db.session.commit()
+        return groupe
 
