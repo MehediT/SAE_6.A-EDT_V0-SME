@@ -1,4 +1,4 @@
-import database.scripts.user_insert
+import database.scripts.student_insert
 import database.scripts.respedtpromo_insert
 import database.scripts.promotion_insert
 import database.scripts.salle_insert
