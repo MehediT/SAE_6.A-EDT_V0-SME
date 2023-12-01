@@ -11,6 +11,13 @@ class Promotion(db.Model):
     ressources = db.relationship('Ressources', backref='promo_ressources', lazy='dynamic')
     respEdt_Promo = db.relationship('RespEDTPromo', backref='promos_of_respEdt', lazy='dynamic')
 
-    def __init__(self, name, niveau):
+    def __init__(self, name, niveau, **kwargs):
         self.name = name
         self.niveau = niveau
+
+
+    def to_dict(self):
+        return {
+            'name': self.name,
+            'niveau': self.niveau
+        }
