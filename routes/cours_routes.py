@@ -30,7 +30,7 @@ def create_cours():
 
     try:
         # Créez un nouveau cours
-        grp = db.query.filter_by(groupe = groupe).first().id
+        grp = db.query.filter_by(groupe = groupe).filter_by(promotion=promotion).first().id
         CoursService.create_cours(date, heureDebut, heureFin, enseignant, ressource, promotion, grp, salle)
         return jsonify({'message': 'Nouveau cours ajouté avec succès'}),200
     except Exception as e:
