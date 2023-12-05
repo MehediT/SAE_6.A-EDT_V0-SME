@@ -23,14 +23,15 @@ def create_cours():
     heureDebut = request.json.get('heureDebut')
     heureFin = request.json.get('heureFin')
     enseignant = request.json.get('enseignant')
-    ressource = request.json.get('ressource')
+    ressource = request.json.get('title')
     promotion = request.json.get('promotion')
     groupe = request.json.get('groupe')
     salle = request.json.get('salle')
 
     try:
         # Créez un nouveau cours
-        CoursService.create_cours(date, heureDebut, heureFin, enseignant, ressource, promotion, groupe, salle)
+        grp = db.query.filter_by(groupe = groupe).first().id
+        CoursService.create_cours(date, heureDebut, heureFin, enseignant, ressource, promotion, grp, salle)
         return jsonify({'message': 'Nouveau cours ajouté avec succès'}),200
     except Exception as e:
         # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
