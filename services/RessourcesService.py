@@ -5,7 +5,6 @@ class RessourcesService:
 
     @staticmethod
     def create_resource(data):
-        print(data)
         ressource = Ressources(**data)
         db.session.add(ressource)
         db.session.commit()

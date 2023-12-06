@@ -8,13 +8,19 @@ dataRessources = [
   {
     'initial' : 'R5A08',
     'name' : 'Qualite de dev',
-    'promo' : 'BUT INFO'
+    'id_promo' : 2
   },
 
   {
     'initial' : 'R5A12',
     'name' : 'Modelisations',
-    'promo' : 'BUT INFO'
+    'id_promo' : 1
+  },
+
+  {
+    'initial' : 'R5A05',
+    'name' : 'PPP',
+    'id_promo' : 3
   }
 ]
 
