@@ -21,7 +21,7 @@ def get_all_groupes():
     try:
         groupes = GroupeService.get_all_groupes()
         groupes_dict = [groupe.to_dict() for groupe in groupes]
-        return jsonify([groupes_dict]),200
+        return jsonify(groupes_dict),200
     except Exception as e:
         return jsonify({'error': str(e)}),403
 
@@ -50,13 +50,12 @@ def delete_groupe(id):
 
 @groupe_bp.route('/groupe/<id>', methods=['PUT'])
 def update_groupe(id):
-    promo = request.json.get('promo')
-    groupeTd = request.json.get('groupeTd')
-    groupeTp = request.json.get('groupeTp')
+    data = request.json
     try:
-        groupe = GroupeService.update_groupe(id, promo, groupeTd, groupeTp)
+        groupe = GroupeService.update_groupe(id, **data)
         if not groupe:
             return jsonify({'error': 'Groupe not found'}),403
+        
         return jsonify(groupe.to_dict()),200
     except Exception as e:
         return jsonify({'error': str(e)}),403

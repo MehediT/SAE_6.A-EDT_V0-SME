@@ -4,37 +4,33 @@ from models.Groupe import Groupe
 class GroupeService:
 
     @staticmethod
-    def create_groupe(idGroupe, promo):
-        groupe = Groupe(idGroupe=idGroupe, promotion=promo)
+    def create_groupe(data):
+        groupe = Groupe(**data)
         db.session.add(groupe)
         db.session.commit()
         return groupe
     
     @staticmethod
     def get_all_groupes():
-        return Groupe.query().all()
-    
-    @staticmethod
-    def get_groupes_by_promo(from_promo):
-        return Groupe.query().filter_by(promotion=from_promo).all()
+        return Groupe.query.all()
     
     @staticmethod
     def get_groupe_by_id(idGroupe):
-        return Groupe.query().filter_by(idGroupe=idGroupe).first()
+        return Groupe.query.get(idGroupe)
     
     @staticmethod
-    def delete_group(idGroupe):
-        groupe = GroupeService.get_groupe_by_id(idGroupe)
+    def delete_groupe(idGroupe):
+        groupe = Groupe.query.get(idGroupe)
 
         db.session.delete(groupe)
         db.session.commit()
 
+        return groupe
+
     @staticmethod
-    def update_groupe(id, promo, groupeTd, groupeTp):
+    def update_groupe(id, name):
         groupe = Groupe.query.get(id)
-        groupe.promo = promo
-        groupe.groupeTd = groupeTd
-        groupe.groupeTp = groupeTp
+        groupe.name = name
         db.session.commit()
         return groupe
 

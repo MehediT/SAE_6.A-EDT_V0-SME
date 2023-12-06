@@ -1,17 +1,31 @@
 from database.config import db
-from models.Promotion import Promotion
 
 class Groupe(db.Model):
     __tablename__= "groupe"
 
+    name = db.Column(db.String(64))
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    promotion = db.Column(db.String(64), db.ForeignKey('promotion.name'))
-    groupeTd = db.Column(db.String(64), nullable=False)
-    groupeTp = db.Column(db.String(64), nullable=True)
-    cours = db.relationship('Cours', backref='groupe_assigne_cour', lazy='dynamic')
+    id_group_parent = db.Column(db.Integer, db.ForeignKey('groupe.id', ondelete='CASCADE'), nullable=True)
 
-    def __init__(self, promo, groupeTd, groupeTp):
-        self.promotion = promo
-        self.groupeTd = groupeTd
-        self.groupeTp = groupeTp
+
+    
+
+    # cours = db.relationship('Cours', backref='groupe_assigne_cour', lazy='dynamic')
+
+    def __init__(self, name, id_group_parent, **kwargs):
+        if id_group_parent: 
+            if Groupe.query.get(id_group_parent) == None:
+                raise Exception("Groupe parent does not exist")
+        else:
+            id_group_parent = db.null()
+
+        self.name = name
+        self.id_group_parent = id_group_parent
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'id_group_parent': self.id_group_parent,
+        }
         

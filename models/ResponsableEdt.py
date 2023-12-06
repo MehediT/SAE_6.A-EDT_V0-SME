@@ -1,13 +1,12 @@
 from database.config import db
 from models.Staff import Staff
 
-from models.Promotion import Promotion
 
 class ResponsableEdt(Staff):
   __tablename__ = "responsable_edt"
   id_resp = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
   id_user = db.Column(db.Integer, db.ForeignKey('staff.id', ondelete='CASCADE'))
-  promotions = db.relationship('Promotion', backref='responsable_edt', lazy='dynamic')
+  # groupes = db.relationship('Groupe', backref='responsable_edt', lazy='dynamic')
   
 
 
