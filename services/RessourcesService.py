@@ -5,6 +5,7 @@ class RessourcesService:
 
     @staticmethod
     def create_resource(data):
+        print(data)
         ressource = Ressources(**data)
         db.session.add(ressource)
         db.session.commit()
@@ -18,9 +19,7 @@ class RessourcesService:
         ressources = Ressources.query.all()
         return ressources
     
-    @staticmethod
-    def add_ressource(name):
-        return Ressources.query.get(name) is not None
+
     
     @staticmethod
     def delete_ressource(initial):
