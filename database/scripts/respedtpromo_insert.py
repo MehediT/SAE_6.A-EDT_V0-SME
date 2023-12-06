@@ -17,6 +17,13 @@ dataRespEDT = [
       'lastname' : 'Bonjour',
       'identifier' : 'sandrine_bonjour',
       'password' : 'sandrine1234'
+  },
+
+    {
+      'name' : 'Boit',
+      'lastname' : 'deleau',
+      'identifier' : 'boit_deleau',
+      'password' : 'boit1234'
   }
 ]
 
