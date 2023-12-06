@@ -5,39 +5,30 @@ from services.GroupeService import GroupeService
 dataGroupes = [
 
   {
-    'id' : 1,
-    'promotion' : 'BUT INFO',
-    'groupeTd' : 'groupe A',
-    'groupeTp' : 'groupe A1'
+    'niveau' : 3,
+    'name' : 'BUT INFO S3',
+    'id_group_parent' : 1
   },
 
   {
-    'id' : 2,
-    'promotion' : 'BUT INFO',
-    'groupeTd' : 'groupe A',
-    'groupeTp' : 'groupe A2'
+    'niveau' : 2,
+    'name' : 'BUT GACO S2',
+    'id_group_parent' : 1
   },
 
   {
-    'id' : 3,
-    'promotion' : 'BUT GACO',
-    'groupeTd' : 'groupe A',
-    'groupeTp' : 'groupe A1'
+    'niveau' : 5,
+    'name' : 'BUT QLIO S5',
+    'id_group_parent' : 1
   },
 
   {
-    'id' : 4,
-    'promotion' : 'BUT GACO',
-    'groupeTd' : 'groupe A',
-    'groupeTp' : 'groupe A2'
+    'niveau' : 2,
+    'name' : 'BUT GACO S2',
+    'id_group_parent' : 2
   }
 ]
 
 
 for groupe in dataGroupes:
-    id = groupe["id"]
-    promo = groupe["promotion"]
-    groupeTd = groupe["groupeTd"]
-    groupeTp = groupe["groupeTp"]
-
-    GroupeService.create_groupe(id,promo)
+    GroupeService.create_groupe(groupe)

@@ -5,15 +5,18 @@ from services.PromotionService import PromotionService
 
 dataPromotions = [
   {
-    'name' : 'BUT INFO',
     'niveau' : 3,
-    'id_resp' : 1
+    'name' : 'BUT INFO S3'
   },
 
   {
-    'name' : 'BUT GACO',
-    'niveau' : 3,
-    'id_resp' : 2
+    'niveau' : 2,
+    'name' : 'BUT GACO S2'
+  },
+
+  {
+    'niveau' : 5,
+    'name' : 'BUT QLIO S5'
   }
 
 ]
