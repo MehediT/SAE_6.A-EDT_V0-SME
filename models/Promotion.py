@@ -6,8 +6,8 @@ class Promotion(Groupe):
 
     id_promo = db.Column(db.Integer, primary_key=True)
     id_groupe = db.Column(db.Integer, db.ForeignKey('groupe.id', ondelete='CASCADE'), nullable=False)
-    ressources = db.relationship('Ressources', backref='promo_ressources', lazy='dynamic')
     niveau = db.Column(db.Integer, nullable=False)
+    id_resp = db.Column(db.BigInteger, db.ForeignKey('responsable_edt.id_resp', ondelete='CASCADE'))
 
 
 
