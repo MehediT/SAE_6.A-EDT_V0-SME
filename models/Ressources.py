@@ -9,7 +9,7 @@ class Ressources(db.Model):
     groupe = db.Column(db.Integer, db.ForeignKey('groupe.id'))
     cours = db.relationship('Cours', backref='ressource_initial', lazy='dynamic')
 
-    def __init__(self, name, initial, groupe):
+    def __init__(self, name, initial, groupe, **kwargs):
         self.name=name
         self.initial = initial
         self.groupe = groupe
