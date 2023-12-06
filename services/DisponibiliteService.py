@@ -1,11 +1,11 @@
 from database.config import db
 from models.Disponibilite import Disponibilite
 
-class DisponibiliteService(db.model):
+class DisponibiliteService():
 
   @staticmethod
-  def create_disponibilite(enseignant, disponible, date_debut_disponibilite, date_fin_disponibilite):
-    disponibilite = Disponibilite(enseignant=enseignant, disponible=disponible, date_debut_disponibilite=date_debut_disponibilite, date_fin_disponibilite=date_fin_disponibilite)
+  def create_disponibilite(data):
+    disponibilite = Disponibilite(**data)
 
     db.session.add(disponibilite)
     db.session.commit()
@@ -15,8 +15,8 @@ class DisponibiliteService(db.model):
     return Disponibilite.query.filter_by(enseignant=initial_enseignant).first()
   
   @staticmethod
-  def delete_disponibilite(initial_enseignant, date_debut_disponibilite, date_fin_disponibilite):
-    disponibilite_to_delete = Disponibilite.query.filter_by(enseignant=initial_enseignant, date_debut_disponibilite=date_debut_disponibilite, date_fin_disponibilite=date_fin_disponibilite).first()
+  def delete_disponibilite(id):
+    disponibilite_to_delete = Disponibilite.query.filter_by(id=id).first()
 
     db.session.delete(disponibilite_to_delete)
     db.session.commit()

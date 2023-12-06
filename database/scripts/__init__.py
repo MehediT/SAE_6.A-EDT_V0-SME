@@ -7,6 +7,7 @@ import database.scripts.groupe_insert
 import database.scripts.salle_insert
 import database.scripts.teacher_insert
 import database.scripts.ressources_insert
+import database.scripts.disponibilite_insert
 #import database.scripts.cours_insert
 #import database.scripts.etudiantgroupe_insert
 
