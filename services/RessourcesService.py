@@ -28,9 +28,9 @@ class RessourcesService:
         return resource
     
     @staticmethod
-    def update_ressource(name, initial, promo):
+    def update_ressource(name, initial, id_promo):
         ressource = Ressources.query.filter_by(initial=initial).first()
         ressource.name = name
-        ressource.promo = promo
+        ressource.id_promo = id_promo
         db.session.commit()
         return ressource
