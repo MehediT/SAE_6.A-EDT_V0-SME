@@ -4,84 +4,41 @@ from models.Cours import Cours
 class CoursService:
 
     @staticmethod
-    def create_cours(date, heureDebut, heureFin, enseignant, ressource, promotion, groupe, salle):
-        cours = Cours(date, heureDebut, heureFin, enseignant, ressource, promotion, groupe, salle, False)
-
-        db.session.add(cours)
+    def create_course(data):
+        course = Cours(**data)
+        db.session.add(course)
         db.session.commit()
-
-        return cours
+        return course
+    
+    def get_course_by_id(id):
+        return Cours.query.get(id)
     
     @staticmethod
-    def get_cours_by_groupe(groupe):
-        return Cours.query.filter_by(groupe=groupe).all()
+    def get_all_courses():
+        courses = Cours.query.all()
+        return courses
     
     @staticmethod
-    def get_cours_by_promo(promo):
-        return Cours.query.filter_by(promotion=promo).all()
+    def add_course(name):
+        return Cours.query.get(name) is not None
     
     @staticmethod
-    def get_teacher_schedule(enseignant):
-        return Cours.query.filter_by(enseignant=enseignant).all()
+    def delete_course(id):
+        resource = Cours.query.get(id)
+        return resource
     
     @staticmethod
-    def get_salle_availability(salle):
-        return Cours.query.filter_by(salle=salle).all()
-    
-    @staticmethod
-    def get_cours_by_date(date):
-        return Cours.query.filter_by(date=date).all()
-    
-    @staticmethod
-    def get_cours_by_ressource(ressource):
-        return Cours.query.filter_by(ressource=ressource).all()
-    
-    @staticmethod
-    def set_groupe(idCours, new_groupe):
-        cour_to_update = Cours.query.filter_by(id=idCours).first()
+    def update_course(id, start_time, end_time, initial_ressource, id_group, name_salle = None,initial_enseignant= None, **kwargs):
+        course = Cours.query.get(id)
 
-        cour_to_update.groupe=new_groupe
-        db.session.commit()
-
-    @staticmethod
-    def set_promo(idCours, new_promo):
-        cour_to_update = Cours.query.filter_by(id=idCours).first()
-
-        cour_to_update.promotion=new_promo
-        db.session.commit()
-
-    @staticmethod
-    def set_teacher(idCours, new_enseignant):
-        cour_to_update = Cours.query.filter_by(id=idCours).first()
-
-        cour_to_update.enseignant=new_enseignant
-        db.session.commit()
-
-    @staticmethod
-    def set_salle(idCours, new_salle):
-        cour_to_update = Cours.query.filter_by(id=idCours).first()
-
-        cour_to_update.salle=new_salle
-        db.session.commit()
-
-    @staticmethod
-    def set_date(idCours, new_date):
-        cour_to_update = Cours.query.filter_by(id=idCours).first()
-
-        cour_to_update.date=new_date
-        db.session.commit()
-
-    @staticmethod
-    def set_ressource(idCours, new_ressource):
-        cour_to_update = Cours.query.filter_by(id=idCours).first()
-
-        cour_to_update.ressource=new_ressource
-        db.session.commit()
-
-    
-    @staticmethod
-    def delete_cour(id):
-        cour = Cours.query.filter_by(id=id).first()
+        course.start_time = start_time
+        course.end_time = end_time
+        course.initial_enseignant = initial_enseignant if initial_enseignant else db.null()
+        course.initial_ressource = initial_ressource
+        course.id_group = id_group
+        course.name_salle = name_salle if name_salle else db.null()
         
-        db.session.delete(cour)
-        db.session.commit() 
+        db.session.commit()
+        return course
+    
+
