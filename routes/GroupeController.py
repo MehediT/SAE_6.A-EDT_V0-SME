@@ -32,7 +32,8 @@ def get_by_id(id):
         groupe = GroupeService.get_groupe_by_id(id)
         if not groupe:
             return jsonify({'error': 'Groupe not found'}),403
-        return jsonify(groupe.to_dict()),200
+                
+        return jsonify(GroupeService.get_parents(id)),200
     except Exception as e:
         return jsonify({'error': str(e)}),403
     

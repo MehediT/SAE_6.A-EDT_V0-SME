@@ -37,8 +37,10 @@ def create_course():
     data = request.json
 
     try:
-        course = CoursService.create_course(data)
-
+        resp, code = CoursService.create_course(data)
+        if code >= 400:
+            return jsonify(resp),code
+        course = resp
         return jsonify(course.to_dict()),200
     except Exception as e:
 

@@ -22,10 +22,10 @@ class Groupe(db.Model):
         self.name = name
         self.id_group_parent = id_group_parent
 
-    def to_dict(self):
+    def to_dict(self, key = None, value = None):
         return {
             'id': self.id,
             'name': self.name,
-            'id_group_parent': self.id_group_parent,
+            'id_group_parent': self.id_group_parent,        
         }
         
