@@ -96,5 +96,18 @@ def cancel_all():
         return jsonify(courses_dict),200
     except Exception as e:
 
-        return jsonify({'error': str(e)}),403    
+        return jsonify({'error': str(e)}),403   
+
+
+@cours_bp.route('/courses/duplicate', methods=['POST']) 
+def duplicate_all():
+    data = request.json
+
+    try:
+        courses = CoursService.duplicate(**data)
+        courses_dict = [course.to_dict() for course in courses]
+        return jsonify(courses_dict),200
+    except Exception as e:
+
+        return jsonify({'error': str(e)}),403
 

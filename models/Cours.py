@@ -22,8 +22,14 @@ class Cours(db.Model):
     # absences = db.relationship('Absence', backref='cours', lazy='dynamic')
 
     def __init__(self, start_time, end_time, initial_ressource, id_group, name_salle = None,id_enseignant= None,is_published=False, **kwargs):
-        self.start_time = datetime.strptime(start_time,"%Y-%m-%d %H:%M:%S")
-        self.end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
+        if type(start_time) == str:
+            self.start_time = datetime.strptime(start_time,"%Y-%m-%d %H:%M:%S")
+        else:
+            self.start_time = start_time
+        if type(end_time) == str:
+            self.end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
+        else:
+            self.end_time = end_time
         self.id_enseignant = id_enseignant if id_enseignant else db.null()
         self.initial_ressource = initial_ressource
         self.id_group = id_group
@@ -45,3 +51,7 @@ class Cours(db.Model):
             'appelEffectue': self.appelEffectue,
             'is_published': self.is_published,
         }
+    def duplicate(self):
+        # Créer une nouvelle instance de la classe avec les mêmes attributs
+        new_course = Cours(self.start_time, self.end_time, self.initial_ressource, self.id_group, self.name_salle, self.id_enseignant, self.is_published)
+        return new_course
