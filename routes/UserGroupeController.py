@@ -4,6 +4,27 @@ from services.UserGroupeService import UserGroupeService
 usergroupe_bp = Blueprint('usergroupe', __name__)
 
 
+
+@usergroupe_bp.route('/usergroupe/addGroupeEtudiant', methods=['POST'])
+def add_user_to_group():
+
+    idStudent = request.json["idStudent"]
+    idGroupe = request.json["idGroupe"]
+    
+    try:
+        # Ajouter un étudiant à un groupe
+        groupe_etudiant = UserGroupeService.add_user_to_group(idStudent,idGroupe)
+
+
+        return jsonify(groupe_etudiant.to_dict()),200
+    except Exception as e:
+        # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
+        # db.session.rollback()
+        return jsonify({'error': str(e)}),403
+
+
+
+
 @usergroupe_bp.route('/usergroupe/groupeEtudiant/<idGroupe>/<idStudent>', methods=['GET'])
 def get_groupe_etudiant(idStudent,idGroupe):
 

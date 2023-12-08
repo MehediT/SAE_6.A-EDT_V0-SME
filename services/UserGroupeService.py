@@ -4,10 +4,14 @@ from models.relations.user_groupe import student_course_association
 class UserGroupeService:
 
   @staticmethod
-  def create_user_groupe(idStudent,idGroupe):
-    user_groupe = student_course_association().append(idStudent,idGroupe) 
+  def add_user_to_group(user_id, group_id):
+    # Create an instance of the user_groupe table
+    user_group_association = student_course_association.insert().values(id_student=user_id, id_group=group_id)
 
-    db.session.add(user_groupe)
+    # Add the association to the database session
+    db.session.execute(user_group_association)
+
+    # Commit the changes to the database
     db.session.commit()
 
   @staticmethod

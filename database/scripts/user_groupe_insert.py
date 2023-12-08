@@ -27,5 +27,5 @@ for etudiantGroupe in dataEtudiantGroupe:
     idStudent = etudiantGroupe["id_student"]
     idGroup = etudiantGroupe["id_group"]
 
-    UserGroupeService.create_user_groupe(idStudent,idGroup)
+    UserGroupeService.add_user_to_group(idStudent,idGroup)
 
