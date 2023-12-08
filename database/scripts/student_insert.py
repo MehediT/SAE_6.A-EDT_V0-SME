@@ -6,7 +6,7 @@ from services.StudentService import StudentService
 dataUsers = [
 
   {
-    'identifier' : 'jonas_obrun',
+    'username' : 'jonas_obrun',
     'password' : 'jonas1234',
     'name' : 'Jonas',
     'lastname' : 'Obrun',
@@ -14,7 +14,7 @@ dataUsers = [
   },
 
   {
-    'identifier' : 'cyril_grosjean',
+    'username' : 'cyril_grosjean',
     'password' : 'cyril1234',
     'name' : 'Cyril',
     'lastname' : 'Grosjean',
@@ -22,7 +22,7 @@ dataUsers = [
   },
 
   {
-    'identifier' : 'nicolas_ramirez',
+    'username' : 'nicolas_ramirez',
     'password' : 'nicolas1234',
     'name' : 'Nicolas',
     'lastname' : 'Ramirez',
@@ -30,7 +30,7 @@ dataUsers = [
   },
 
   {
-    'identifier' : 'ismael_argence',
+    'username' : 'ismael_argence',
     'password' : 'ismael1234',
     'name' : 'Ismael',
     'lastname' : 'Argence',
@@ -38,7 +38,7 @@ dataUsers = [
   },
 
   {
-    'identifier' : 'onur_genc',
+    'username' : 'onur_genc',
     'password' : 'onur1234',
     'name' : 'Onur',
     'lastname' : 'Genc',
