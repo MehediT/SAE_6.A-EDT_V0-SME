@@ -31,7 +31,7 @@ class CoursService:
         return Cours.query.get(id)
     
     @staticmethod
-    def get_all_courses(args, publish: bool= None, name_salle=None, id_enseignant=None, id_group=None, initial_ressource=None):
+    def get_all_courses(args, publish: bool= None):
 
         query = Cours.query
 
@@ -48,14 +48,14 @@ class CoursService:
         if type(publish) == bool:
             query = query.filter(Cours.is_published == publish)
 
-        if name_salle:
-            query = query.filter(Cours.name_salle == name_salle)
-        if id_enseignant:
-            query = query.filter(Cours.id_enseignant == id_enseignant)
-        if id_group:
-            query = query.filter(Cours.id_group == id_group)
-        if initial_ressource:
-            query = query.filter(Cours.initial_ressource == initial_ressource)
+        if 'room' in args:
+            query = query.filter(Cours.name_salle == args["room"])
+        if 'teacher' in args:
+            query = query.filter(Cours.id_enseignant == args["teacher"])
+        if 'group' in args:
+            query = query.filter(Cours.id_group == args["group"])
+        if 'resource' in args:
+            query = query.filter(Cours.initial_ressource == args["resource"])
 
         return query.all()
     
