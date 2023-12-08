@@ -12,7 +12,7 @@ class UserService:
 
     @staticmethod
     def create_user(username, password, name, lastname, role):
-        user = User(usernmae=username, password=password, role=role, name=name, lastname=lastname)
+        user = User(username=username, password=password, role=role, name=name, lastname=lastname)
         db.session.add(user)
         db.session.commit()
         return user
