@@ -25,7 +25,7 @@ class AffiliationRespEdtService:
     return affiliation_resp_edt.query.filter_by(id_resp=idResp).filter_by(id_promo=idPromo).all()
   
   @staticmethod
-  def delete_user_groupe(idResp):
+  def delete_respEdt_promo(idResp):
     affiliation_resp_edt_delete = affiliation_resp_edt.query.filter_by(id_resp=idResp).first()
 
     db.session.delete(affiliation_resp_edt_delete)
