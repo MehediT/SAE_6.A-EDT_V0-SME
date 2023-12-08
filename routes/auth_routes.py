@@ -30,10 +30,10 @@ def register():
 @auth_bp.route('/login', methods=['POST'])
 def login():
 
-    identifier = request.json.get('identifier')
+    username = request.json.get('username')
     password = request.json.get('password')
 
-    user = UserService.get_by_identifier(identifier)
+    user = UserService.get_by_identifier(username)
     if (user is not None):
         # Vérifiez le nom d'utilisateur et le mot de passe (par exemple, dans une base de données)
         # Si la vérification est réussie, générez un jeton d'accès JWT
