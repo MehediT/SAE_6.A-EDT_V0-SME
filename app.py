@@ -22,7 +22,7 @@ def create_app():
     migrate = Migrate(app, db)
     app.debug = True
 
-    CORS(app, resources={r"/*": {"origins": "*"}})    
+    CORS(app, resources={r"/*": {"origins": "*", "supports_credentials": True}})    
     register_routes(app)
 
     return app
