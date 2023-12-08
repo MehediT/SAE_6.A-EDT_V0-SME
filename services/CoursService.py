@@ -31,17 +31,14 @@ class CoursService:
     
     @staticmethod
     def get_all_courses():
-        courses = Cours.query.all()
-        return courses
-    
-    @staticmethod
-    def add_course(name):
-        return Cours.query.get(name) is not None
+        return Cours.query.all()
     
     @staticmethod
     def delete_course(id):
-        resource = Cours.query.get(id)
-        return resource
+        course = Cours.query.get(id)
+        db.session.delete(course)
+        db.session.commit()
+        return course
     
     @staticmethod
     def update_course(id, start_time, end_time, initial_ressource, id_group, name_salle = None,id_enseignant= None, **kwargs):
@@ -103,6 +100,22 @@ class CoursService:
 
 
         return None, 200
+    
+    @staticmethod
+    def publish():
+        courses = Cours.query.filter_by(is_published=False).all()
+        for course in courses:
+            course.is_published = True
+        db.session.commit()
+        return courses
+    
+    @staticmethod
+    def cancel():
+        courses = Cours.query.filter_by(is_published=False).all()
+        for course in courses:
+            db.session.delete(course)
+        db.session.commit()
+        return courses
     
     
     
