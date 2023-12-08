@@ -12,7 +12,7 @@ auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/user', methods=['POST'])
 def register():
-    username = request.json.get('username')
+    username = request.json.get('identifier')
     password = request.json.get('password')
     name = request.json.get('name')
     lastname = request.json.get('lastname')
@@ -33,7 +33,7 @@ def login():
     username = request.json.get('username')
     password = request.json.get('password')
 
-    user = UserService.get_by_identifier(username)
+    user = UserService.get_by_username(username)
     if (user is not None):
         # Vérifiez le nom d'utilisateur et le mot de passe (par exemple, dans une base de données)
         # Si la vérification est réussie, générez un jeton d'accès JWT
