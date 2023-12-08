@@ -13,7 +13,7 @@ cours_bp = Blueprint('cours', __name__)
 def get_all_courses():
 
     try:
-        courses = CoursService.get_all_courses()   
+        courses = CoursService.get_all_courses(request.args)   
 
         ressources_dict = [course.to_dict() for course in courses]
         return jsonify(ressources_dict),200

@@ -2,6 +2,7 @@ from operator import and_
 
 from database.config import db
 from models.Cours import Cours
+from datetime import datetime, timedelta
 
 from services.GroupeService import GroupeService
 
@@ -30,8 +31,33 @@ class CoursService:
         return Cours.query.get(id)
     
     @staticmethod
-    def get_all_courses():
-        return Cours.query.all()
+    def get_all_courses(args, publish: bool= None, name_salle=None, id_enseignant=None, id_group=None, initial_ressource=None):
+
+        query = Cours.query
+
+        if 'date_min' in args:
+            date_start = datetime.strptime(args["date_min"], '%Y-%m-%d')
+            print(date_start)
+            query = query.filter(Cours.end_time >= date_start)
+
+        if 'date_max' in args:
+            date_end = datetime.strptime(args["date_max"], '%Y-%m-%d') + timedelta(days=1)
+            print(date_end)
+            query = query.filter(Cours.start_time < date_end)
+
+        if type(publish) == bool:
+            query = query.filter(Cours.is_published == publish)
+
+        if name_salle:
+            query = query.filter(Cours.name_salle == name_salle)
+        if id_enseignant:
+            query = query.filter(Cours.id_enseignant == id_enseignant)
+        if id_group:
+            query = query.filter(Cours.id_group == id_group)
+        if initial_ressource:
+            query = query.filter(Cours.initial_ressource == initial_ressource)
+
+        return query.all()
     
     @staticmethod
     def delete_course(id):

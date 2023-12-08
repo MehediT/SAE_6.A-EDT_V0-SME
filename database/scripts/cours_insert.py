@@ -9,8 +9,8 @@ date
 
 dataCours = [
     {
-    "start_time" : "2023-12-06 12:55:00",
-    "end_time" : "2023-12-06 14:00:00",
+    "start_time" : "2023-12-02 23:55:00",
+    "end_time" : "2023-12-03 01:00:00",
     "initial_ressource" : "R5A05",
     "id_group":2,
     "id_enseignant":1,
@@ -18,8 +18,8 @@ dataCours = [
   },
 
   {
-    "start_time" : "2023-12-06 13:55:00",
-    "end_time" : "2023-12-06 15:00:00",
+    "start_time" : "2023-12-03 13:55:00",
+    "end_time" : "2023-12-03 15:00:00",
     "initial_ressource" : "R5A05",
     "id_group":1,
     "id_enseignant":1,
@@ -27,8 +27,8 @@ dataCours = [
   },
 
   {
-    "start_time" : "2023-12-06 12:55:00",
-    "end_time" : "2023-12-06 13:00:00",
+    "start_time" : "2023-12-03 23:55:00",
+    "end_time" : "2023-12-04 02:00:00",
     "initial_ressource" : "R5A05",
     "id_group":1,
     "id_enseignant":1
