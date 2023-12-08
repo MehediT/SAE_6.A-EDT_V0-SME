@@ -45,8 +45,8 @@ class CoursService:
             print(date_end)
             query = query.filter(Cours.start_time < date_end)
 
-        if publish:
-            query = query.filter(Cours.is_published == publish)
+        # if publish:
+        #     query = query.filter(Cours.is_published == publish)
 
         if 'room' in args:
             query = query.filter(Cours.name_salle == args["room"])
