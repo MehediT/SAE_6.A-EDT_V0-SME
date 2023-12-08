@@ -27,7 +27,7 @@ def register():
         # db.session.rollback()
         return jsonify({'error': str(e)}),403
 
-@auth_bp.route('/login', methods=['POST'])
+@auth_bp.route('/auth/login', methods=['POST'])
 def login():
 
     username = request.json.get('username')
