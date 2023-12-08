@@ -8,13 +8,13 @@ user_bp = Blueprint('user', __name__)
 
 @user_bp.route('/user', methods=['POST'])
 def create_user():
-    identifier = request.json.get('identifier')
+    username = request.json.get('username')
     password = request.json.get('password')
     name = request.json.get('name')
     lastname = request.json.get('lastname')
 
     try:
-        user = UserService.create_user(identifier, password, name, lastname)
+        user = UserService.create_user(username, password, name, lastname)
         return jsonify(user.to_dict()),200
     except Exception as e:
         return jsonify({'error': str(e)}),403 

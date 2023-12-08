@@ -8,21 +8,21 @@ dataTeacher = [
     {
         'name' : 'Philippe',
         'lastname' : 'Bonnot',
-        'identifier' : 'philippe_bonnot',
+        'username' : 'philippe_bonnot',
         'password' : 'philippe1234'
     },
 
     {
         'name' : 'Jeremy',
         'lastname' : 'Marcinkowski',
-        'identifier' : 'jeremy_marcinkowski',
+        'username' : 'jeremy_marcinkowski',
         'password' : 'jeremy1234'
     },
 
     {
         'name' : 'Philippe',
         'lastname' : 'Bonnet',
-        'identifier' : 'philippe_bonnet',
+        'username' : 'philippe_bonnet',
         'password' : 'philippe21234'
     }
 ]

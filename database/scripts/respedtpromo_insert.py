@@ -8,21 +8,21 @@ dataRespEDT = [
   {
       'name' : 'Philippe',
       'lastname' : 'Bonnot',
-      'identifier' : 'philippe_bonnot1',
+      'username' : 'philippe_bonnot1',
       'password' : 'philippe1234'
   },
 
   {
       'name' : 'Sandrine',
       'lastname' : 'Bonjour',
-      'identifier' : 'sandrine_bonjour',
+      'username' : 'sandrine_bonjour',
       'password' : 'sandrine1234'
   },
 
     {
       'name' : 'Boit',
       'lastname' : 'deleau',
-      'identifier' : 'boit_deleau',
+      'username' : 'boit_deleau',
       'password' : 'boit1234'
   }
 ]

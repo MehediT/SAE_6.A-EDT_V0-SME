@@ -11,8 +11,8 @@ class UserService:
         return User.query.all()
 
     @staticmethod
-    def create_user(identifier, password, name, lastname, role):
-        user = User(identifier=identifier, password=password, role=role, name=name, lastname=lastname)
+    def create_user(username, password, name, lastname, role):
+        user = User(usernmae=username, password=password, role=role, name=name, lastname=lastname)
         db.session.add(user)
         db.session.commit()
         return user
@@ -26,8 +26,8 @@ class UserService:
         return User.query.get(id)
     
     @staticmethod
-    def get_by_identifier(identifier):
-        user = User.query.filter_by(identifier=identifier).first()
+    def get_by_username(username):
+        user = User.query.filter_by(username=username).first()
         return user
 
     @staticmethod
