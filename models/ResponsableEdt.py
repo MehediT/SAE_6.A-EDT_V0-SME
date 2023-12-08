@@ -5,7 +5,7 @@ from models.Staff import Staff
 class ResponsableEdt(Staff):
   __tablename__ = "responsable_edt"
   id_resp = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
-  id_user = db.Column(db.Integer, db.ForeignKey('staff.id', ondelete='CASCADE'))
+  id_staff = db.Column(db.Integer, db.ForeignKey('staff.id', ondelete='CASCADE'))
   # groupes = db.relationship('Groupe', backref='responsable_edt', lazy='dynamic')
   
 
