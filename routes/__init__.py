@@ -1,6 +1,5 @@
 from flask import Flask
 from .authentificationController import auth_bp
-from .api_routes import api_bp
 from .CoursController import cours_bp
 from .UserController import user_bp
 from .TeacherController import teacher_bp
@@ -14,7 +13,6 @@ from .ResponsableEdtController import responsable_edt_bp
 
 def register_routes(app):
     app.register_blueprint(auth_bp)
-    app.register_blueprint(api_bp)
     app.register_blueprint(cours_bp)
     app.register_blueprint(user_bp)
     app.register_blueprint(teacher_bp)

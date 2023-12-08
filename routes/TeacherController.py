@@ -5,6 +5,7 @@ from flask_jwt_extended import (jwt_required, create_access_token, get_jwt_ident
 
 teacher_bp = Blueprint('teacher', __name__)
 
+@jwt_required()
 @teacher_bp.route('/teachers', methods=['GET'])
 def get_all_teacher():
     try:
