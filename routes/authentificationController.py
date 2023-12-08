@@ -12,14 +12,14 @@ auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/user', methods=['POST'])
 def register():
-    identifier = request.json.get('identifier')
+    username = request.json.get('username')
     password = request.json.get('password')
     name = request.json.get('name')
     lastname = request.json.get('lastname')
 
     try:
         # Créez un nouvel utilisateur
-        UserService.create_user(identifier=identifier, password=password, name=name, lastname=lastname)
+        UserService.create_user(username=username, password=password, name=name, lastname=lastname)
 
         return jsonify({'message': 'Nouvel utilisateur ajouté avec succès'}),200
     except Exception as e:
