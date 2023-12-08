@@ -1,50 +1,43 @@
+import json
 from models.Cours import Cours
 from database.config import db 
 from services.CoursService import CoursService
 from datetime import date, time
 
 
+date
 
 dataCours = [
-
-  {
-
-    'id': 1,
-    'date' : date(2023,12,8),
-    'heureDebut' : time(11,00,00) ,
-    'heureFin' : time(12,00,00),
-    'enseignant' : 'JEM',
-    'ressource' : 'Qualité dev',
-    'promotion' : 'BUT INFO S5',
-    'groupe' : 1,
-    'salle' : 'A2-05'
+    {
+    "start_time" : "2023-12-06 12:55:00",
+    "end_time" : "2023-12-06 14:00:00",
+    "initial_ressource" : "R5A05",
+    "id_group":2,
+    "id_enseignant":1,
+    "name_salle":"A2-05"
   },
 
   {
-    'id': 2,
-    'date' : date(2023,12,8),
-    'heureDebut' : time(14,00,00),
-    'heureFin' : time(15,30,00),
-    'enseignant' : 'PB',
-    'ressource' : 'Modélisations',
-    'promotion' : 'BUT INFO S5',
-    'groupe' : 2,
-    'salle' : 'B1-09'
+    "start_time" : "2023-12-06 13:55:00",
+    "end_time" : "2023-12-06 15:00:00",
+    "initial_ressource" : "R5A05",
+    "id_group":1,
+    "id_enseignant":1,
+    "name_salle":"B1-09"
+  },
+
+  {
+    "start_time" : "2023-12-06 12:55:00",
+    "end_time" : "2023-12-06 13:00:00",
+    "initial_ressource" : "R5A05",
+    "id_group":1,
+    "id_enseignant":1
   }
 ]
 
 
 for cours in dataCours:
-    id = cours["id"]
-    date = cours["date"]
-    heureDebut = cours["heureDebut"]
-    heureFin = cours["heureFin"]
-    enseignant = cours["enseignant"]
-    ressource = cours["ressource"]
-    promotion = cours["promotion"]
-    groupe = cours["groupe"]
-    salle = cours["salle"]
     
-    CoursService.create_cours(date, heureDebut, heureFin,enseignant, ressource,promotion, groupe, salle)
+    CoursService.create_course(cours)
 
 

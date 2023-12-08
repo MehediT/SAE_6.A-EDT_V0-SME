@@ -1,4 +1,5 @@
 from operator import and_
+
 from database.config import db
 from models.Cours import Cours
 
@@ -17,6 +18,12 @@ class CoursService:
         
         db.session.add(course)
         db.session.commit()
+
+        result = course.to_dict()
+        if code > 200:
+            result.update(resp)
+            return result, code
+
         return course, 200
     
     def get_course_by_id(id):
@@ -52,7 +59,7 @@ class CoursService:
     
 
     @staticmethod
-    def can_create_course(start_time, end_time, id_group, name_salle = None, **kwargs):
+    def can_create_course(start_time, end_time, id_group, name_salle = None, id_enseignant = None,   **kwargs):
 
         if type(start_time) != str:
             start_time = start_time.strftime("%Y-%m-%d %H:%M:%S")
@@ -71,20 +78,28 @@ class CoursService:
             current_group = GroupeService.get_groupe_by_id(group)
             #Si un cours est déjà prévu entre start_time et end_time
             courses = Cours.query.filter_by(id_group=group).filter(and_(Cours.start_time > start_time, Cours.start_time < end_time)).all()
-            if len(courses) > 0: return {"response" :f"Le groupe {current_group.name} à déjà cours !"}, 409
+            if len(courses) > 0: return {"error" :f"Le groupe {current_group.name} à déjà cours !"}, 409
             courses = Cours.query.filter_by(id_group=group).filter(and_(Cours.end_time > start_time, Cours.end_time < end_time)).all()
-            if len(courses) > 0: return {"response" :f"Le groupe {current_group.name} à déjà cours !"}, 409
+            if len(courses) > 0: return {"error" :f"Le groupe {current_group.name} à déjà cours !"}, 409
 
             courses = Cours.query.filter_by(id_group=group).filter(and_(Cours.start_time == start_time, Cours.end_time == end_time)).all()
-            if len(courses) > 0: return {"response" :f"Le groupe {current_group.name} à déjà cours !"}, 409
+            if len(courses) > 0: return {"error" :f"Le groupe {current_group.name} à déjà cours !"}, 409
 
             #Si une salle est déjà prise entre start_time et end_time
             if name_salle:
-                courses = Cours.query.filter_by(name_salle=name_salle).filter(Cours.start_time >= start_time).filter(Cours.start_time <= start_time).all()
-                if len(courses) > 0: return {"response" :"Cette salle est déjà prise"},409
+                courses = Cours.query.filter_by(name_salle=name_salle).filter(Cours.start_time > start_time).filter(Cours.start_time < end_time).all()
+                if len(courses) > 0: return {"error" :"Cette salle est déjà prise"},409
 
-                courses = Cours.query.filter_by(name_salle=name_salle).filter(Cours.end_time >= end_time).filter(Cours.end_time <= end_time).all()
-                if len(courses) > 0: return {"response" :"Cette salle est déjà prise"},409
+                courses = Cours.query.filter_by(name_salle=name_salle).filter(Cours.end_time > start_time).filter(Cours.end_time < end_time).all()
+                if len(courses) > 0: return {"error" :"Cette salle est déjà prise"},409
+
+
+            if id_enseignant:
+                courses = Cours.query.filter_by(id_enseignant=id_enseignant).filter(Cours.start_time > start_time).filter(Cours.start_time < end_time).all()
+                if len(courses) > 0: return {"warning" :"Attention ! Ce professeur à déjà un cours dans cette plage horaire"},201
+
+                courses = Cours.query.filter_by(id_enseignant=id_enseignant).filter(Cours.end_time > start_time).filter(Cours.end_time < end_time).all()
+                if len(courses) > 0: return {"warning" :"Attention ! Ce professeur à déjà un cours dans cette plage horaire"},201
 
 
         return None, 200

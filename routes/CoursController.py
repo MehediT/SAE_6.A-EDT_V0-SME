@@ -40,8 +40,13 @@ def create_course():
         resp, code = CoursService.create_course(data)
         if code >= 400:
             return jsonify(resp),code
+        
+        warning_with_result = resp
+        if code > 200:
+            return jsonify(warning_with_result),code
+        
         course = resp
-        return jsonify(course.to_dict()),200
+        return jsonify(course.to_dict()),code
     except Exception as e:
 
         return jsonify({'error': str(e)}),403
