@@ -53,8 +53,8 @@ def delete_ressource(initial):
 def update_ressource(initial):
 
     data = request.json
-    if 'id' in data:
-        del data['id']
+    if 'initial' in data:
+        del data['initial']
 
     try:
         ressource = RessourcesService.update_ressource(initial=initial,**data)

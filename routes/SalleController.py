@@ -62,11 +62,9 @@ def delete_room(name):
 @salle_bp.route('/salle/<name>', methods=['PUT'])
 def update_room(name):
     data = request.json
-    if 'id' in data:
-        del data['id']
+    if 'name' in data:
+        del data['name']
 
-    if 'id' in data:
-        del data['id']
 
     try:
         salle = SalleService.update_salle(name=name, **data)
