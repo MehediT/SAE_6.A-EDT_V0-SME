@@ -59,8 +59,10 @@ def delete_responsable(id):
 @responsable_edt_bp.route('/responsable/<id>', methods=['PUT'])
 def update_responsable_edt(id):
     data = request.json
+    if 'id' in data:
+        del data['id']
     try:
-        responsable_edt = ResponsableEdtService.update_responsableEdt(id, **data)
+        responsable_edt = ResponsableEdtService.update_responsableEdt(id=id, **data)
         if not responsable_edt:
             return jsonify({'error': 'Responsable edt not found'}),403
         

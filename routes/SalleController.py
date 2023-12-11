@@ -35,14 +35,11 @@ def get_room(name):
 
 @salle_bp.route('/salle', methods=['POST'])
 def create_room():
-    name = request.json.get('name')
-    ordi = request.json.get('ordi')
-    tableauNumerique = request.json.get('tableauNumerique')
-    videoProj = request.json.get('videoProjecteur')
+    data = request.json
 
     try:
         # Créer une salle
-        salle = SalleService.create_salle(name, ordi, tableauNumerique, videoProj)
+        salle = SalleService.create_salle(data)
 
         return jsonify(salle.to_dict()),200
     except Exception as e:
@@ -64,12 +61,15 @@ def delete_room(name):
 
 @salle_bp.route('/salle/<name>', methods=['PUT'])
 def update_room(name):
-    ordi = request.json.get('ordi')
-    tableauNumerique = request.json.get('tableauNumerique')
-    videoProj = request.json.get('videoProjecteur')
+    data = request.json
+    if 'id' in data:
+        del data['id']
+
+    if 'id' in data:
+        del data['id']
 
     try:
-        salle = SalleService.update_salle(name, ordi, tableauNumerique, videoProj)
+        salle = SalleService.update_salle(name=name, **data)
 
         return jsonify(salle.to_dict()),200
     except Exception as e:

@@ -51,11 +51,13 @@ def delete_ressource(initial):
 
 @ressource_bp.route('/ressource/<initial>', methods=['PUT'])
 def update_ressource(initial):
-    name = request.json.get('name')
-    promo = request.json.get('promo')
+
+    data = request.json
+    if 'id' in data:
+        del data['id']
 
     try:
-        ressource = RessourcesService.update_ressource(initial, name, promo)
+        ressource = RessourcesService.update_ressource(initial=initial,**data)
 
         return jsonify(ressource.to_dict()),200
     except Exception as e:

@@ -52,6 +52,8 @@ def delete_groupe(id):
 @groupe_bp.route('/groupe/<id>', methods=['PUT'])
 def update_groupe(id):
     data = request.json
+    if 'id' in data:
+        del data['id']
     try:
         groupe = GroupeService.update_groupe(id, **data)
         if not groupe:

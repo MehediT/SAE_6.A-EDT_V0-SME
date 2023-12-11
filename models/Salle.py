@@ -10,7 +10,7 @@ class Salle(db.Model):
     cours = db.relationship('Cours', backref='salle_name', lazy='dynamic')
 
 
-    def __init__(self, name, ordi, tableauNumerique, videoProjecteur):
+    def __init__(self, name, ordi, tableauNumerique, videoProjecteur, **kwargs):
         self.nom = name
         self.ordi = ordi
         self.tableauNumerique = tableauNumerique

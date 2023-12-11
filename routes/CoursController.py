@@ -66,7 +66,8 @@ def delete_course(id):
 @cours_bp.route('/course/<id>', methods=['PUT'])
 def update_course(id):
     data = request.json
-
+    if 'id' in data:
+        del data['id']
     try:
         course = CoursService.update_course(id, **data)
 

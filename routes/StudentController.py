@@ -59,8 +59,10 @@ def delete_student(id):
 @student_bp.route('/student/<id>', methods=['PUT'])
 def update_student(id):
     data = request.json
+    if 'id' in data:
+        del data['id']
     try:
-        student = StudentService.update_student(id, **data)
+        student = StudentService.update_student(id=id, **data)
         if not student:
             return jsonify({'error': 'Student not found'}),403
         

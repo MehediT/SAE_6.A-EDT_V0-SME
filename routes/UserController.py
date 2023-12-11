@@ -55,10 +55,11 @@ def delete_user(id):
 
 @user_bp.route('/user/<id>', methods=['PUT'])
 def update_user(id):
-    name = request.json.get('name')
-    lastname = request.json.get('lastname')
+    data = request.json
+    if 'id' in data:
+        del data['id']
     try:
-        user = UserService.update_user(id, name, lastname)
+        user = UserService.update_user(id=id, **data)
         if not user:
             return jsonify({'error': 'User not found'}),403  
         return jsonify(user.to_dict()),200

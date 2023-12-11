@@ -60,8 +60,10 @@ def delete_teacher(id):
 @teacher_bp.route('/teacher/<id>', methods=['PUT'])
 def update_teacher(id):
     data = request.json
+    if 'id' in data:
+        del data['id']
     try:
-        teacher = TeacherService.update_teacher(id, **data)
+        teacher = TeacherService.update_teacher(id=id, **data)
         if not teacher:
             return jsonify({'error': 'Teacher not found'}),403
         
