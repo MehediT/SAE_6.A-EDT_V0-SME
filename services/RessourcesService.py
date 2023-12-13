@@ -26,7 +26,7 @@ class RessourcesService:
         return resource
     
     @staticmethod
-    def update_ressource(name, initial, id_promo):
+    def update_ressource(initial, name, id_promo):
         ressource = Ressources.query.filter_by(initial=initial).first()
         ressource.name = name
         ressource.id_promo = id_promo

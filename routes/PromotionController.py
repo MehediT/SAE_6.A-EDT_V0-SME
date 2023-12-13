@@ -17,12 +17,12 @@ def get_all_promotions():
         # db.session.rollback()
         return jsonify({'error': str(e)}),403
     
-@promotion_bp.route('/promotion/<name>', methods=['GET'])
-def get_promotion_by_id(name):
+@promotion_bp.route('/promotion/<id>', methods=['GET'])
+def get_promotion_by_id(id):
 
     try:
         # Récupérer toutes les abscences d'un étudiant
-        promotion = PromotionService.get_promo_by_id(name)   
+        promotion = PromotionService.get_promo_by_id(id)   
 
         if not promotion:
             return jsonify({'error': 'Promotion not found'}),404
@@ -44,10 +44,10 @@ def create_promotion():
         # db.session.rollback()
         return jsonify({'error': str(e)}),403
     
-@promotion_bp.route('/promotion/<name>', methods=['DELETE'])
-def delete_promotion(name):
+@promotion_bp.route('/promotion/<id>', methods=['DELETE'])
+def delete_promotion(id):
     try:
-        promotion = PromotionService.delete_promo(name)
+        promotion = PromotionService.delete_promo(id)
         if not promotion:
             return jsonify({'error': 'Promotion not found'}),404
         
@@ -58,11 +58,14 @@ def delete_promotion(name):
         return jsonify({'error': str(e)}),403
     
 
-@promotion_bp.route('/promotion/<name>', methods=['PUT'])
-def update_promotion(name):
+@promotion_bp.route('/promotion/<id>', methods=['PUT'])
+def update_promotion(id):
     try:
         data = request.json
-        promotion = PromotionService.update_promo(name, **data)
+        if 'id' in data:
+            del data['id']
+
+        promotion = PromotionService.update_promo(id=id, **data)
         if not promotion:
             return jsonify({'error': 'Promotion not found'}),404
         

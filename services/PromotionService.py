@@ -29,8 +29,8 @@ class PromotionService:
         return promo
     
     @staticmethod
-    def update_promo(id_promo,name, niveau, id_resp, **kwargs):
-        promo = Promotion.query.filter_by(id_promo=id_promo).first()
+    def update_promo(id,name, niveau, id_resp, **kwargs):
+        promo = Promotion.query.filter_by(id_promo=id).first()
         promo.name = name
         promo.niveau = niveau
         promo.id_resp = id_resp
