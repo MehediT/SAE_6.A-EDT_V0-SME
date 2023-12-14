@@ -71,6 +71,7 @@ def update_user(id):
 @jwt_required
 def identify():
     current_user = get_jwt_identity()
+    print(current_user)
     try:
         user = UserService.get_by_id(current_user)
         if not user:
