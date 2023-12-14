@@ -63,8 +63,12 @@ class CoursService:
     @staticmethod
     def delete_course(id):
         course = Cours.query.get(id)
-        db.session.delete(course)
+        if course.is_published == 1:
+            course.is_published = 2
+        else:
+            db.session.delete(course)
         db.session.commit()
+        
         return course
     
     @staticmethod
@@ -87,11 +91,10 @@ class CoursService:
         course_duplicate.is_published = 0
 
         db.session.add(course_duplicate)
-
-        course.is_published = 2
-
-
         db.session.commit()
+
+        
+        CoursService.delete_course(course.id)
 
 
         result = course_duplicate.to_dict()
