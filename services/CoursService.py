@@ -135,15 +135,15 @@ class CoursService:
 
             current_group = GroupeService.get_groupe_by_id(group)
             #Si un cours est déjà prévu entre start_time et end_time
-            courses = query.filter_by(id_group=group).filter(and_(Cours.start_time > start_time, Cours.start_time < end_time)).all()
+            courses = query.filter_by(id_group=group).filter(and_(Cours.start_time >= start_time, Cours.start_time < end_time)).all()
             if len(courses) > 0: return {"error" :f"Le groupe {current_group.name} à déjà cours !"}, 409
-            courses = query.filter_by(id_group=group).filter(and_(Cours.end_time > start_time, Cours.end_time < end_time)).all()
+            courses = query.filter_by(id_group=group).filter(and_(Cours.end_time > start_time, Cours.end_time <= end_time)).all()
             if len(courses) > 0: return {"error" :f"Le groupe {current_group.name} à déjà cours !"}, 409
-            courses = query.filter_by(id_group=group).filter(and_(Cours.start_time < start_time, Cours.end_time > end_time)).all()
+            courses = query.filter_by(id_group=group).filter(and_(Cours.start_time <= start_time, Cours.end_time >= end_time)).all()
             if len(courses) > 0: return {"error" :f"Le groupe {current_group.name} à déjà cours !"}, 409
 
-            courses = query.filter_by(id_group=group).filter(and_(Cours.start_time == start_time, Cours.end_time == end_time)).all()
-            if len(courses) > 0: return {"error" :f"Le groupe {current_group.name} à déjà cours !"}, 409
+            # courses = query.filter_by(id_group=group).filter(and_(Cours.start_time == start_time, Cours.end_time == end_time)).all()
+            # if len(courses) > 0: return {"error" :f"Le groupe {current_group.name} à déjà cours !"}, 409
 
             #Si une salle est déjà prise entre start_time et end_time
             if name_salle:
