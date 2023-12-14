@@ -1,12 +1,12 @@
 from database.config import db 
 from models.Cours import Cours
-from models.User import User
+from models.Student import Student
 
 
 class Absence(db.Model):
     __tablename__= "absence"
 
-    idEtudiant = db.Column(db.String(80), db.ForeignKey('user.username'), primary_key=True)
+    idEtudiant = db.Column(db.BigInteger, db.ForeignKey('student.id_student'), primary_key=True)
     idCour = db.Column(db.Integer, db.ForeignKey('cours.id'), primary_key=True)
     justifiée = db.Column(db.Boolean)
 

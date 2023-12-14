@@ -48,8 +48,8 @@ class GroupeService:
             # temp['children'] = GroupeService.get_children(subgroup.id)
             result_temp.append( GroupeService.get_children(subgroup.id))
         
-        if len(result_temp) != 0:
-            result['children'] = result_temp
+        # if len(result_temp) != 0:
+        result['children'] = result_temp
         return result
     
     def get_parents(id_group):
@@ -58,8 +58,7 @@ class GroupeService:
         if group.id_group_parent:
             result_temp = GroupeService.get_parents(group.id_group_parent)
         result = group.to_dict()
-        if result_temp:
-            result['parent'] = result_temp
+        result['parent'] = result_temp
 
         return result
     

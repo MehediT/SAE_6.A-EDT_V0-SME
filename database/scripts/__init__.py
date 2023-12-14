@@ -12,6 +12,6 @@ import database.scripts.disponibilite_insert
 import database.scripts.user_groupe_insert
 import database.scripts.cours_insert
 import database.scripts.absence_insert
-import database.scripts.studentAbsencesCours_insert
+# import database.scripts.studentAbsencesCours_insert
 
 
