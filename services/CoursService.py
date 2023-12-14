@@ -122,13 +122,17 @@ class CoursService:
             print(e)
             return {"response" : "Groupe introuvable"}, 404
             
-        if not id_cours:
-            query = Cours.query
-        else:
-            query = Cours.query.filter(Cours.id != id_cours).filter(Cours.is_published != 2)
 
+
+        warning: str = ""
 
         for group in group_depends:
+
+            if not id_cours:
+                query = Cours.query
+            else:
+                query = Cours.query.filter(Cours.id != id_cours).filter(Cours.is_published != 2)
+
             current_group = GroupeService.get_groupe_by_id(group)
             #Si un cours est déjà prévu entre start_time et end_time
             courses = query.filter_by(id_group=group).filter(and_(Cours.start_time > start_time, Cours.start_time < end_time)).all()
@@ -150,12 +154,15 @@ class CoursService:
 
             if id_enseignant:
                 courses = query.filter_by(id_enseignant=id_enseignant).filter(Cours.start_time > start_time).filter(Cours.start_time < end_time).all()
-                if len(courses) > 0: return {"warning" :"Attention ! Ce professeur à déjà un cours dans cette plage horaire"},201
+                if len(courses) > 0: warning = "Attention ! Ce professeur à déjà un cours dans cette plage horaire"
 
                 courses = query.filter_by(id_enseignant=id_enseignant).filter(Cours.end_time > start_time).filter(Cours.end_time < end_time).all()
-                if len(courses) > 0: return {"warning" :"Attention ! Ce professeur à déjà un cours dans cette plage horaire"},201
+                if len(courses) > 0: warning = "Attention ! Ce professeur à déjà un cours dans cette plage horaire"
 
 
+        if warning != "":
+            return {"warning" : warning}, 201
+        
         return None, 200
     
     @staticmethod
