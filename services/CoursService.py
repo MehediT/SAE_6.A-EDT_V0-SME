@@ -139,6 +139,8 @@ class CoursService:
             if len(courses) > 0: return {"error" :f"Le groupe {current_group.name} à déjà cours !"}, 409
             courses = query.filter_by(id_group=group).filter(and_(Cours.end_time > start_time, Cours.end_time < end_time)).all()
             if len(courses) > 0: return {"error" :f"Le groupe {current_group.name} à déjà cours !"}, 409
+            courses = query.filter_by(id_group=group).filter(and_(Cours.start_time < start_time, Cours.end_time > end_time)).all()
+            if len(courses) > 0: return {"error" :f"Le groupe {current_group.name} à déjà cours !"}, 409
 
             courses = query.filter_by(id_group=group).filter(and_(Cours.start_time == start_time, Cours.end_time == end_time)).all()
             if len(courses) > 0: return {"error" :f"Le groupe {current_group.name} à déjà cours !"}, 409
