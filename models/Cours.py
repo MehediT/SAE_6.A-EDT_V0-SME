@@ -18,7 +18,7 @@ class Cours(db.Model):
     id_group = db.Column(db.Integer, db.ForeignKey('groupe.id'), nullable=False)
     name_salle = db.Column(db.String(64), db.ForeignKey("salle.nom"), nullable=True)
     appelEffectue = db.Column(db.Boolean, nullable=False, default=False)
-    is_published = db.Column(db.Boolean, nullable=False, default=False)
+    is_published = db.Column(db.Integer, nullable=False, default=0)
     # absences = db.relationship('Absence', backref='cours', lazy='dynamic')
 
     def __init__(self, start_time, end_time, initial_ressource, id_group, name_salle = None,id_enseignant= None,is_published=False, **kwargs):
