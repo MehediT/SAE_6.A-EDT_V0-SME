@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from database.config import db
 
 
-@pytest.fixture()
+
 def create_app():
   app = Flask(__name__)
   app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
@@ -17,7 +17,7 @@ def create_app():
 
 
 
-@pytest.fixture
+@pytest.fixture(name="app")
 def app():
     app = create_app()
 
