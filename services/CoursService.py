@@ -64,7 +64,9 @@ class CoursService:
             # query = query.filter(Cours.id_group.in_(GroupeService.get_tree(user.id_group)))
             query = query.filter(or_(Cours.is_published == 0, Cours.is_published == 1))
         else:
-            query = query.filter(Cours.id_group.in_(UserGroupeService.get_groupes_for_student(user.id).group))
+            group = UserGroupeService.get_groupes_for_student(user.id)
+            groups_id = [g.id for g in group.group]
+            query = query.filter(Cours.id_group.in_(groups_id))
             query = query.filter(or_(Cours.is_published == 0, Cours.is_published == 1))
         
 
