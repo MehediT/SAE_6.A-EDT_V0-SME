@@ -69,7 +69,17 @@ def update_course(id):
     if 'id' in data:
         del data['id']
     try:
-        course = CoursService.update_course(id, **data)
+        resp, code = CoursService.update_course(id, **data)
+
+        if code >= 400:
+            return jsonify(resp),code
+        
+        warning_with_result = resp
+        if code > 200:
+            return jsonify(warning_with_result),code
+        
+        course = resp
+        return jsonify(course.to_dict()),code
 
         return jsonify(course.to_dict()),200
     except Exception as e:

@@ -71,15 +71,35 @@ class CoursService:
     def update_course(id, start_time, end_time, initial_ressource, id_group, name_salle = None,id_enseignant= None, **kwargs):
         course = Cours.query.get(id)
 
-        course.start_time = start_time
-        course.end_time = end_time
-        course.id_enseignant = id_enseignant if id_enseignant else db.null()
-        course.initial_ressource = initial_ressource
-        course.id_group = id_group
-        course.name_salle = name_salle if name_salle else db.null()
+
+        resp, code = CoursService.can_create_course(start_time=start_time, end_time=end_time, id_group=id_group, name_salle=name_salle, id_enseignant=id_enseignant, id_cours=id)
+        if code >= 400:
+            return resp, code
         
+        course_duplicate = course.duplicate()
+
+        course_duplicate.start_time = start_time
+        course_duplicate.end_time = end_time
+        course_duplicate.id_enseignant = id_enseignant if id_enseignant else db.null()
+        course_duplicate.initial_ressource = initial_ressource
+        course_duplicate.id_group = id_group
+        course_duplicate.name_salle = name_salle if name_salle else db.null()
+        course_duplicate.is_published = 0
+
+        db.session.add(course_duplicate)
+
+        course.is_published = 2
+
+
         db.session.commit()
-        return course
+
+
+        result = course_duplicate.to_dict()
+        if code > 200:
+            result.update(resp)
+            return result, code
+
+        return course_duplicate, 200
     
 
     @staticmethod
