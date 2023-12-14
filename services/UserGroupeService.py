@@ -1,5 +1,12 @@
+from models.Groupe import Groupe
+from models.User import User
+from models.Groupe import Groupe
 from database.config import db
 from models.relations.user_groupe import student_course_association
+from database.config import db
+from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import aliased
+
 
 class UserGroupeService:
 
@@ -20,7 +27,12 @@ class UserGroupeService:
   
   @staticmethod
   def get_groupes_for_student(idStudent):
-    return student_course_association.query.filter_by(idStudent=idStudent).all()
+      query = db.session.query(student_course_association).filter_by(id_student=idStudent)
+
+      result = query.all()
+      groupes = [id_group for id_student, id_group in result]
+
+      return groupes
   
   @staticmethod
   def get_etudiant_by_groupe(idGroupe, idStudent):

@@ -15,7 +15,7 @@ def get_all_courses():
 
     try:
         current_user = get_jwt_identity()
-        user : User = UserService.get_by_id(current_user['id'])
+        user : User = UserService.get_by_id(current_user)
         courses = CoursService.get_all_courses(request.args, user=user )   
 
         ressources_dict = [course.to_dict() for course in courses]

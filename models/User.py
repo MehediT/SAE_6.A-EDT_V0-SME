@@ -1,6 +1,7 @@
 from database.config import db
 from datetime import datetime
 import bcrypt
+from models.relations.user_groupe import student_course_association
 
 
 class User(db.Model):
@@ -12,6 +13,7 @@ class User(db.Model):
     role = db.Column(db.String(64), nullable=False)
     name = db.Column(db.String(64), nullable=False)
     lastname = db.Column(db.String(64), nullable=False)
+
     
 
 
