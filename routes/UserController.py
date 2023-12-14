@@ -68,7 +68,7 @@ def update_user(id):
     
 
 @user_bp.route('/identify', methods=['GET'])
-@jwt_required
+@jwt_required()
 def identify():
     current_user = get_jwt_identity()
     print(current_user)
