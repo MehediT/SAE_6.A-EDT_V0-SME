@@ -82,6 +82,8 @@ class GroupeService:
             parent = parent['parent']
             result.append(parent['id'])
         return result
+    
+
 
         
             

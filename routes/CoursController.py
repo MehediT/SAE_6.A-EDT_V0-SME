@@ -10,10 +10,13 @@ cours_bp = Blueprint('cours', __name__)
 
 
 @cours_bp.route('/courses', methods=['GET'])
+@jwt_required()
 def get_all_courses():
 
     try:
-        courses = CoursService.get_all_courses(request.args)   
+        current_user = get_jwt_identity()
+        user : User = UserService.get_by_id(current_user['id'])
+        courses = CoursService.get_all_courses(request.args, user=user )   
 
         ressources_dict = [course.to_dict() for course in courses]
         return jsonify(ressources_dict),200

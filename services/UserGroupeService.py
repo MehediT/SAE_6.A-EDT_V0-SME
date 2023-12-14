@@ -19,6 +19,10 @@ class UserGroupeService:
     return student_course_association.query.filter_by(idStudent=idStudent).filter_by(idGroupe=idGroupe).first()
   
   @staticmethod
+  def get_groupes_for_student(idStudent):
+    return student_course_association.query.filter_by(idStudent=idStudent).all()
+  
+  @staticmethod
   def get_etudiant_by_groupe(idGroupe, idStudent):
     return student_course_association.query.filter_by(idGroupe=idGroupe).filter_by(idStudent=idStudent).all()
   

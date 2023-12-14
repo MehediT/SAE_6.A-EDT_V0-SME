@@ -1,4 +1,6 @@
-from operator import and_
+from operator import and_, or_
+
+from services.UserGroupeService import UserGroupeService
 
 from database.config import db
 from models.Cours import Cours
@@ -32,7 +34,7 @@ class CoursService:
         return Cours.query.get(id)
     
     @staticmethod
-    def get_all_courses(args, publish = True):
+    def get_all_courses(args,user):
 
         query = Cours.query
 
@@ -57,6 +59,14 @@ class CoursService:
             query = query.filter(Cours.id_group == args["group"])
         if 'resource' in args:
             query = query.filter(Cours.initial_ressource == args["resource"])
+        
+        if user.role == "ROLE_RESP_EDT":
+            # query = query.filter(Cours.id_group.in_(GroupeService.get_tree(user.id_group)))
+            query = query.filter(or_(Cours.is_published == 0, Cours.is_published == 1))
+        else:
+            query = query.filter(Cours.id_group.in_(UserGroupeService.get_groupes_for_student(user.id).group))
+            query = query.filter(or_(Cours.is_published == 0, Cours.is_published == 1))
+        
 
         return query.all()
     
