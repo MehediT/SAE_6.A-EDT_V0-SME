@@ -122,7 +122,8 @@ class CoursService:
         if not id_cours:
             query = Cours.query
         else:
-            query = Cours.query.filter(Cours.id != id_cours)
+            query = Cours.query.filter(Cours.id != id_cours).filter(Cours.is_published != 2)
+
 
         for group in group_depends:
             current_group = GroupeService.get_groupe_by_id(group)
