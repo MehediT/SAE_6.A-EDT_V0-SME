@@ -65,3 +65,17 @@ def update_user(id):
         return jsonify(user.to_dict()),200
     except Exception as e:
         return jsonify({'error': str(e)}),403
+    
+
+@user_bp.route('/identify', methods=['GET'])
+@jwt_required
+def identify():
+    current_user = get_jwt_identity()
+    try:
+        user = UserService.get_by_id(current_user)
+        if not user:
+            return jsonify({'error': 'User not found'}),404
+    except Exception as e:
+        return jsonify({'error': str(e)}),403
+    
+    return jsonify(user.to_dict()),200
