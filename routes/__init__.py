@@ -1,5 +1,5 @@
 from flask import Flask
-from .authentificationController import auth_bp
+from .AuthentificationController import auth_bp
 from .CoursController import cours_bp
 from .UserController import user_bp
 from .TeacherController import teacher_bp
