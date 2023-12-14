@@ -65,20 +65,20 @@ class GroupeService:
     @staticmethod
     def get_tree(id):
         group = Groupe.query.get(id)
+        print(group)
         
         result = [group.id]
         children = GroupeService.get_children(id)
         current = [children]
         while len(current) !=0:
-            if 'children' in current[0]:
-                for child in current[0]['children']:
-                    result.append(child['id'])
-                    current.append(child)
+            for child in current[0]['children']:
+                result.append(child['id'])
+                current.append(child)
             current.pop(0)
 
 
         parent = GroupeService.get_parents(id)
-        while 'parent' in parent:
+        while parent['parent']!= None:
             parent = parent['parent']
             result.append(parent['id'])
         return result

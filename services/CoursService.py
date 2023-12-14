@@ -13,6 +13,7 @@ class CoursService:
 
         resp, code = CoursService.can_create_course(**data)
         if code >= 400:
+            print(resp)
             return resp, code
 
         course = Cours(**data)
@@ -82,7 +83,7 @@ class CoursService:
     
 
     @staticmethod
-    def can_create_course(start_time, end_time, id_group, name_salle = None, id_enseignant = None,   **kwargs):
+    def can_create_course(start_time, end_time, id_group, name_salle = None, id_enseignant = None,id_cours= None,   **kwargs):
 
         if type(start_time) != str:
             start_time = start_time.strftime("%Y-%m-%d %H:%M:%S")
@@ -95,33 +96,39 @@ class CoursService:
         try:
             group_depends = GroupeService.get_tree(id_group)
         except Exception as e:
+            print(e)
             return {"response" : "Groupe introuvable"}, 404
+            
+        if not id_cours:
+            query = Cours.query
+        else:
+            query = Cours.query.filter(Cours.id != id_cours)
 
         for group in group_depends:
             current_group = GroupeService.get_groupe_by_id(group)
             #Si un cours est déjà prévu entre start_time et end_time
-            courses = Cours.query.filter_by(id_group=group).filter(and_(Cours.start_time > start_time, Cours.start_time < end_time)).all()
+            courses = query.filter_by(id_group=group).filter(and_(Cours.start_time > start_time, Cours.start_time < end_time)).all()
             if len(courses) > 0: return {"error" :f"Le groupe {current_group.name} à déjà cours !"}, 409
-            courses = Cours.query.filter_by(id_group=group).filter(and_(Cours.end_time > start_time, Cours.end_time < end_time)).all()
+            courses = query.filter_by(id_group=group).filter(and_(Cours.end_time > start_time, Cours.end_time < end_time)).all()
             if len(courses) > 0: return {"error" :f"Le groupe {current_group.name} à déjà cours !"}, 409
 
-            courses = Cours.query.filter_by(id_group=group).filter(and_(Cours.start_time == start_time, Cours.end_time == end_time)).all()
+            courses = query.filter_by(id_group=group).filter(and_(Cours.start_time == start_time, Cours.end_time == end_time)).all()
             if len(courses) > 0: return {"error" :f"Le groupe {current_group.name} à déjà cours !"}, 409
 
             #Si une salle est déjà prise entre start_time et end_time
             if name_salle:
-                courses = Cours.query.filter_by(name_salle=name_salle).filter(Cours.start_time > start_time).filter(Cours.start_time < end_time).all()
+                courses = query.filter_by(name_salle=name_salle).filter(Cours.start_time > start_time).filter(Cours.start_time < end_time).all()
                 if len(courses) > 0: return {"error" :"Cette salle est déjà prise"},409
 
-                courses = Cours.query.filter_by(name_salle=name_salle).filter(Cours.end_time > start_time).filter(Cours.end_time < end_time).all()
+                courses = query.filter_by(name_salle=name_salle).filter(Cours.end_time > start_time).filter(Cours.end_time < end_time).all()
                 if len(courses) > 0: return {"error" :"Cette salle est déjà prise"},409
 
 
             if id_enseignant:
-                courses = Cours.query.filter_by(id_enseignant=id_enseignant).filter(Cours.start_time > start_time).filter(Cours.start_time < end_time).all()
+                courses = query.filter_by(id_enseignant=id_enseignant).filter(Cours.start_time > start_time).filter(Cours.start_time < end_time).all()
                 if len(courses) > 0: return {"warning" :"Attention ! Ce professeur à déjà un cours dans cette plage horaire"},201
 
-                courses = Cours.query.filter_by(id_enseignant=id_enseignant).filter(Cours.end_time > start_time).filter(Cours.end_time < end_time).all()
+                courses = query.filter_by(id_enseignant=id_enseignant).filter(Cours.end_time > start_time).filter(Cours.end_time < end_time).all()
                 if len(courses) > 0: return {"warning" :"Attention ! Ce professeur à déjà un cours dans cette plage horaire"},201
 
 
@@ -129,18 +136,30 @@ class CoursService:
     
     @staticmethod
     def publish():
-        courses = Cours.query.filter_by(is_published=False).all()
+        courses = Cours.query.filter_by(is_published=0).all()
         for course in courses:
-            course.is_published = True
+            course.is_published = 1
+        db.session.commit()
+
+        courses_delete = Cours.query.filter_by(is_published=2).all()
+        for course in courses_delete:
+            db.session.delete(course)
         db.session.commit()
         return courses
     
     @staticmethod
     def cancel():
-        courses = Cours.query.filter_by(is_published=False).all()
+        courses = Cours.query.filter_by(is_published=0).all()
         for course in courses:
             db.session.delete(course)
         db.session.commit()
+
+        courses = Cours.query.filter_by(is_published=2).all()
+        for course in courses:
+            course.is_published = 1
+        db.session.commit()
+
+
         return courses
     
     @staticmethod
