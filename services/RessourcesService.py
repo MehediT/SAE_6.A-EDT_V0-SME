@@ -23,6 +23,8 @@ class RessourcesService:
     @staticmethod
     def delete_ressource(initial):
         resource = Ressources.query.filter_by(initial=initial).first()
+        db.session.delete(resource)
+        db.session.commit()
         return resource
     
     @staticmethod
