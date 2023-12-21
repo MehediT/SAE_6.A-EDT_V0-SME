@@ -67,5 +67,15 @@ def test_isExist(app):
         db.session.commit()
 
 
+def test_delete_salle(app):
+    with app.app_context():
+        salle_data = {'name': 'A2-05', 'ordi': 25, 'tableauNumerique': 1, 'videoProj': 1}
+        SalleService.create_salle(**salle_data)
 
+        deleted_salle = SalleService.delete_salle('A2-05')
 
+        assert deleted_salle is not None
+        assert deleted_salle.nom == 'A2-05'
+
+        salle_exists = SalleService.isExist('A2-05')
+        assert salle_exists is False
