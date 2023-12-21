@@ -79,3 +79,17 @@ def test_delete_salle(app):
 
         salle_exists = SalleService.isExist('A2-05')
         assert salle_exists is False
+
+
+def test_get_salle_by_name(app):
+    with app.app_context():
+        salle_data = {'name': 'A2-05', 'ordi': 25, 'tableauNumerique': 1, 'videoProj': 1}
+        SalleService.create_salle(**salle_data)
+
+        retrieved_salle = SalleService.get_salle_by_name('A2-05')
+
+        assert retrieved_salle is not None
+        assert retrieved_salle.nom == 'A2-05'
+
+        db.session.delete(retrieved_salle)
+        db.session.commit()
