@@ -36,7 +36,6 @@ def test_create_salle(app):
             'videoProj': 1
         }
 
-        # Use SalleService.create_salle with the provided data
         salle = SalleService.create_salle(**salle_data)
 
         # Retrieve the instance from the database
@@ -48,6 +47,25 @@ def test_create_salle(app):
         assert retrieved_salle.tableauNumerique == 1
         assert retrieved_salle.videoProjecteur == 1
 
-        # Clean up the database (optional)
+        # Clean up the database
         db.session.delete(retrieved_salle)
         db.session.commit()
+
+
+def test_isExist(app):
+    with app.app_context():
+        salle_data = {'name': 'A2-05', 'ordi': 25, 'tableauNumerique': 1, 'videoProj': 1}
+        SalleService.create_salle(**salle_data)
+
+        #Check if the salle exists
+        salle_exists = SalleService.isExist('A2-05')
+
+        assert salle_exists is True
+
+        salle = SalleService.get_salle_by_name('A2-05')
+        db.session.delete(salle)
+        db.session.commit()
+
+
+
+
