@@ -5,7 +5,7 @@ class WeekCommentService:
 
     @staticmethod
     def create_comment(data):
-        commentExist = WeekComment.query.filter_by(week_number=data['week_number'], year=data['year']).first()
+        commentExist = WeekComment.query.filter_by(week_number=data['week_number'], year=data['year'], id_promo=data['id_promo']).first()
         if (commentExist):
             return WeekCommentService.update_comment(commentExist.id, **data)
 
