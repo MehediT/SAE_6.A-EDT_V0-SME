@@ -1,5 +1,8 @@
 from database.config import db
 from models.ResponsableEdt import ResponsableEdt
+from services.AffiliationRespEdtService import AffiliationRespEdtService
+from models.Staff import Staff
+from models.User import User
 
 class ResponsableEdtService():
     
@@ -18,6 +21,19 @@ class ResponsableEdtService():
     @staticmethod
     def get_by_id(id):
         return ResponsableEdt.query.filter_by(id_resp=id).first()
+    
+    @staticmethod
+    def get_by_userId(userId):
+        print(userId)
+        respedt = ResponsableEdt.query.filter_by(id_staff=userId).first()
+        print(respedt)
+        return respedt
+    
+    @staticmethod
+    def get_promos(respEdt):
+        promos = AffiliationRespEdtService.get_promos_for_respedt(respEdt.id_resp)
+        return promos
+        # id_groups = [promo.id_group for promo in promos]
     
 
     @staticmethod

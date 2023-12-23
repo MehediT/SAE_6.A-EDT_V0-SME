@@ -7,6 +7,8 @@ from models.Cours import Cours
 from datetime import datetime, timedelta
 
 from services.GroupeService import GroupeService
+from services.AffiliationRespEdtService import AffiliationRespEdtService
+from services.ResponsableEdtService import ResponsableEdtService
 
 class CoursService:
 
@@ -61,12 +63,16 @@ class CoursService:
             query = query.filter(Cours.initial_ressource == args["resource"])
         
         if user.role == "ROLE_RESP_EDT":
+            # respedt = ResponsableEdtService.get_by_userId(user.id)
+            # promos = AffiliationRespEdtService.get_promos_for_respedt(respedt.id_resp)
+            # id_groups = [promo.id_group for promo in promos]
+
             # query = query.filter(Cours.id_group.in_(GroupeService.get_tree(user.id_group)))
             query = query.filter(or_(Cours.is_published == 0, Cours.is_published == 1))
         else:
         
-
-            query = query.filter(Cours.id_group.in_(UserGroupeService.get_groupes_for_student(user.id)))
+            if not 'method' in args or args["method"] == "default":
+                query = query.filter(Cours.id_group.in_(UserGroupeService.get_groupes_for_student(user.id)))
             query = query.filter(or_(Cours.is_published == 2, Cours.is_published == 1))
         
 

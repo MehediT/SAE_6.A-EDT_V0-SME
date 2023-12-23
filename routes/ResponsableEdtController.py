@@ -2,6 +2,9 @@ from flask import Blueprint, jsonify, send_from_directory, request
 from functools import wraps
 from flask_jwt_extended import (jwt_required, create_access_token, get_jwt_identity)
 from services.ResponsableEdtService import ResponsableEdtService
+from models.User import User
+from services.UserService import UserService
+from services.PromotionService import PromotionService
 
 responsable_edt_bp = Blueprint('responsable_edt', __name__)
 
@@ -70,3 +73,18 @@ def update_responsable_edt(id):
     except Exception as e:
   
         return jsonify({'error': str(e)}),403
+    
+
+@responsable_edt_bp.route('/responsable/promos', methods=['GET'])
+@jwt_required()
+def get_promos():
+    try:
+        current_user = get_jwt_identity()
+        user : User = UserService.get_by_id(current_user)
+        respEdt= ResponsableEdtService.get_by_userId(user.id)
+        promos = ResponsableEdtService.get_promos(respEdt)
+        promos = [PromotionService.get_promo_by_id(promoId) for promoId in promos]
+        return [promos.to_dict() for promos in promos],200
+    except Exception as e:
+        return jsonify({'error': str(e)}),403
+    # id_groups = [promo.id_group for promo in promos]

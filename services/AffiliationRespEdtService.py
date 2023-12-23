@@ -19,7 +19,14 @@ class AffiliationRespEdtService:
   def get_respedt_by_promo(idResp, idPromo):
     return affiliation_resp_edt.query.filter_by(id_Promo=idPromo).filter_by(id_Resp=idResp).all()
   
+  @staticmethod
+  def get_promos_for_respedt(idRespedt):
+      query = db.session.query(affiliation_resp_edt).filter_by(id_resp=idRespedt)
 
+      result = query.all()
+      promos = [id_promo for id_resp, id_promo in result]
+
+      return promos
   @staticmethod
   def get_promo_by_respedt(idResp, idPromo):
     return affiliation_resp_edt.query.filter_by(id_resp=idResp).filter_by(id_promo=idPromo).all()
