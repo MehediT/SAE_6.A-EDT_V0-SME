@@ -58,7 +58,8 @@ class CoursService:
         if 'teacher' in args:
             query = query.filter(Cours.id_enseignant == args["teacher"])
         if 'group' in args:
-            query = query.filter(Cours.id_group == args["group"])
+            id_groups = GroupeService.get_tree(args["group"])
+            query = query.filter(Cours.id_group.in_(id_groups))
         if 'resource' in args:
             query = query.filter(Cours.initial_ressource == args["resource"])
         
