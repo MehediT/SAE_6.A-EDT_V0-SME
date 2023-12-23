@@ -5,7 +5,7 @@ class WeekComment(db.Model):
     __tablename__ = "week_comment"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    id_promo = db.Column(db.Integer, db.ForeignKey('promo.id'), nullable=False)
+    id_promo = db.Column(db.Integer, db.ForeignKey('promotion.id_promo'), nullable=False)
     week_number = db.Column(db.Integer, nullable=False)
     year = db.Column(db.Integer, nullable=False)
     content = db.Column(db.String(255), nullable=False)
