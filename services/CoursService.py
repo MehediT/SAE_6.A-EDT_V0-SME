@@ -215,7 +215,7 @@ class CoursService:
         return courses
     
     @staticmethod
-    def duplicate(start_time, end_time, id_group, start_time_attempt, **kwargs):
+    def duplicate(start_time, end_time, id_group, start_time_attempt, sat_date, sun_date, **kwargs):
 
         start_time = datetime.strptime(start_time, '%Y-%m-%d')
         print(start_time)
@@ -223,6 +223,11 @@ class CoursService:
         print(end_time)
         start_time_attempt = datetime.strptime(start_time_attempt, '%Y-%m-%d')
         print(start_time_attempt)
+        sat_date = datetime.strptime(sat_date, '%Y-%m-%d')
+        print(sat_date)
+        sun_date = datetime.strptime(sun_date, '%Y-%m-%d')
+        print(sun_date)
+
 
         days_diff = (start_time_attempt - start_time).days
         print(days_diff)
@@ -249,9 +254,10 @@ class CoursService:
                 new_course = course.duplicate()
                 new_course.start_time = course.start_time + timedelta(days=days_diff)
                 new_course.end_time = course.end_time + timedelta(days=days_diff)
-                db.session.add(new_course)
-                db.session.commit()
-                result.append(new_course)
+                if(new_course.start_time < sat_date or new_course.end_time > sun_date):
+                    db.session.add(new_course)
+                    db.session.commit()
+                    result.append(new_course)
 
         return result
     
