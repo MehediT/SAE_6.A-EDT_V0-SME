@@ -1,8 +1,10 @@
+from xml.dom import NotFoundErr
 from flask import Blueprint, jsonify, send_from_directory, request
 from services.GroupeService import GroupeService
 from models.Groupe import Groupe
 from functools import wraps
 from flask_jwt_extended import (jwt_required, create_access_token, get_jwt_identity)
+from flask import abort
 
 groupe_bp = Blueprint('groupe', __name__)
 
@@ -11,9 +13,15 @@ def create_groupe():
     data = request.json
     try:
         groupe = GroupeService.create_groupe(data)
-        return jsonify(groupe.to_dict()),200
+        return jsonify(groupe.to_dict()), 200
+    except ValueError as ve:
+        abort(400, {'error': str(ve)})
+    except PermissionError as pe:
+        abort(403, {'error': str(pe)})
+    except NotFoundErr as nfe:
+        abort(404, {'error': str(nfe)})
     except Exception as e:
-        return jsonify({'error': str(e)}),403
+        abort(500, {'error': str(e)})
 
 
 @groupe_bp.route('/groupes', methods=['GET'])

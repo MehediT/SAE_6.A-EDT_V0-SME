@@ -1,5 +1,7 @@
+from xml.dom import NotFoundErr
 from flask import Blueprint, jsonify, request
 from services.SalleService import SalleService
+from flask import abort
 
 salle_bp = Blueprint('salle', __name__)
 
@@ -31,21 +33,27 @@ def get_room(name):
         # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
         # db.session.rollback()
         return jsonify({'error': str(e)}),403
-    
 
 @salle_bp.route('/salle', methods=['POST'])
 def create_room():
     data = request.json
 
     try:
-        # Créer une salle
         salle = SalleService.create_salle(data)
+        return jsonify(salle.to_dict()), 200
 
-        return jsonify(salle.to_dict()),200
+    except ValueError as ve:
+        abort(400, {'error': str(ve)})
+
+    except PermissionError as pe:
+        abort(403, {'error': str(pe)})
+
+    except NotFoundErr as nfe:
+        abort(404, {'error': str(nfe)})
+
     except Exception as e:
-        # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
-        # db.session.rollback()
-        return jsonify({'error': str(e)}),403
+        abort(500, {'error': str(e)})
+
     
 @salle_bp.route('/salle/<name>', methods=['DELETE'])
 def delete_room(name):

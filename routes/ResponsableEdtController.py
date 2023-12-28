@@ -1,3 +1,4 @@
+from xml.dom import NotFoundErr
 from flask import Blueprint, jsonify, send_from_directory, request
 from functools import wraps
 from flask_jwt_extended import (jwt_required, create_access_token, get_jwt_identity)
@@ -5,6 +6,7 @@ from services.ResponsableEdtService import ResponsableEdtService
 from models.User import User
 from services.UserService import UserService
 from services.PromotionService import PromotionService
+from flask import abort
 
 responsable_edt_bp = Blueprint('responsable_edt', __name__)
 
@@ -34,18 +36,21 @@ def get_by_responsable_edt(id):
         # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
         # db.session.rollback()
         return jsonify({'error': str(e)}),403
-    
 
 @responsable_edt_bp.route('/responsable', methods=['POST'])
 def create_responsable():
     data = request.json
     try:
         responsable_edt = ResponsableEdtService.create_responsable_edt(data)
-        return jsonify(responsable_edt.to_dict()),200
+        return jsonify(responsable_edt.to_dict()), 200
+    except ValueError as ve:
+        abort(400, {'error': str(ve)})
+    except PermissionError as pe:
+        abort(403, {'error': str(pe)})
+    except NotFoundErr as nfe:
+        abort(404, {'error': str(nfe)})
     except Exception as e:
-        return jsonify({'error': str(e)}),403
-
-
+        abort(500, {'error': str(e)})
 
 @responsable_edt_bp.route('/responsable/<id>', methods=['DELETE'])
 def delete_responsable(id):

@@ -1,7 +1,9 @@
+from xml.dom import NotFoundErr
 from flask import Blueprint, jsonify, send_from_directory, request
 from services.StudentService import StudentService
 from functools import wraps
 from flask_jwt_extended import (jwt_required, create_access_token, get_jwt_identity)
+from flask import abort
 
 student_bp = Blueprint('student', __name__)
 
@@ -38,9 +40,20 @@ def create_student():
     data = request.json
     try:
         student = StudentService.create_student(data)
-        return jsonify(student.to_dict()),200
+        return jsonify(student.to_dict()), 200
+
+    except ValueError as ve:
+        abort(400, {'error': str(ve)})
+
+    except PermissionError as pe:
+        abort(403, {'error': str(pe)})
+
+    except NotFoundErr as nfe:
+        abort(404, {'error': str(nfe)})
+
     except Exception as e:
-        return jsonify({'error': str(e)}),403
+        abort(500, {'error': str(e)})
+
 
 
 
