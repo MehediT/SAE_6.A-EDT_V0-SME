@@ -1,5 +1,7 @@
+from xml.dom import NotFoundErr
 from flask import Blueprint, jsonify, request
 from services.PromotionService import PromotionService
+from flask import abort
 
 promotion_bp = Blueprint('promotion', __name__)
 
@@ -38,11 +40,15 @@ def create_promotion():
     try:
         data = request.json
         promotion = PromotionService.create_promo(data)
-        return jsonify(promotion.to_dict()),200
+        return jsonify(promotion.to_dict()), 200
+    except ValueError as ve:
+        abort(400, {'error': str(ve)})
+    except PermissionError as pe:
+        abort(403, {'error': str(pe)})
+    except NotFoundErr as nfe:
+        abort(404, {'error': str(nfe)})
     except Exception as e:
-        # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
-        # db.session.rollback()
-        return jsonify({'error': str(e)}),403
+        abort(500, {'error': str(e)})
     
 @promotion_bp.route('/promotion/<id>', methods=['DELETE'])
 def delete_promotion(id):

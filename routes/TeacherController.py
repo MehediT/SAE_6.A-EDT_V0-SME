@@ -1,7 +1,10 @@
+from xml.dom import NotFoundErr
 from flask import Blueprint, jsonify, send_from_directory, request
 from services.TeacherService import TeacherService
 from functools import wraps
 from flask_jwt_extended import (jwt_required, create_access_token, get_jwt_identity)
+from flask import abort
+
 
 teacher_bp = Blueprint('teacher', __name__)
 
@@ -33,15 +36,25 @@ def get_by_idTeacher(id):
         # db.session.rollback()
         return jsonify({'error': str(e)}),403
     
-
 @teacher_bp.route('/teacher', methods=['POST'])
 def create_teacher():
     data = request.json
     try:
         teacher = TeacherService.create_teacher(data)
-        return jsonify(teacher.to_dict()),200
+        return jsonify(teacher.to_dict()), 200
+
+    except ValueError as ve:
+        abort(400, {'error': str(ve)})
+
+    except PermissionError as pe:
+        abort(403, {'error': str(pe)})
+
+    except NotFoundErr as nfe:
+        abort(404, {'error': str(nfe)})
+
     except Exception as e:
-        return jsonify({'error': str(e)}),403
+        abort(500, {'error': str(e)})
+
 
 
 

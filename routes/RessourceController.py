@@ -1,5 +1,7 @@
+from xml.dom import NotFoundErr
 from flask import Blueprint, jsonify, request
 from services.RessourcesService import RessourcesService
+from flask import abort
 
 ressource_bp = Blueprint('ressource', __name__)
 
@@ -24,7 +26,6 @@ def get_ressource(initial):
         return jsonify(ressource.to_dict()),200
     except Exception as e:
         return jsonify({'error': str(e)}),403
-    
 
 @ressource_bp.route('/ressource', methods=['POST'])
 def create_ressource():
@@ -32,11 +33,20 @@ def create_ressource():
 
     try:
         ressource = RessourcesService.create_resource(data)
+        return jsonify(ressource.to_dict()), 200
 
-        return jsonify(ressource.to_dict()),200
+    except ValueError as ve:
+        abort(400, {'error': str(ve)})
+
+    except PermissionError as pe:
+        abort(403, {'error': str(pe)})
+
+    except NotFoundErr as nfe:
+        abort(404, {'error': str(nfe)})
+
     except Exception as e:
+        abort(500, {'error': str(e)})
 
-        return jsonify({'error': str(e)}),403
     
 @ressource_bp.route('/ressource/<initial>', methods=['DELETE'])
 def delete_ressource(initial):

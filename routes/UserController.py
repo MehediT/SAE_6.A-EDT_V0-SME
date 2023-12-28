@@ -3,8 +3,11 @@ from services.UserService import UserService
 from models.User import User
 from functools import wraps
 from flask_jwt_extended import (jwt_required, create_access_token, get_jwt_identity)
+from flask import abort
 
 user_bp = Blueprint('user', __name__)
+
+
 
 @user_bp.route('/user', methods=['POST'])
 def create_user():
@@ -18,6 +21,7 @@ def create_user():
         return jsonify(user.to_dict()),200
     except Exception as e:
         return jsonify({'error': str(e)}),403 
+
     
 
 @user_bp.route('/users', methods=['GET'])
