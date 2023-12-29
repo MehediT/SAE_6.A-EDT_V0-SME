@@ -85,3 +85,18 @@ def get_tree(id):
         return jsonify(groupe_dict),200
     except Exception as e:
         return jsonify({'error': str(e)}),403
+
+
+@groupe_bp.route('/groupe/childs/<id>', methods=['GET'])
+def get_childs(id):
+    try:
+        groupe = GroupeService.get_groupe_by_id(id)
+        if not groupe:
+            return jsonify({'error': 'Groupe not found'}),403
+        
+        groupe_dict = groupe.to_dict()
+        groupe_dict["children"] = GroupeService.get_children(id)["children"]
+                
+        return jsonify(groupe_dict),200
+    except Exception as e:
+        return jsonify({'error': str(e)}),403
