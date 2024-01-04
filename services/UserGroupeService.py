@@ -51,12 +51,25 @@ class UserGroupeService:
     db.session.delete(user_groupe_delete)
     db.session.commit()
 
+  # @staticmethod
+  # def get_etudiants_for_groupe(idGroupe):
+  #   query = db.session.query(Student.name, Student.lastname).join(student_course_association).filter(student_course_association.c.id_group == idGroupe)
+  #   result = query.all()
+
+  #   etudiants_list = [{"name": name, "lastname": lastname} for name, lastname in result]
+
+  #   return etudiants_list
+
   @staticmethod
   def get_etudiants_for_groupe(idGroupe):
-    query = db.session.query(Student.name, Student.lastname).join(student_course_association).filter(student_course_association.c.id_group == idGroupe)
+    query = db.session.query(
+        student_course_association.c.id_group,
+        Student.name,
+        Student.lastname
+    ).join(Student).filter(student_course_association.c.id_group == idGroupe)
+
     result = query.all()
 
-    etudiants_list = [{"name": name, "lastname": lastname} for name, lastname in result]
+    etudiants_list = [{"id_group": id_group, "name": name, "lastname": lastname} for id_group, name, lastname in result]
 
     return etudiants_list
-
