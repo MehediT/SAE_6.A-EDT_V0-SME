@@ -83,3 +83,17 @@ def update_student(id):
     except Exception as e:
   
         return jsonify({'error': str(e)}),403
+    
+# @student_bp.route('/students/groupe/<idGroupe>', methods=['GET'])
+# def get_students_by_group(idGroupe):
+#     try:
+#         # Récupérer tous les enseignants d'un groupe
+#         students = StudentService.get_students_by_group(idGroupe)
+#         if not students:
+#             return jsonify({'error': 'Students not found'}),403
+        
+#         return jsonify(students),200
+#     except Exception as e:
+#         # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
+#         # db.session.rollback()
+#         return jsonify({'error': str(e)}),403

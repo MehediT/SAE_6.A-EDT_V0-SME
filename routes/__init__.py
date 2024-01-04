@@ -10,6 +10,7 @@ from .StudentController import student_bp
 from .PromotionController import promotion_bp
 from .ResponsableEdtController import responsable_edt_bp
 from .WeekCommentController import week_comment_bp
+from .UserGroupeController import usergroupe_bp
 
 
 def register_routes(app):
@@ -24,5 +25,6 @@ def register_routes(app):
     app.register_blueprint(responsable_edt_bp)
     app.register_blueprint(student_bp)
     app.register_blueprint(week_comment_bp)
+    app.register_blueprint(usergroupe_bp)
 
 # Exportez la fonction pour l'utiliser dans app.py

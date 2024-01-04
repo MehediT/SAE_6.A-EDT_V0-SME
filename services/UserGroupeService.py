@@ -1,9 +1,8 @@
 from models.Groupe import Groupe
 from models.User import User
-from models.Groupe import Groupe
+from models.Student import Student
 from database.config import db
 from models.relations.user_groupe import student_course_association
-from database.config import db
 from sqlalchemy.orm import joinedload
 from sqlalchemy.orm import aliased
 
@@ -50,4 +49,14 @@ class UserGroupeService:
     user_groupe_delete = student_course_association.query.filter_by(idStudent=idStudent).first()
 
     db.session.delete(user_groupe_delete)
-    db.session.commit()  
+    db.session.commit()
+
+  @staticmethod
+  def get_etudiants_for_groupe(idGroupe):
+    query = db.session.query(Student.name, Student.lastname).join(student_course_association).filter(student_course_association.c.id_group == idGroupe)
+    result = query.all()
+
+    etudiants_list = [{"name": name, "lastname": lastname} for name, lastname in result]
+
+    return etudiants_list
+
