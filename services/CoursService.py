@@ -215,7 +215,7 @@ class CoursService:
         return courses
     
     @staticmethod
-    def duplicate(start_time, end_time, id_group, start_time_attempt, sat_date, sun_date, **kwargs):
+    def paste(start_time, end_time, id_group, start_time_attempt, sat_date, sun_date, **kwargs):
 
         start_time = datetime.strptime(start_time, '%Y-%m-%d')
         print(start_time)
