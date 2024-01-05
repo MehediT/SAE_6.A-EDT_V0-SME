@@ -88,3 +88,17 @@ def get_etudiants_for_groupe(idGroupe):
         # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
         # db.session.rollback()
         return jsonify({'error': str(e)}),403
+    
+@usergroupe_bp.route('/usergroupe/groupForStudent/<idEtudiant>', methods=['GET'])
+def get_groupes_for_student(idEtudiant):
+    try:
+        # Récupérer tous les groupes d'un etudiant
+        groupes = UserGroupeService.get_groupes_for_student(idEtudiant)
+        if not groupes:
+            return jsonify({'error': 'Groupe not found'}),201
+
+        return jsonify(groupes),200
+    except Exception as e:
+        # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
+        # db.session.rollback()
+        return jsonify({'error': str(e)}),403
