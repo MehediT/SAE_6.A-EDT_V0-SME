@@ -6,17 +6,27 @@ dataEtudiantGroupe = [
 
   {
     'id_student' : 1,
-    'id_group' : 2,
+    'id_group' : 6,
   },
 
   {
     'id_student' : 2,
-    'id_group' : 1,
+    'id_group' : 6,
   },
 
   {
     'id_student' : 3,
-    'id_group' : 3
+    'id_group' : 7
+  },
+
+  {
+    'id_student' : 4,
+    'id_group' : 7
+  },
+
+  {
+    'id_student' : 5,
+    'id_group' : 7
   }
 
 ]
