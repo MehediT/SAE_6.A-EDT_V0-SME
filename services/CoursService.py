@@ -263,24 +263,29 @@ class CoursService:
     
     
     @staticmethod
-    def duplicate(course, groups, **kwargs):
+    def duplicate(courseId, groupsToDuplicateTo, **kwargs):
 
-        if not course:
+        if not courseId:
             return {"Aucun cours transmis !"},404
 
-        if not groups:
+        if not groupsToDuplicateTo:
             return {"Aucun groupes choisis !"},404
 
-        result = []
-        for group in groups:
-            new_course = course.duplicate()
+        course = Cours.query.get(courseId)
+        
+        if course:
+            result = []
+            for group in groupsToDuplicateTo:
+                new_course = courseId.duplicate()
 
-            new_course.id_group = group            
-            db.session.add(new_course)
-            db.session.commit()
-            result.append(new_course)
+                new_course.id_group = group            
+                db.session.add(new_course)
+                db.session.commit()
+                result.append(new_course)
 
-        return result
+            return result
+        else:
+            return {"Aucun cours avec cet id !"},404
     
 
 
