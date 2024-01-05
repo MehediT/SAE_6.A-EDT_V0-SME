@@ -276,7 +276,7 @@ class CoursService:
         if course:
             result = []
             for group in groupsToDuplicateTo:
-                new_course = courseId.duplicate()
+                new_course = course.duplicate()
 
                 new_course.id_group = group            
                 db.session.add(new_course)
