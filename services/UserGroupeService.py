@@ -1,3 +1,4 @@
+from sqlalchemy import update
 from models.Groupe import Groupe
 from models.User import User
 from models.Student import Student
@@ -38,15 +39,24 @@ class UserGroupeService:
     return student_course_association.query.filter_by(idGroupe=idGroupe).filter_by(idStudent=idStudent).all()
   
   @staticmethod
-  def set_groupe_etudiant(idStudent, newIdGroupe):
-    etudiant_groupe_to_modify = student_course_association.query.filter_by(idStudent=idStudent).first()
+  def update_student_group(student_id, new_group_id, old_group_id):
+    try:
+        db.session.execute(
+            student_course_association.update().where(
+                (student_course_association.c.id_student == student_id) &
+                (student_course_association.c.id_group == old_group_id)
+            ).values(id_group=new_group_id)
+        )
+        db.session.commit()
+        return {"message": "Groupe d'étudiants mis à jour avec succès"}
+    except Exception as e:
+        db.session.rollback()
+        return {"error": str(e)}
 
-    etudiant_groupe_to_modify.idGroupe = newIdGroupe
-    db.session.commit()
 
   @staticmethod
   def delete_user_groupe(idStudent):
-    user_groupe_delete = student_course_association.query.filter_by(idStudent=idStudent).first()
+    user_groupe_delete = student_course_association.query.filter_by(id_student=idStudent).first()
 
     db.session.delete(user_groupe_delete)
     db.session.commit()
@@ -73,3 +83,10 @@ class UserGroupeService:
     etudiants_list = [{"id_group": id_group, "name": name, "lastname": lastname} for id_group, name, lastname in result]
 
     return etudiants_list
+  
+  # @staticmethod
+  # def modifier_etudiant_groupe(idStudent, idGroupe):
+  #   user_groupe_to_modify = student_course_association.query.filter_by(idStudent=idStudent).first()
+
+  #   user_groupe_to_modify.idGroupe = idGroupe
+  #   db.session.commit()
