@@ -34,10 +34,11 @@ class TeacherService:
     
 
     @staticmethod
-    def update_teacher(id, name: str, lastname: str, **kwargs):
+    def update_teacher(id, name: str, lastname: str,activated: bool, **kwargs):
         teacher = Teacher.query.filter_by(id_teacher=id).first()
         teacher.name = name
         teacher.lastname = lastname
+        teacher.activated = activated
         # teacher.role = role
 
 
