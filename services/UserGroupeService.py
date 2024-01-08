@@ -73,6 +73,7 @@ class UserGroupeService:
   @staticmethod
   def get_etudiants_for_groupe(idGroupe):
     query = db.session.query(
+        student_course_association.c.id_group,
         Student.id_student,
         Student.name,
         Student.lastname
@@ -80,7 +81,7 @@ class UserGroupeService:
 
     result = query.all()
 
-    etudiants_list = [{"id_student": id_student, "name": name, "lastname": lastname} for id_student, name, lastname in result]
+    etudiants_list = [{"id_group": id_group, "id_student": id_student, "name": name, "lastname": lastname} for id_group, id_student, name, lastname in result]
 
     return etudiants_list
   
