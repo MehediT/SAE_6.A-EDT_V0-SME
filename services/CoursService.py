@@ -271,14 +271,15 @@ class CoursService:
         if not groupsToDuplicateTo:
             return {"Aucun groupes choisis !"},404
 
-        course = Cours.query.get(courseId)
+        course = Cours.query.filter(id_group=courseId)
         
         if course:
             result = []
             for group in groupsToDuplicateTo:
                 new_course = course.duplicate()
 
-                new_course.id_group = group            
+                new_course.id_group = group
+
                 db.session.add(new_course)
                 db.session.commit()
                 result.append(new_course)
@@ -286,7 +287,7 @@ class CoursService:
             return result
         else:
             return {"Aucun cours avec cet id !"},404
-    
+
 
 
     
