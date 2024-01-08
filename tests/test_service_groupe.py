@@ -8,8 +8,6 @@ import warnings
 # Suppress SQLAlchemy Legacy API Warning
 warnings.filterwarnings("ignore", category=DeprecationWarning, module="sqlalchemy.orm.query.*")
 
-
-
 def create_app():
   app = Flask(__name__)
   app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
