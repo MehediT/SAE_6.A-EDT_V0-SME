@@ -45,14 +45,10 @@ def get_etudiant_by_groupe(idStudent,idGroupe):
 @usergroupe_bp.route('/usergroupe/delete/<idStudent>', methods=['DELETE'])
 def delete_user_groupe(idStudent):
     try:
-        groupe_etudiant = UserGroupeService.delete_user_groupe(idStudent)
-        
-        if not groupe_etudiant:
-            return jsonify({'error': 'Etudiant not found'}),403
-
-        return jsonify(groupe_etudiant.to_dict()),200
+        UserGroupeService.delete_user_groupe(idStudent)
+        return jsonify({"message": "Utilisateur supprimé du groupe avec succès"}), 200
     except Exception as e:
-        return jsonify({'error': str(e)}),403
+        return jsonify({'error': str(e)}), 403
     
 @usergroupe_bp.route('/usergroupe/groupe/<idGroupe>', methods=['GET'])
 def get_etudiants_for_groupe(idGroupe):

@@ -56,10 +56,15 @@ class UserGroupeService:
 
   @staticmethod
   def delete_user_groupe(idStudent):
-    user_groupe_delete = student_course_association.query.filter_by(id_student=idStudent).first()
+    try:
+        # Utilisez delete() directement sur la table d'association
+        student_course_association.delete().where(student_course_association.c.id_student == idStudent)
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        raise e
 
-    db.session.delete(user_groupe_delete)
-    db.session.commit()
+
 
   # @staticmethod
   # def get_etudiants_for_groupe(idGroupe):
