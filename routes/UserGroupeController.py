@@ -7,16 +7,15 @@ usergroupe_bp = Blueprint('usergroupe', __name__)
 
 @usergroupe_bp.route('/usergroupe/addGroupeEtudiant', methods=['POST'])
 def add_user_to_group():
-
     idStudent = request.json["idStudent"]
     idGroupe = request.json["idGroupe"]
     
     try:
-        groupe_etudiant = UserGroupeService.add_user_to_group(idStudent,idGroupe)
-
-        return jsonify(groupe_etudiant.to_dict()),200
+        UserGroupeService.add_user_to_group(idStudent, idGroupe)
+        return jsonify({"message": "Utilisateur ajouté au groupe avec succès"}), 200
     except Exception as e:
-        return jsonify({'error': str(e)}),403
+        return jsonify({'error': str(e)}), 403
+
 
 @usergroupe_bp.route('/usergroupe/groupeEtudiant/<idGroupe>/<idStudent>', methods=['GET'])
 def get_groupe_etudiant(idStudent,idGroupe):
