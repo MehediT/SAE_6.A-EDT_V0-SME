@@ -117,35 +117,36 @@ class UserGroupeService:
   
   @staticmethod
   def update_promo_etudiants(idEtudiants, idNvPromo):
-    all_groups_of_new_promo = GroupeService.get_tree(idNvPromo)
-    
-    group_tp_new_promo = []
-    
-    students_to_add = []
-    
-    for e in [idEtudiants]: 
-        students_to_add.append(e)
-        
-    for group in all_groups_of_new_promo:
-      has_children = GroupeService.get_children(group)
+      all_groups_of_new_promo = GroupeService.get_tree(idNvPromo)
+      group_tp_new_promo = []
+      students_to_add = idEtudiants.copy()  # Copy the list to avoid modifying the original
       
-      if not has_children:
-        group_tp_new_promo.append(group)
-    
-    nb_students_per_group = len(idEtudiants)/len(group_tp_new_promo)
-    
-    students_per_group = []
-  
-    for group in group_tp_new_promo:
-      for j in range(nb_students_per_group):
-        random_student = random.choice(students_to_add)
-        
-        students_to_add.remove(random_student)
-        
-        students_per_group.append([random_student, group])
-        
-    print(students_per_group)
+      for group in all_groups_of_new_promo:
+          has_children = GroupeService.get_children(group)
+          
+          if has_children is not None:
+              if len(has_children) == 0:
+                  group_tp_new_promo.append(group)
+          else:
+              print(f"Warning: get_children returned None for group {group}")
       
+      students_per_group = []
+      
+      if len(group_tp_new_promo) > 0:
+          nb_students_per_group = len(idEtudiants) // len(group_tp_new_promo)
+          
+          for group in group_tp_new_promo:
+              group_students = random.sample(students_to_add, min(nb_students_per_group, len(students_to_add)))
+              
+              for student in group_students:
+                  students_to_add.remove(student)
+                  students_per_group.append([student, group])
+      else:
+          print("No groups available in the new promotion.")
+      
+      print(students_per_group)
+
+    
       
       
       
