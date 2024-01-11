@@ -1,5 +1,6 @@
 from database.config import db
 from models.Student import Student
+from services.UserGroupeService import UserGroupeService
 from models.relations import user_groupe
 # import ast
 # import json
@@ -25,6 +26,8 @@ class StudentService:
 
     @staticmethod
     def delete_student(id):
+        UserGroupeService.delete_user_groupe(id)
+        
         student = Student.query.filter_by(id_student=id).first()
         db.session.delete(student)
         db.session.commit()
