@@ -92,9 +92,9 @@ def migrate_promo() :
         result = UserGroupeService.update_promo_etudiants(**data)
         
         if "error" in result:
-            return jsonify({'error': result["error"]}), 403
+            return jsonify({'error': result}), 403
 
-        return jsonify({'message': result["message"]}), 200
+        return jsonify({'message': result}), 200
     
     except Exception as e:
         return jsonify({'error': str(e)}), 403
