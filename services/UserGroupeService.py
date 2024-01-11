@@ -2,10 +2,12 @@ from sqlalchemy import update
 from models.Groupe import Groupe
 from models.User import User
 from models.Student import Student
+from services.GroupeService import GroupeService
 from database.config import db
 from models.relations.user_groupe import student_course_association
 from sqlalchemy.orm import joinedload
 from sqlalchemy.orm import aliased
+import random
 
 
 class UserGroupeService:
@@ -91,3 +93,46 @@ class UserGroupeService:
 
   #   user_groupe_to_modify.idGroupe = idGroupe
   #   db.session.commit()
+  
+  @staticmethod
+  def update_promo_etudiants(idEtudiants, idNvPromo):
+    all_groups_of_new_promo = GroupeService.get_tree(idNvPromo)
+    
+    group_tp_new_promo = []
+    
+    students_to_add = []
+    
+    for e in [idEtudiants]: 
+        students_to_add.append(e)
+        
+    for group in all_groups_of_new_promo:
+      has_children = GroupeService.get_children(group)
+      
+      if not has_children:
+        group_tp_new_promo.append(group)
+    
+    nb_students_per_group = len(idEtudiants)/len(group_tp_new_promo)
+    
+    students_per_group = []
+  
+    for group in group_tp_new_promo:
+      for j in range(nb_students_per_group):
+        random_student = random.choice(students_to_add)
+        
+        students_to_add.remove(random_student)
+        
+        students_per_group.append([random_student, group])
+        
+    print(students_per_group)
+      
+      
+      
+      
+       
+
+    
+  
+    
+          
+          
+        

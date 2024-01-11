@@ -88,3 +88,19 @@ def update_student_group(idStudent, newIdGroupe, idGroupe):
         return jsonify({'message': result["message"]}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 403
+    
+@usergroupe_bp.route('/usergroupe/migrate', methods=['POST'])
+def migrate_promo() :
+    try:
+        data = request.json
+        
+        result = UserGroupeService.update_promo_etudiants(**data)
+        
+        if "error" in result:
+            return jsonify({'error': result["error"]}), 403
+
+        return jsonify({'message': result["message"]}), 200
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 403
+

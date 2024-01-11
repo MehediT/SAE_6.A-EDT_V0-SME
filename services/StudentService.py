@@ -1,11 +1,16 @@
 from database.config import db
 from models.Student import Student
 from models.relations import user_groupe
+from services import GroupeService
+from services import UserGroupeService
 # import ast
 # import json
 # import os
 
 class StudentService:
+    
+    def __init__(self):
+        self.group_service = GroupeService()
     
     @staticmethod
     def get_all_students():
@@ -38,6 +43,19 @@ class StudentService:
         db.session.commit()
         return student
     
-    # @staticmethod
-    # def get_students_by_group(idGroupe):
-    #     return db.session.query(Student).join(user_groupe).filter_by(id_group=idGroupe).all()
+    
+    def get_students_by_group(idGroupe):
+        group_service = GroupeService()
+        groups = group_service.get_tree(idGroupe)
+
+        students = []
+
+        for group in groups:
+            students_of_group = UserGroupeService.get_etudiants_for_groupe(group.id)
+            
+            if students_of_group:
+                students.append(students_of_group)
+
+        return students
+
+

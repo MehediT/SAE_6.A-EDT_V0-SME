@@ -1,9 +1,12 @@
 from xml.dom import NotFoundErr
 from flask import Blueprint, jsonify, send_from_directory, request
+from services.GroupeService import GroupeService
 from services.StudentService import StudentService
 from functools import wraps
 from flask_jwt_extended import (jwt_required, create_access_token, get_jwt_identity)
 from flask import abort
+
+from services.UserGroupeService import UserGroupeService
 
 student_bp = Blueprint('student', __name__)
 
@@ -84,16 +87,23 @@ def update_student(id):
   
         return jsonify({'error': str(e)}),403
     
-# @student_bp.route('/students/groupe/<idGroupe>', methods=['GET'])
-# def get_students_by_group(idGroupe):
-#     try:
-#         # Récupérer tous les enseignants d'un groupe
-#         students = StudentService.get_students_by_group(idGroupe)
-#         if not students:
-#             return jsonify({'error': 'Students not found'}),403
+@student_bp.route('/students/groupe/<idGroupe>', methods=['GET'])
+def get_all_students_by_group(idGroupe):
+    try:
+        groups = GroupeService.get_tree(idGroupe)
+        if not groups:
+            return jsonify({'error': 'Students not found'}),403
         
-#         return jsonify(students),200
-#     except Exception as e:
-#         # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
-#         # db.session.rollback()
-#         return jsonify({'error': str(e)}),403
+        students = []
+        
+        for group in groups:
+            students_of_group = UserGroupeService.get_etudiants_for_groupe(group)
+
+            if students_of_group:
+                students.append(students_of_group)
+                
+        return jsonify(students),200
+    except Exception as e:
+        # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
+        # db.session.rollback()
+        return jsonify({'error': str(e)}),403
