@@ -26,6 +26,7 @@ def app():
     with app.app_context():
         db.drop_all()
 
+# Tests unitaires pour créer unee promo
 def test_create_promo(app):
     # Test the creation of a promotion
     with app.app_context():
@@ -43,6 +44,7 @@ def test_create_promo(app):
 
         PromotionService.delete_promo(promo.id_promo)
 
+# Tests unitaires pour récupérer toutes les promos
 def test_get_all_promos(app):
     with app.app_context():
         promos = PromotionService.get_all_promos()
@@ -50,6 +52,7 @@ def test_get_all_promos(app):
         assert isinstance(promos, list)
         assert len(promos) >= 0  
 
+# Tests unitaires pour récupérer une promo avec un id
 def test_get_promo_by_id(app):
     # Test retrieving a promotion by ID
     with app.app_context():
@@ -71,6 +74,7 @@ def test_get_promo_by_id(app):
 
         PromotionService.delete_promo(promo.id_promo)
 
+# Tests unitaires pour mettre à jour une promo
 def test_update_promo(app):
     # Test updating a promotion
     with app.app_context():
@@ -92,7 +96,7 @@ def test_update_promo(app):
 
         PromotionService.delete_promo(updated_promo.id_promo)
 
-
+# Tests unitaires pour supprimer une promo
 def test_delete_promo(app):
     # Test deleting a promotion
     with app.app_context():

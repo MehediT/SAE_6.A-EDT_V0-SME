@@ -32,7 +32,7 @@ def app():
     with app.app_context():
         db.drop_all()
 
-
+# Tests unitaires pour créer un utilisateur
 def test_create_user(app):
     # Test the creation of a user
     with app.app_context():
@@ -56,7 +56,7 @@ def test_create_user(app):
 
         UserService.delete_user(retrieved_user)
 
-
+# Tests unitaires pour récupérer tous les users
 def test_get_all_users(app):
     with app.app_context():
         user1 = UserService.create_user('user1', 'pass1', 'User1', 'Last1', 'user')
@@ -71,7 +71,7 @@ def test_get_all_users(app):
         UserService.delete_user(user1)
         UserService.delete_user(user2)
 
-
+# Tests unitaires pour récupérer un user par son nom d'utilisateur
 def test_get_by_username(app):
     with app.app_context():
         user_data = {

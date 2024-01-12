@@ -26,6 +26,7 @@ def app():
     with app.app_context():
         db.drop_all()
 
+# Tests unitaires pour créer une salle
 def test_create_salle(app):
     with app.app_context():
         # Create a test instance
@@ -51,7 +52,7 @@ def test_create_salle(app):
         db.session.delete(retrieved_salle)
         db.session.commit()
 
-
+# Tests unitaires pour savoir si une salle étant créée existe bien
 def test_isExist(app):
     with app.app_context():
         salle_data = {'name': 'A2-05', 'ordi': 25, 'tableauNumerique': 1, 'videoProj': 1}
@@ -66,7 +67,7 @@ def test_isExist(app):
         db.session.delete(salle)
         db.session.commit()
 
-
+# Tests unitaires pour supprimer une salle
 def test_delete_salle(app):
     with app.app_context():
         salle_data = {'name': 'A2-05', 'ordi': 25, 'tableauNumerique': 1, 'videoProj': 1}
@@ -80,7 +81,7 @@ def test_delete_salle(app):
         salle_exists = SalleService.isExist('A2-05')
         assert salle_exists is False
 
-
+# Tests unitaires pour récupérer une salle par son nom
 def test_get_salle_by_name(app):
     with app.app_context():
         salle_data = {'name': 'A2-05', 'ordi': 25, 'tableauNumerique': 1, 'videoProj': 1}

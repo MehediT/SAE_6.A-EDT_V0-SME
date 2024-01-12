@@ -28,11 +28,9 @@ def app():
         db.drop_all()
 
 
-
-
+# Fonction de test pour l'initialisation de la classe Salle
 def test_salle_initialization(app):
     # Test the initialization of the Salle class
-
     # Create a test instance
     salle = Salle(
         name="A2-05",
@@ -50,13 +48,12 @@ def test_salle_initialization(app):
     with app.app_context():
         retrieved_salle = Salle.query.filter_by(nom="A2-05").first()
 
-    # Perform assertions to check if the instance was added and retrieved correctly
+    # Assertions pour vérifier si l'instance a été ajoutée et récupérée correctement
     assert retrieved_salle is not None
     assert retrieved_salle.ordi == 25
     assert retrieved_salle.tableauNumerique == 1
     assert retrieved_salle.videoProjecteur == 1
 
-    # Clean up the database (optional)
     with app.app_context():
         db.session.delete(retrieved_salle)
         db.session.commit()

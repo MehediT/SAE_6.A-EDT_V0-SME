@@ -30,10 +30,7 @@ def app():
     with app.app_context():
         db.drop_all()
 
-
-
-
-
+# Fonction de test pour l'initialisation de la classe Ressources
 def test_ressources_initialization(app):
     # Test the initialization of the Ressources class
 

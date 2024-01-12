@@ -37,22 +37,18 @@ def test_disponibilite_initialization(app):
         date_fin_disponibilite= datetime(2023,1,1,17,00,00)
     )
 
-    # Add the instance to the test database
     with app.app_context():
         db.session.add(disponibilite)
         db.session.commit()
 
-    # Retrieve the instance from the database
     with app.app_context():
         retrieved_disponibilite = Disponibilite.query.filter_by(enseignant="JM").first()
 
-    # Perform assertions to check if the instance was added and retrieved correctly
     assert retrieved_disponibilite is not None
     assert retrieved_disponibilite.disponible is True
     assert str(retrieved_disponibilite.date_debut_disponibilite) == "2023-01-01 08:00:00"
     assert str(retrieved_disponibilite.date_fin_disponibilite) == "2023-01-01 17:00:00"
 
-    # Clean up the database (optional)
     with app.app_context():
         db.session.delete(retrieved_disponibilite)
         db.session.commit()

@@ -29,7 +29,7 @@ def app():
     with app.app_context():
         db.drop_all()
 
-
+# Tests unitaires pour la création de GroupeService
 def test_create_groupe(app):
     with app.app_context():
         # Create a test groupe
@@ -43,7 +43,7 @@ def test_create_groupe(app):
         # Clean up
         GroupeService.delete_groupe(groupe.id)
 
-
+# Tests unitaires pour la récupération de tous les groupes
 def test_get_all_groupes(app):
     with app.app_context():
         # Create some test groupes
@@ -62,7 +62,7 @@ def test_get_all_groupes(app):
         GroupeService.delete_groupe(groupes[0].id)
         GroupeService.delete_groupe(groupes[1].id)
 
-
+# Tests unitaires pour récupérer un groupe via un id 
 def test_get_groupe_by_id(app):
     with app.app_context():
         # Create a test groupe
@@ -79,7 +79,7 @@ def test_get_groupe_by_id(app):
         # Clean up
         GroupeService.delete_groupe(groupe.id)
 
-
+# Tests unitaires pour mettre à jour un groupe
 def test_update_groupe(app):
     with app.app_context():
         # Create a test groupe
@@ -95,7 +95,7 @@ def test_update_groupe(app):
         # Clean up
         GroupeService.delete_groupe(updated_groupe.id)
 
-
+# Tests unitaires pour supprimer un groupe
 def test_delete_groupe(app):
     with app.app_context():
         # Create a test groupe

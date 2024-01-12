@@ -4,9 +4,10 @@ from database.config import db
 from models.Groupe import Groupe
 import warnings
 
-# Suppress SQLAlchemy Legacy API Warning
+# Suppression de l'avertissement sur l'API obsolète de SQLAlchemy
 warnings.filterwarnings("ignore", category=DeprecationWarning, module="sqlalchemy.orm.query.*")
 
+# Fonction pour créer une application Flask pour les tests
 def create_app():
     app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
@@ -28,6 +29,7 @@ def app():
     with app.app_context():
         db.drop_all()
 
+# Fonction de test pour créer un groupe
 def test_create_groupe(app):
     with app.app_context():
         # Create a test groupe
@@ -38,12 +40,12 @@ def test_create_groupe(app):
         db.session.add(groupe)
         db.session.commit()
 
-        # Check if the groupe was created
+        # Check si le groupe était créé
         assert groupe.id is not None
         assert groupe.name == 'Test Groupe'
         assert groupe.id_group_parent is None
 
-
+# Fonction de test pour créer un groupe avec un parent
 def test_create_groupe_with_parent(app):
     with app.app_context():
         # Create a parent groupe
@@ -62,12 +64,12 @@ def test_create_groupe_with_parent(app):
         db.session.add(child)
         db.session.commit()
 
-        # Check if both groupes were created
+        # Check si les deux groupe ont été créé
         assert parent.id is not None
         assert child.id is not None
         assert child.id_group_parent == parent.id
 
-
+# Fonction de test pour créer un groupe avec un parent inexistant
 def test_create_groupe_with_nonexistent_parent(app):
     with app.app_context():
         # Attempt to create a groupe with a nonexistent parent
@@ -77,7 +79,7 @@ def test_create_groupe_with_nonexistent_parent(app):
             db.session.add(groupe)
             db.session.commit()
 
-
+# Fonction de test pour vérifier la méthode to_dict
 def test_to_dict_method(app):
     with app.app_context():
         # Create a test groupe
