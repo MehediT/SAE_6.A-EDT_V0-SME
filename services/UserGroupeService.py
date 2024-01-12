@@ -119,7 +119,7 @@ class UserGroupeService:
     def update_promo_etudiants(idEtudiants, idNvPromo):
         all_groups_of_new_promo = GroupeService.get_tree(idNvPromo)
         group_tp_new_promo = []
-        students_to_add = idEtudiants.copy()
+        students_to_add = idEtudiants
         
         for group in all_groups_of_new_promo:
             group_has_children = GroupeService.get_children(group)
