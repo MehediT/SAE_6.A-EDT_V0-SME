@@ -46,7 +46,7 @@ class StudentService:
         db.session.commit()
         return student
     
-    
+    @staticmethod
     def get_students_by_group(idGroupe):
         group_service = GroupeService()
         groups = group_service.get_tree(idGroupe)
