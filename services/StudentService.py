@@ -1,9 +1,8 @@
 from database.config import db
 from models.Student import Student
 from services.UserGroupeService import UserGroupeService
+from services.GroupeService import GroupeService
 from models.relations import user_groupe
-from services import GroupeService
-from services import UserGroupeService
 # import ast
 # import json
 # import os
