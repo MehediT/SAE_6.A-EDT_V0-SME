@@ -148,6 +148,12 @@ class UserGroupeService:
                     print("students_per_group",students_per_group)
         else:
             print("No groups available in the new promotion.")
+            
+        for student in students_per_group:
+          all_entries_of_student = Student.query.filter_by(id_student=student[0])
+          UserGroupeService.delete_user_groupe(student[0])
+          
+          UserGroupeService.add_user_to_group(student[0], student[1])
         
         return students_per_group        
     
