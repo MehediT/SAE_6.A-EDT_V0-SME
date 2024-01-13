@@ -218,34 +218,22 @@ class CoursService:
     def paste(start_time, end_time, id_group, start_time_attempt, sat_date, sun_date, **kwargs):
 
         start_time = datetime.strptime(start_time, '%Y-%m-%d')
-        print(start_time)
         end_time = datetime.strptime(end_time, '%Y-%m-%d') + timedelta(days=1)
-        print(end_time)
         start_time_attempt = datetime.strptime(start_time_attempt, '%Y-%m-%d')
-        print(start_time_attempt)
         sat_date = datetime.strptime(sat_date, '%Y-%m-%d')
-        print(sat_date)
         sun_date = datetime.strptime(sun_date, '%Y-%m-%d')
-        print(sun_date)
-
 
         days_diff = (start_time_attempt - start_time).days
-        print(days_diff)
-
-
         end_time_attempt = end_time + timedelta(days=days_diff)
 
         groups = GroupeService.get_tree(id_group)
 
-
         for group in groups:
-            courses = Cours.query.filter_by(id_group=group).filter(and_(Cours.end_time >= start_time_attempt, Cours.start_time < end_time_attempt)).all()
-            for course in courses:
-                # return {"error" :f"Le groupe {group} à déjà cours !"}, 409
-                db.session.delete(course)
-        db.session.commit()
-
-
+            overlapping_courses = Cours.query.filter_by(id_group=group).filter(and_(Cours.end_time >= start_time_attempt, Cours.start_time < end_time_attempt)).all()
+            if overlapping_courses:
+                for course in overlapping_courses:
+                    db.session.delete(course)
+                db.session.commit()
 
         result = []
         for group in groups:
@@ -254,11 +242,10 @@ class CoursService:
                 new_course = course.duplicate()
                 new_course.start_time = course.start_time + timedelta(days=days_diff)
                 new_course.end_time = course.end_time + timedelta(days=days_diff)
-                if(new_course.start_time < sat_date or new_course.end_time > sun_date):
+                if not (new_course.start_time >= sat_date and new_course.end_time <= sun_date):
                     db.session.add(new_course)
-                    db.session.commit()
                     result.append(new_course)
-
+        db.session.commit()
         return result
     
     
