@@ -271,13 +271,15 @@ class CoursService:
         if not groupsToDuplicateTo:
             return {"Aucun groupes choisis !"},404
 
-        course = Cours.query.filter(id_group=courseId)
+        course = Cours.query.filter(Cours.id == courseId).first()
         
+        print(course.start_time, course.end_time, course.id_group)
         if course:
             result = []
             for group in groupsToDuplicateTo:
                 new_course = course.duplicate()
 
+                print(new_course.start_time, new_course.end_time, new_course.id_group), 
                 new_course.id_group = group
 
                 db.session.add(new_course)
