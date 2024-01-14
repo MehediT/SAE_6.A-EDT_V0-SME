@@ -280,7 +280,9 @@ class CoursService:
         else:
             return {"Aucun cours avec cet id !"},404
 
-
+    @staticmethod
+    def get_courses_by_teacher(id_teacher):
+        return Cours.query.filter_by(id_enseignant=id_teacher).all()
 
     
 
