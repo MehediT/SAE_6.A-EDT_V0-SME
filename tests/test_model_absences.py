@@ -6,7 +6,6 @@ import pytest
 from database.config import db
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-#from tests.conftests import create_app, app
 
 # Fonction pour créer une application Flask pour les tests
 def create_app():
