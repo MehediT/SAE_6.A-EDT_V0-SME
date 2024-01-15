@@ -136,4 +136,13 @@ def duplicate_all():
     except Exception as e:
 
         return jsonify({'error': str(e)}),403
+    
+@cours_bp.route('/courses/teacher/<id_teacher>', methods=['POST'])
+def get_courses_by_teacher(id_teacher):
+    try:
+        courses = CoursService.get_courses_by_teacher(id_teacher)
+        courses_dict = [course.to_dict() for course in courses]
+        return jsonify(courses_dict),200
+    except Exception as e:
 
+        return jsonify({'error': str(e)}),403
