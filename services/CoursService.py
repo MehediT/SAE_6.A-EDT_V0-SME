@@ -1,4 +1,5 @@
 from operator import and_, or_
+from models.Teacher import Teacher
 
 from services.UserGroupeService import UserGroupeService
 
@@ -281,8 +282,12 @@ class CoursService:
             return {"Aucun cours avec cet id !"},404
 
     @staticmethod
-    def get_courses_by_teacher(id_teacher):
-        return Cours.query.filter_by(id_enseignant=id_teacher).all()
+    def get_courses_by_teacher(id_user):
+        try:
+            teacher = Teacher.query.filter_by(id_user=id_user).first()
+            return Cours.query.filter_by(id_enseignant=teacher.id_teacher).all()
+        except Exception as e:
+            return {"error": str(e)}, 403
 
     
 

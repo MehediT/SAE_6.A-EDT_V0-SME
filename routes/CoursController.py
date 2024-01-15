@@ -137,12 +137,33 @@ def duplicate_all():
 
         return jsonify({'error': str(e)}),403
     
-@cours_bp.route('/courses/teacher/<id_teacher>', methods=['POST'])
-def get_courses_by_teacher(id_teacher):
+@cours_bp.route('/courses/stats/<id_teacher>', methods=['GET'])
+def get_stats_teacher(id_teacher):
     try:
         courses = CoursService.get_courses_by_teacher(id_teacher)
-        courses_dict = [course.to_dict() for course in courses]
-        return jsonify(courses_dict),200
+        
+        name_courses = {course.initial_ressource for course in courses}
+        stats = []
+        total_minutes = 0
+                
+        for nc in name_courses:
+            duration_nc_minutes = 0
+            
+            for course in courses:
+                if nc == course.initial_ressource:
+                    duration = course.end_time - course.start_time
+                    minutes = duration.total_seconds() / 60
+                    
+                    duration_nc_minutes += minutes
+                    total_minutes += minutes
+                    
+            hours, minutes = divmod(duration_nc_minutes, 60)
+            stats.append({'name': nc, 'hours': hours, 'minutes': minutes})
+        
+        total_hours, total_minutes = divmod(total_minutes, 60)
+        stats.append({'name': 'total', 'hours': total_hours, 'minutes': total_minutes})
+        print("stats", stats)             
+            
+        return jsonify(stats),200
     except Exception as e:
-
         return jsonify({'error': str(e)}),403
