@@ -233,7 +233,7 @@ class CoursService:
             overlapping_courses = Cours.query.filter_by(id_group=group).filter(and_(Cours.end_time >= start_time_attempt, Cours.start_time < end_time_attempt)).all()
             if overlapping_courses:
                 for course in overlapping_courses:
-                    db.session.delete(course)
+                    course.is_published = 2
                 db.session.commit()
 
         result = []
