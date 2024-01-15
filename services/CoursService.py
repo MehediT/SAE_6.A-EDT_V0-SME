@@ -243,6 +243,7 @@ class CoursService:
                 new_course = course.duplicate()
                 new_course.start_time = course.start_time + timedelta(days=days_diff)
                 new_course.end_time = course.end_time + timedelta(days=days_diff)
+                new_course.is_published = 0
                 if not (new_course.start_time >= sat_date and new_course.end_time <= sun_date):
                     db.session.add(new_course)
                     result.append(new_course)
