@@ -19,9 +19,11 @@ class Cours(db.Model):
     name_salle = db.Column(db.String(64), db.ForeignKey("salle.nom"), nullable=True)
     appelEffectue = db.Column(db.Boolean, nullable=False, default=False)
     is_published = db.Column(db.Integer, nullable=False, default=0)
+    evaluation = db.Column(db.Boolean, nullable=False, default=False)
+
     # absences = db.relationship('Absence', backref='cours', lazy='dynamic')
 
-    def __init__(self, start_time, end_time, initial_ressource, id_group, name_salle = None,id_enseignant= None,is_published=False, **kwargs):
+    def __init__(self, start_time, end_time, initial_ressource, id_group, name_salle = None,id_enseignant= None,is_published=False, evaluation = False, **kwargs):
         if type(start_time) == str:
             self.start_time = datetime.strptime(start_time,"%Y-%m-%d %H:%M:%S")
         else:
@@ -35,6 +37,7 @@ class Cours(db.Model):
         self.id_group = id_group
         self.name_salle = name_salle if name_salle else db.null()
         self.is_published = is_published
+        self.evaluation = evaluation
 
     # def appelFait(self, appelFait):
     #     self.appelEffectue = appelFait
@@ -50,6 +53,7 @@ class Cours(db.Model):
             'name_salle': self.name_salle,
             'appelEffectue': self.appelEffectue,
             'is_published': self.is_published,
+            'evaluation': self.evaluation
         }
     def duplicate(self):
         # Créer une nouvelle instance de la classe avec les mêmes attributs

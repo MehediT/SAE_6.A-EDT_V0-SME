@@ -103,7 +103,7 @@ class CoursService:
     
     # Met à jour un cours avec les nouvelles données fournies
     @staticmethod
-    def update_course(id, start_time, end_time, initial_ressource, id_group, name_salle = None,id_enseignant= None, **kwargs):
+    def update_course(id, start_time, end_time, initial_ressource, id_group, name_salle = None,id_enseignant= None, evaluation= False, **kwargs):
         course = Cours.query.get(id)
 
 
@@ -120,6 +120,7 @@ class CoursService:
         course_duplicate.id_group = id_group
         course_duplicate.name_salle = name_salle if name_salle else db.null()
         course_duplicate.is_published = 0
+        course_duplicate.evaluation = evaluation
 
         db.session.add(course_duplicate)
         db.session.commit()
