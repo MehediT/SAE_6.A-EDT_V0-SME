@@ -8,10 +8,12 @@ from services.UserService import UserService
 
 class TeacherService:
     
+    # Récupère tous les enseignants de la base de données
     @staticmethod
     def get_all_teachers():
         return Teacher.query.all()
 
+    # Crée un nouvel enseignant avec les données fournies
     @staticmethod
     def create_teacher(data):
         teacher = Teacher(**data)
@@ -20,11 +22,12 @@ class TeacherService:
 
         return teacher
     
+    # Récupère un enseignant par son identifiant
     @staticmethod
     def get_by_id(id):
         return Teacher.query.filter_by(id_teacher=id).first()
     
-
+    # Supprime un enseignant de la base de données par son identifiant
     @staticmethod
     def delete_teacher(id):
         teacher = Teacher.query.filter_by(id_teacher=id).first()
@@ -32,7 +35,7 @@ class TeacherService:
         db.session.commit()
         return teacher
     
-
+    # Met à jour les informations d'un enseignant avec les valeurs fournies
     @staticmethod
     def update_teacher(id, name: str, lastname: str,activated: bool, **kwargs):
         teacher = Teacher.query.filter_by(id_teacher=id).first()
@@ -40,7 +43,6 @@ class TeacherService:
         teacher.lastname = lastname
         teacher.activated = activated
         # teacher.role = role
-
 
         db.session.commit()
         return teacher

@@ -13,9 +13,9 @@ from services.ResponsableEdtService import ResponsableEdtService
 
 class CoursService:
 
+    # Crée un nouveau cours avec les données fournies.
     @staticmethod
     def create_course(data):
-
         resp, code = CoursService.can_create_course(**data)
         if code >= 400:
             print(resp)
@@ -33,9 +33,11 @@ class CoursService:
 
         return course, 200
     
+    # Récupère un cours par son identifiant
     def get_course_by_id(id):
         return Cours.query.get(id)
     
+    # Récupère tous les cours en fonction des paramètres spécifiés
     @staticmethod
     def get_all_courses(args,user):
 
@@ -80,6 +82,7 @@ class CoursService:
 
         return query.all()
     
+    # Supprime un cours de la base de données par son identifiant
     @staticmethod
     def delete_course(id):
         course = Cours.query.get(id)
@@ -91,6 +94,7 @@ class CoursService:
         
         return course
     
+    # Met à jour un cours avec les nouvelles données fournies
     @staticmethod
     def update_course(id, start_time, end_time, initial_ressource, id_group, name_salle = None,id_enseignant= None, **kwargs):
         course = Cours.query.get(id)
@@ -124,7 +128,7 @@ class CoursService:
 
         return course_duplicate, 200
     
-
+    # Vérifie si un cours peut être créé avec les paramètres spécifiés
     @staticmethod
     def can_create_course(start_time, end_time, id_group, name_salle = None, id_enseignant = None,id_cours= None,   **kwargs):
 
@@ -187,6 +191,7 @@ class CoursService:
         
         return None, 200
     
+    # Publie tous les cours non publiés et supprime les cours annulés
     @staticmethod
     def publish():
         courses = Cours.query.filter_by(is_published=0).all()
@@ -200,6 +205,7 @@ class CoursService:
         db.session.commit()
         return courses
     
+    # Annule tous les cours non publiés et republie les cours annulés
     @staticmethod
     def cancel():
         courses = Cours.query.filter_by(is_published=0).all()
@@ -215,6 +221,7 @@ class CoursService:
 
         return courses
     
+    # Duplique les cours d'une période à une autre pour un groupe spécifié
     @staticmethod
     def paste(start_time, end_time, id_group, start_time_attempt, sat_date, sun_date, **kwargs):
 
