@@ -4,6 +4,7 @@ from models.Groupe import Groupe
 
 class GroupeService:
 
+    # Crée un nouveau groupe avec les données fournies
     @staticmethod
     def create_groupe(data):
         groupe = Groupe(**data)
@@ -11,14 +12,17 @@ class GroupeService:
         db.session.commit()
         return groupe
     
+    # Récupère tous les groupes de la base de données
     @staticmethod
     def get_all_groupes():
         return Groupe.query.all()
     
+    # Récupère un groupe par son identifiant
     @staticmethod
     def get_groupe_by_id(idGroupe):
         return Groupe.query.get(idGroupe)
     
+    # Supprime un groupe de la base de données par son identifiant
     @staticmethod
     def delete_groupe(idGroupe):
         groupe = Groupe.query.get(idGroupe)
@@ -28,6 +32,7 @@ class GroupeService:
 
         return groupe
 
+    # Met à jour le nom d'un groupe avec la valeur fournie
     @staticmethod
     def update_groupe(id, name):
         groupe = Groupe.query.get(id)
@@ -35,6 +40,7 @@ class GroupeService:
         db.session.commit()
         return groupe
     
+
     @staticmethod
     def get_children(id_group):
         group = Groupe.query.get(id_group)
@@ -52,6 +58,7 @@ class GroupeService:
         result['children'] = result_temp
         return result
     
+    # Récupère les parents d'un groupe spécifié sous forme de structure d'arbre
     def get_parents(id_group):
         group = Groupe.query.get(id_group)
         result_temp = None
@@ -62,6 +69,7 @@ class GroupeService:
 
         return result
     
+    # Récupère l'arborescence complète à partir d'un groupe spécifié.
     @staticmethod
     def get_tree(id):
         group = Groupe.query.get(id)
