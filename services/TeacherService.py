@@ -24,6 +24,10 @@ class TeacherService:
     def get_by_id(id):
         return Teacher.query.filter_by(id_teacher=id).first()
     
+    @staticmethod
+    def get_by_user_id(id):
+        return Teacher.query.filter_by(id_user=id).first()
+    
 
     @staticmethod
     def delete_teacher(id):

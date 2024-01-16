@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 from services.GroupeService import GroupeService
 from services.AffiliationRespEdtService import AffiliationRespEdtService
 from services.ResponsableEdtService import ResponsableEdtService
+from services.TeacherService import TeacherService
 
 class CoursService:
 
@@ -71,9 +72,15 @@ class CoursService:
             # query = query.filter(Cours.id_group.in_(GroupeService.get_tree(user.id_group)))
             query = query.filter(or_(Cours.is_published == 0, Cours.is_published == 1))
         else:
-        
-            if not 'method' in args or args["method"] == "default":
-                query = query.filter(Cours.id_group.in_(UserGroupeService.get_groupes_for_student(user.id)))
+            if user.role == "ROLE_TEACHER":
+                if not 'method' in args or args["method"] == "default":
+                    teacher = TeacherService.get_by_user_id(user.id)
+                    query = query.filter(Cours.id_enseignant == teacher.id_teacher)
+
+            else:
+                 if not 'method' in args or args["method"] == "default":
+                    query = query.filter(Cours.id_group.in_(UserGroupeService.get_groupes_for_student(user.id)))
+
             query = query.filter(or_(Cours.is_published == 2, Cours.is_published == 1))
         
 
