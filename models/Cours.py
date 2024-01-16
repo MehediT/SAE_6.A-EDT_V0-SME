@@ -57,5 +57,5 @@ class Cours(db.Model):
         }
     def duplicate(self):
         # Créer une nouvelle instance de la classe avec les mêmes attributs
-        new_course = Cours(self.start_time, self.end_time, self.initial_ressource, self.id_group, self.name_salle, self.id_enseignant, self.is_published)
+        new_course = Cours(self.start_time, self.end_time, self.initial_ressource, self.id_group, self.name_salle, self.id_enseignant, self.is_published, self.evaluation)
         return new_course
