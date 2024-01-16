@@ -253,7 +253,7 @@ class CoursService:
 
         result = []
         for group in groups:
-            courses = Cours.query.filter_by(id_group=group).filter(and_(Cours.end_time >= start_time, Cours.start_time < end_time)).all()
+            courses = Cours.query.filter_by(id_group=group).filter(and_(Cours.is_published != 2,Cours.end_time >= start_time, Cours.start_time < end_time)).all()
             for course in courses:
                 new_course = course.duplicate()
                 new_course.start_time = course.start_time + timedelta(days=days_diff)
