@@ -119,47 +119,6 @@ class UserGroupeService:
     #   user_groupe_to_modify.idGroupe = idGroupe
     #   db.session.commit()
 
-    # @staticmethod
-    # def update_promo_etudiants(idAncPromo, idNvPromo):
-    #     all_groups_of_new_promo = GroupeService.get_tree(idNvPromo)
-    #     groups_of_actual_promo = GroupeService.get_tree(idAncPromo)
-
-    #     groups_to_modify = []
-
-    #     for group in all_groups_of_new_promo:
-    #         students_to_remove = UserGroupeService.get_etudiants_for_groupe(group)
-
-    #         for student in students_to_remove:
-    #             UserGroupeService.delete_user_groupe(student)
-
-    #     new_groups_of_new_promo = []
-    #     for group in all_groups_of_new_promo:
-    #         new_groups_of_new_promo.append(GroupeService.get_groupe_by_id(group))
-
-    #     for group in new_groups_of_new_promo:
-    #         db.session.delete(group)
-
-    #     new_groups_of_actual_promo = []
-    #     for group in groups_of_actual_promo:
-    #         new_groups_of_actual_promo.append(GroupeService.get_groupe_by_id(group))
-
-    #     for group in new_groups_of_actual_promo:
-    #         if group.id_group_parent is not None and (len(GroupeService.get_children(group.id))>0):
-    #             groups_to_modify.append(group)
-
-    #         replace_group = group.duplicate()
-    #         new_groups_of_actual_promo.append(replace_group)
-
-    #     for group in groups_to_modify:
-    #         group.id_group_parent = idNvPromo
-
-    #     for group in new_groups_of_actual_promo:
-    #         db.session.add(group)
-
-    #     db.session.commit()
-
-    #     return GroupeService.get_tree(idNvPromo)
-
     @staticmethod
     def update_promo_etudiants(idEtudiants, idAncPromo, idNvPromo, idResp):
         # Get the old promotion
@@ -171,7 +130,6 @@ class UserGroupeService:
             "niveau": new_promo_to_copy.niveau,
             "id_resp": idResp,
         }
-
 
         # Create a new promotion with the same name as the new promotion
         new_promo = PromotionService.create_promo(datePromo)
@@ -198,13 +156,22 @@ class UserGroupeService:
         for group in td:
             GroupeService.create_groupe({"name":group.name, "id_group_parent":new_promo.id_groupe})
             id = Groupe.query.order_by(Groupe.id.desc()).first()
-            print(id.id)
+            
             for group2 in tp:
                 if group2.id_group_parent == group.id:
                     new_group=group2.duplicate()
                     new_group.id_group_parent=id.id
-                    db.session.add(new_group)        
-                
+                    db.session.add(new_group)  
+                    
+                    for student in idEtudiants:
+                        user_group = UserGroupeService.get_groupes_for_student(student)
+
+                        for user in user_group:
+                            if user == group2.id:
+                                UserGroupeService.update_student_group(student, new_group.id, group2.id)
+                            db.session.commit()
+        
+                        
         db.session.commit()
 
         return GroupeService.get_tree(new_promo.id_groupe)
