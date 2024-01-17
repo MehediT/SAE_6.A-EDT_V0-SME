@@ -48,9 +48,6 @@ def get_respedt_for_promo(idPromo):
         # Associer un respEdt à une promo
         respedts = AffiliationRespEdtService.get_respedt_by_promo(idPromo)
 
-        if len(respedts) == 0:
-            return jsonify({'error': 'RespEdt not found'}),201
-
         return jsonify([respedt.to_dict() for respedt in respedts]),200
     except Exception as e:
         return jsonify({'error': str(e)}),403
