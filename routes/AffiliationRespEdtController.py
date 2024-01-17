@@ -17,7 +17,7 @@ def affiliate_respedt_to_promo():
         # Associer un respEdt à une promo
         affiliate_respEdt = AffiliationRespEdtService.affiliate_respedt_to_promo(idResp,idPromo)
 
-        return jsonify(affiliate_respEdt.to_dict()),200
+        return jsonify({"message": "RespEdtPromo ajouté au groupe avec succès"}),200
     except Exception as e:
         # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
         # db.session.rollback()
