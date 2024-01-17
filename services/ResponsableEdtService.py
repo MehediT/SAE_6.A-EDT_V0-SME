@@ -1,6 +1,5 @@
 from database.config import db
 from models.ResponsableEdt import ResponsableEdt
-from services.AffiliationRespEdtService import AffiliationRespEdtService
 from models.Staff import Staff
 from models.User import User
 
@@ -34,11 +33,11 @@ class ResponsableEdtService():
         return respedt
     
     # Récupère les promotions associées à un responsable d'emploi du temps
-    @staticmethod
-    def get_promos(respEdt):
-        promos = AffiliationRespEdtService.get_promos_for_respedt(respEdt.id_resp)
-        return promos
-        # id_groups = [promo.id_group for promo in promos]
+    # @staticmethod
+    # def get_promos(respEdt):
+    #     promos = AffiliationRespEdtService.get_promos_for_respedt(respEdt.id_resp)
+    #     return promos
+    #     # id_groups = [promo.id_group for promo in promos]
     
     # Supprime un responsable d'emploi du temps de la base de données par son identifiant
     @staticmethod

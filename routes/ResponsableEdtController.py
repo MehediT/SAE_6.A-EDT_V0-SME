@@ -6,6 +6,7 @@ from services.ResponsableEdtService import ResponsableEdtService
 from models.User import User
 from services.UserService import UserService
 from services.PromotionService import PromotionService
+from services.AffiliationRespEdtService import AffiliationRespEdtService
 from flask import abort
 
 responsable_edt_bp = Blueprint('responsable_edt', __name__)
@@ -92,8 +93,7 @@ def get_promos():
         current_user = get_jwt_identity()
         user : User = UserService.get_by_id(current_user)
         respEdt= ResponsableEdtService.get_by_userId(user.id)
-        promos = ResponsableEdtService.get_promos(respEdt)
-        promos = [PromotionService.get_promo_by_id(promoId) for promoId in promos]
+        promos = AffiliationRespEdtService.get_promos_for_respedt(respEdt.id_resp)
         return [promos.to_dict() for promos in promos],200
     except Exception as e:
         return jsonify({'error': str(e)}),403
