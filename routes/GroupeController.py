@@ -9,6 +9,7 @@ from flask import abort
 groupe_bp = Blueprint('groupe', __name__)
 
 @groupe_bp.route('/groupe', methods=['POST'])
+@jwt_required()
 def create_groupe():
     data = request.json
     try:
@@ -25,6 +26,7 @@ def create_groupe():
 
 
 @groupe_bp.route('/groupes', methods=['GET'])
+@jwt_required()
 def get_all_groupes():
     try:
         groupes = GroupeService.get_all_groupes()
@@ -35,6 +37,7 @@ def get_all_groupes():
 
 
 @groupe_bp.route('/groupe/<id>', methods=['GET'])
+@jwt_required()
 def get_by_id(id):
     try:
         groupe = GroupeService.get_groupe_by_id(id)
@@ -47,6 +50,7 @@ def get_by_id(id):
     
 
 @groupe_bp.route('/groupe/<id>', methods=['DELETE'])
+@jwt_required()
 def delete_groupe(id):
     try:
         groupe = GroupeService.delete_groupe(id)
@@ -58,6 +62,7 @@ def delete_groupe(id):
     
 
 @groupe_bp.route('/groupe/<id>', methods=['PUT'])
+@jwt_required()
 def update_groupe(id):
     data = request.json
     if 'id' in data:
@@ -72,6 +77,7 @@ def update_groupe(id):
         return jsonify({'error': str(e)}),403
     
 @groupe_bp.route('/groupe/tree/<id>', methods=['GET'])
+@jwt_required()
 def get_tree(id):
     try:
         groupe = GroupeService.get_groupe_by_id(id)
@@ -106,6 +112,7 @@ def get_tree(id):
 
 
 @groupe_bp.route('/groupe/childs/<id>', methods=['GET'])
+@jwt_required()
 def get_childs(id):
     try:
         groupe = GroupeService.get_groupe_by_id(id)

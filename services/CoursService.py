@@ -285,6 +285,7 @@ class CoursService:
 
                 print(new_course.start_time, new_course.end_time, new_course.id_group), 
                 new_course.id_group = group
+                new_course.is_published = 0
 
                 group_has_course = Cours.query.filter(Cours.id_group == group).filter(and_(Cours.end_time >= new_course.start_time, Cours.start_time <= new_course.end_time)).first()                            
 

@@ -23,6 +23,7 @@ def get_all_teacher():
 
 
 @teacher_bp.route('/teacher/<id>', methods=['GET'])
+@jwt_required()
 def get_by_idTeacher(id):
     try:
         # Récupérer un enseignant avec son ID
@@ -37,6 +38,7 @@ def get_by_idTeacher(id):
         return jsonify({'error': str(e)}),403
     
 @teacher_bp.route('/teacher', methods=['POST'])
+@jwt_required()
 def create_teacher():
     data = request.json
     try:
@@ -59,6 +61,7 @@ def create_teacher():
 
 
 @teacher_bp.route('/teacher/<id>', methods=['DELETE'])
+@jwt_required()
 def delete_teacher(id):
     try:
         teacher = TeacherService.delete_teacher(id)
@@ -71,6 +74,7 @@ def delete_teacher(id):
         return jsonify({'error': str(e)}),403
     
 @teacher_bp.route('/teacher/<id>', methods=['PUT'])
+@jwt_required()
 def update_teacher(id):
     data = request.json
     if 'id' in data:
