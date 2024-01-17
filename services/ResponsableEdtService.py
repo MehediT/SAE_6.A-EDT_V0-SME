@@ -1,6 +1,5 @@
 from database.config import db
 from models.ResponsableEdt import ResponsableEdt
-from services.AffiliationRespEdtService import AffiliationRespEdtService
 from models.Staff import Staff
 from models.User import User
 

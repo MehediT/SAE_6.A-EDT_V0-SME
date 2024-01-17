@@ -8,7 +8,6 @@ from models.Cours import Cours
 from datetime import datetime, timedelta
 
 from services.GroupeService import GroupeService
-from services.AffiliationRespEdtService import AffiliationRespEdtService
 from services.ResponsableEdtService import ResponsableEdtService
 from services.TeacherService import TeacherService
 
