@@ -69,6 +69,14 @@ class GroupeService:
 
         return result
     
+    def get_parents_list(id_group):
+        group = Groupe.query.get(id_group)
+        result = []
+        while group.id_group_parent:
+            group = Groupe.query.get(group.id_group_parent)
+            result.append(group.id)
+        return result
+    
     # Récupère l'arborescence complète à partir d'un groupe spécifié.
     @staticmethod
     def get_tree(id):
