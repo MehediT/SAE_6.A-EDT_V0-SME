@@ -116,46 +116,113 @@ class UserGroupeService:
     #   db.session.commit()
 
     @staticmethod
-    def update_promo_etudiants(idEtudiants, idNvPromo):
+    def update_promo_etudiants(idAncPromo, idNvPromo):
         all_groups_of_new_promo = GroupeService.get_tree(idNvPromo)
-        group_tp_new_promo = []
-        students_to_add = idEtudiants
-        
+        groups_of_actual_promo = GroupeService.get_tree(idAncPromo)
+
+        print("all_groups_of_new_promo",all_groups_of_new_promo)
+        print("groups_of_actual_promo",groups_of_actual_promo)
+        groups_to_modify = []
+
         for group in all_groups_of_new_promo:
-            group_has_children = GroupeService.get_children(group)
-            
-        if len(group_has_children.get('children'))==0 :
-            group_tp_new_promo.append(group)
+            students_to_remove = UserGroupeService.get_etudiants_for_groupe(group)
 
-        else:
-            print(f"Warning: get_children returned None for group {group}")
-        
-        print("group_tp_new_promo",group_tp_new_promo)
-        students_per_group = []
-        
-        if len(group_tp_new_promo) > 0:
-            nb_students_per_group = len(idEtudiants) // len(group_tp_new_promo)
-            
-            print("nb_students_per_group",nb_students_per_group)
-            for group in group_tp_new_promo:
-                group_students = random.sample(students_to_add, min(nb_students_per_group, len(students_to_add)))
+            for student in students_to_remove:
+                print("student",student)
+                UserGroupeService.delete_user_groupe(student)
 
-                print("group_students",group_students)
-                for student in group_students:
-                    print("students_to_add",students_to_add)
-                    students_to_add.remove(student)
-                    students_per_group.append([student, group])
-                    print("students_per_group",students_per_group)
-        else:
-            print("No groups available in the new promotion.")
+
+        for group in all_groups_of_new_promo:
+            all_groups_of_new_promo.append(GroupeService.get_groupe_by_id(group))
+            all_groups_of_new_promo.remove(group)
+
+
+        for group in all_groups_of_new_promo:
+            db.session.delete(group)
+            db.session.commit()
+
+        
+        for group in groups_of_actual_promo:
+            groups_of_actual_promo.append(GroupeService.get_groupe_by_id(group))
+            groups_of_actual_promo.remove(group)
+
+
+        for group in groups_of_actual_promo:
+            if group.id_group_parent is not None and (len(GroupeService.get_children(group.id))>0):
+                groups_to_modify.append(group)
             
-        for student in students_per_group:
-          all_entries_of_student = Student.query.filter_by(id_student=student[0])
-          UserGroupeService.delete_user_groupe(student[0])
+            if group.id_group_parent is None:
+                groups_to_modify.append(group)
+            
+            replace_group = group.duplicate()
+
+            groups_of_actual_promo.remove(group)
+            groups_of_actual_promo.append(replace_group)
+
+
+        for group in groups_to_modify:
+            group.id_group_parent = idNvPromo
+            
+            db.session.commit()
+
+
+        for group in groups_of_actual_promo:
+            if isinstance(group, Groupe):
+                print("isgroup")
+            
+            db.session.add(group)
+            db.session.commit()
+
+        return GroupeService.get_tree(idNvPromo)
+                    
+
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        # students_per_group = []
+        
+        # if len(group_new_promo) > 0:
+        #     nb_students_per_group = len(idEtudiants) // len(group_new_promo)
+            
+        #     print("nb_students_per_group",nb_students_per_group)
+        #     for group in group_new_promo:
+        #         group_students = random.sample(students_to_add, min(nb_students_per_group, len(students_to_add)))
+
+        #         print("group_students",group_students)
+        #         for student in group_students:
+        #             print("students_to_add",students_to_add)
+        #             students_to_add.remove(student)
+        #             students_per_group.append([student, group])
+        #             print("students_per_group",students_per_group)
+        # else:
+        #     print("No groups available in the new promotion.")
+            
+        # for student in students_per_group:
+        #   all_entries_of_student = Student.query.filter_by(id_student=student[0])
+        #   UserGroupeService.delete_user_groupe(student[0])
           
-          UserGroupeService.add_user_to_group(student[0], student[1])
+        #   UserGroupeService.add_user_to_group(student[0], student[1])
         
-        return students_per_group        
+        # return students_per_group        
     
 
 

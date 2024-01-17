@@ -28,4 +28,8 @@ class Groupe(db.Model):
             'name': self.name,
             'id_group_parent': self.id_group_parent,        
         }
+    
+    def duplicate(self):
+        new_group = Groupe(self.name, self.id_group_parent)
+        return new_group
         
