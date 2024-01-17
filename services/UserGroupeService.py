@@ -1,13 +1,17 @@
 from sqlalchemy import update
+from models import Promotion
 from models.Groupe import Groupe
 from models.User import User
 from models.Student import Student
+from services.AffiliationRespEdtService import AffiliationRespEdtService
 from services.GroupeService import GroupeService
 from database.config import db
 from models.relations.user_groupe import student_course_association
 from sqlalchemy.orm import joinedload
 from sqlalchemy.orm import aliased
 import random
+
+from services.PromotionService import PromotionService
 
 
 class UserGroupeService:
@@ -115,114 +119,96 @@ class UserGroupeService:
     #   user_groupe_to_modify.idGroupe = idGroupe
     #   db.session.commit()
 
+    # @staticmethod
+    # def update_promo_etudiants(idAncPromo, idNvPromo):
+    #     all_groups_of_new_promo = GroupeService.get_tree(idNvPromo)
+    #     groups_of_actual_promo = GroupeService.get_tree(idAncPromo)
+
+    #     groups_to_modify = []
+
+    #     for group in all_groups_of_new_promo:
+    #         students_to_remove = UserGroupeService.get_etudiants_for_groupe(group)
+
+    #         for student in students_to_remove:
+    #             UserGroupeService.delete_user_groupe(student)
+
+    #     new_groups_of_new_promo = []
+    #     for group in all_groups_of_new_promo:
+    #         new_groups_of_new_promo.append(GroupeService.get_groupe_by_id(group))
+
+    #     for group in new_groups_of_new_promo:
+    #         db.session.delete(group)
+
+    #     new_groups_of_actual_promo = []
+    #     for group in groups_of_actual_promo:
+    #         new_groups_of_actual_promo.append(GroupeService.get_groupe_by_id(group))
+
+    #     for group in new_groups_of_actual_promo:
+    #         if group.id_group_parent is not None and (len(GroupeService.get_children(group.id))>0):
+    #             groups_to_modify.append(group)
+
+    #         replace_group = group.duplicate()
+    #         new_groups_of_actual_promo.append(replace_group)
+
+    #     for group in groups_to_modify:
+    #         group.id_group_parent = idNvPromo
+
+    #     for group in new_groups_of_actual_promo:
+    #         db.session.add(group)
+
+    #     db.session.commit()
+
+    #     return GroupeService.get_tree(idNvPromo)
+
     @staticmethod
-    def update_promo_etudiants(idAncPromo, idNvPromo):
-        all_groups_of_new_promo = GroupeService.get_tree(idNvPromo)
-        groups_of_actual_promo = GroupeService.get_tree(idAncPromo)
+    def update_promo_etudiants(idAncPromo, idNvPromo, idResp):
+        # Get the old promotion
+        old_promo = PromotionService.get_promo_by_id(idAncPromo)
+        new_promo_to_copy = PromotionService.get_promo_by_id(idNvPromo)
 
-        print("all_groups_of_new_promo",all_groups_of_new_promo)
-        print("groups_of_actual_promo",groups_of_actual_promo)
-        groups_to_modify = []
-
-        for group in all_groups_of_new_promo:
-            students_to_remove = UserGroupeService.get_etudiants_for_groupe(group)
-
-            for student in students_to_remove:
-                print("student",student)
-                UserGroupeService.delete_user_groupe(student)
+        datePromo = {
+            "name": new_promo_to_copy.name,
+            "niveau": new_promo_to_copy.niveau,
+            "id_resp": idResp,
+        }
 
 
-        for group in all_groups_of_new_promo:
-            all_groups_of_new_promo.append(GroupeService.get_groupe_by_id(group))
-            all_groups_of_new_promo.remove(group)
+        # Create a new promotion with the same name as the new promotion
+        new_promo = PromotionService.create_promo(datePromo)
+        db.session.add(new_promo)
+        db.session.commit()
+
+        # Get the groups of the old promotion
+        groups_id_of_old_promo = GroupeService.get_tree(idAncPromo)
+        groups_of_old_promo = []
+        for group in groups_id_of_old_promo:
+            group_to_copy = GroupeService.get_groupe_by_id(group)
+            groups_of_old_promo.append(group_to_copy)
 
 
-        for group in all_groups_of_new_promo:
-            db.session.delete(group)
-            db.session.commit()
+        td = []
+        tp = []
+        # Duplicate the groups and assign them to the new promotion
+        for group in groups_of_old_promo:
+            if group.id_group_parent is not None and len(GroupeService.get_children(group.id)['children'])>0:
+                td.append(group)
+            elif group.id_group_parent is not None and len(GroupeService.get_children(group.id)['children'])==0:
+                tp.append(group)
 
-        
-        for group in groups_of_actual_promo:
-            groups_of_actual_promo.append(GroupeService.get_groupe_by_id(group))
-            groups_of_actual_promo.remove(group)
+        for group in td:
+            GroupeService.create_groupe({"name":group.name, "id_group_parent":new_promo.id_groupe})
+            id = Groupe.query.order_by(Groupe.id.desc()).first()
+            print(id.id)
+            for group2 in tp:
+                if group2.id_group_parent == group.id:
+                    new_group=group2.duplicate()
+                    new_group.id_group_parent=id.id
+                    db.session.add(new_group)        
+                
+        db.session.commit()
 
-
-        for group in groups_of_actual_promo:
-            if group.id_group_parent is not None and (len(GroupeService.get_children(group.id))>0):
-                groups_to_modify.append(group)
-            
-            if group.id_group_parent is None:
-                groups_to_modify.append(group)
-            
-            replace_group = group.duplicate()
-
-            groups_of_actual_promo.remove(group)
-            groups_of_actual_promo.append(replace_group)
-
-
-        for group in groups_to_modify:
-            group.id_group_parent = idNvPromo
-            
-            db.session.commit()
-
-
-        for group in groups_of_actual_promo:
-            if isinstance(group, Groupe):
-                print("isgroup")
-            
-            db.session.add(group)
-            db.session.commit()
-
-        return GroupeService.get_tree(idNvPromo)
-                    
-
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        # students_per_group = []
-        
-        # if len(group_new_promo) > 0:
-        #     nb_students_per_group = len(idEtudiants) // len(group_new_promo)
-            
-        #     print("nb_students_per_group",nb_students_per_group)
-        #     for group in group_new_promo:
-        #         group_students = random.sample(students_to_add, min(nb_students_per_group, len(students_to_add)))
-
-        #         print("group_students",group_students)
-        #         for student in group_students:
-        #             print("students_to_add",students_to_add)
-        #             students_to_add.remove(student)
-        #             students_per_group.append([student, group])
-        #             print("students_per_group",students_per_group)
-        # else:
-        #     print("No groups available in the new promotion.")
-            
-        # for student in students_per_group:
-        #   all_entries_of_student = Student.query.filter_by(id_student=student[0])
-        #   UserGroupeService.delete_user_groupe(student[0])
-          
-        #   UserGroupeService.add_user_to_group(student[0], student[1])
-        
-        # return students_per_group        
+        return GroupeService.get_tree(new_promo.id_groupe)
+       
     
 
 
