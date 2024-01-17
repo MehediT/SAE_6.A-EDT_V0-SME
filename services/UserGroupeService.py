@@ -161,7 +161,7 @@ class UserGroupeService:
     #     return GroupeService.get_tree(idNvPromo)
 
     @staticmethod
-    def update_promo_etudiants(idAncPromo, idNvPromo, idResp):
+    def update_promo_etudiants(idEtudiants, idAncPromo, idNvPromo, idResp):
         # Get the old promotion
         old_promo = PromotionService.get_promo_by_id(idAncPromo)
         new_promo_to_copy = PromotionService.get_promo_by_id(idNvPromo)
