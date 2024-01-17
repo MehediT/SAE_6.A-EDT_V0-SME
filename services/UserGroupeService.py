@@ -39,7 +39,8 @@ class UserGroupeService:
         groupes = [id_group for id_student, id_group in result]
         groupes_tree_list = []
         for groupe in groupes:
-            groupes_tree_list.append(groupe)
+            if groupe not in groupes_tree_list:
+                groupes_tree_list.append(groupe)
             #Add the groupe id to the list no duplicates
             for groupe_tree in GroupeService.get_parents_list(groupe):
                 if groupe_tree not in groupes_tree_list:
