@@ -2,7 +2,7 @@ from database.config import db
 from models.relations.affiliation_resp_edt import affiliation_resp_edt
 from models.Promotion import Promotion
 from services.ResponsableEdtService import ResponsableEdtService
-from services.PromotionService import PromotionService
+
 
 class AffiliationRespEdtService:
 
@@ -39,7 +39,22 @@ class AffiliationRespEdtService:
       return promos
   
   @staticmethod
-  def delete_respEdt_promo(idResp, idPromo):
+  def delete_respEdt_promo(idResp):
+        try:
+            # Use delete() directly on the association table
+            db.session.query(affiliation_resp_edt).filter(
+                (affiliation_resp_edt.c.id_resp == idResp) &
+                (affiliation_resp_edt.c.id_promo == Promotion.id)
+            ).delete(synchronize_session=False)
+
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            raise e
+        
+
+  @staticmethod
+  def delete_respEdt_and_promo(idResp, idPromo):
         try:
             # Use delete() directly on the association table
             db.session.query(affiliation_resp_edt).filter(
