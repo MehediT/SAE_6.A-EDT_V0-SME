@@ -2,10 +2,12 @@ from xml.dom import NotFoundErr
 from flask import Blueprint, jsonify, request
 from services.PromotionService import PromotionService
 from flask import abort
+from flask_jwt_extended import (jwt_required, create_access_token, get_jwt_identity)
 
 promotion_bp = Blueprint('promotion', __name__)
 
 @promotion_bp.route('/promotions', methods=['GET'])
+@jwt_required()
 def get_all_promotions():
 
     try:
@@ -20,6 +22,7 @@ def get_all_promotions():
         return jsonify({'error': str(e)}),403
     
 @promotion_bp.route('/promotion/<id>', methods=['GET'])
+@jwt_required()
 def get_promotion_by_id(id):
 
     try:
@@ -36,6 +39,7 @@ def get_promotion_by_id(id):
         return jsonify({'error': str(e)}),403
     
 @promotion_bp.route('/promotion', methods=['POST'])
+@jwt_required()
 def create_promotion():
     try:
         data = request.json
@@ -51,6 +55,7 @@ def create_promotion():
         abort(500, {'error': str(e)})
     
 @promotion_bp.route('/promotion/<id>', methods=['DELETE'])
+@jwt_required()
 def delete_promotion(id):
     try:
         promotion = PromotionService.delete_promo(id)
@@ -65,6 +70,7 @@ def delete_promotion(id):
     
 
 @promotion_bp.route('/promotion/<id>', methods=['PUT'])
+@jwt_required()
 def update_promotion(id):
     try:
         data = request.json

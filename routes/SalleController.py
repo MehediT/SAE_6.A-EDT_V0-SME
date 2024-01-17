@@ -2,11 +2,13 @@ from xml.dom import NotFoundErr
 from flask import Blueprint, jsonify, request
 from services.SalleService import SalleService
 from flask import abort
+from flask_jwt_extended import (jwt_required, create_access_token, get_jwt_identity)
 
 salle_bp = Blueprint('salle', __name__)
 
 
 @salle_bp.route('/salles', methods=['GET'])
+@jwt_required()
 def get_all_rooms():
 
     try:
@@ -21,6 +23,7 @@ def get_all_rooms():
         return jsonify({'error': str(e)}),403
     
 @salle_bp.route('/salle/<name>', methods=['GET'])
+@jwt_required()
 def get_room(name):
     try:
         # Récupérer toutes les abscences d'un étudiant
@@ -35,6 +38,7 @@ def get_room(name):
         return jsonify({'error': str(e)}),403
 
 @salle_bp.route('/salle', methods=['POST'])
+@jwt_required()
 def create_room():
     data = request.json
 
@@ -56,6 +60,7 @@ def create_room():
 
     
 @salle_bp.route('/salle/<name>', methods=['DELETE'])
+@jwt_required()
 def delete_room(name):
     try: 
         salle = SalleService.delete_salle(name)
@@ -68,6 +73,7 @@ def delete_room(name):
     
 
 @salle_bp.route('/salle/<name>', methods=['PUT'])
+@jwt_required()
 def update_room(name):
     data = request.json
     if 'name' in data:

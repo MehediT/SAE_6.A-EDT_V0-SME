@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, request
+from flask_jwt_extended import (jwt_required, create_access_token, get_jwt_identity)
 from services.UserGroupeService import UserGroupeService
 
 usergroupe_bp = Blueprint('usergroupe', __name__)
@@ -6,6 +7,7 @@ usergroupe_bp = Blueprint('usergroupe', __name__)
 
 
 @usergroupe_bp.route('/usergroupe/addGroupeEtudiant', methods=['POST'])
+@jwt_required()
 def add_user_to_group():
     idStudent = request.json["idStudent"]
     idGroupe = request.json["idGroupe"]
@@ -18,6 +20,7 @@ def add_user_to_group():
 
 
 @usergroupe_bp.route('/usergroupe/groupeEtudiant/<idGroupe>/<idStudent>', methods=['GET'])
+@jwt_required()
 def get_groupe_etudiant(idStudent,idGroupe):
 
     try:
@@ -30,6 +33,7 @@ def get_groupe_etudiant(idStudent,idGroupe):
         return jsonify({'error': str(e)}),403
     
 @usergroupe_bp.route('/usergroupe/etudiantGroupe/<idGroupe>/<idStudent>', methods=['GET'])
+@jwt_required()
 def get_etudiant_by_groupe(idStudent,idGroupe):
 
     try:
@@ -43,6 +47,7 @@ def get_etudiant_by_groupe(idStudent,idGroupe):
     
 
 @usergroupe_bp.route('/usergroupe/delete/<idStudent>', methods=['DELETE'])
+@jwt_required()
 def delete_user_groupe(idStudent):
     try:
         UserGroupeService.delete_user_groupe(idStudent)
@@ -51,6 +56,7 @@ def delete_user_groupe(idStudent):
         return jsonify({'error': str(e)}), 403
     
 @usergroupe_bp.route('/usergroupe/groupe/<idGroupe>', methods=['GET'])
+@jwt_required()
 def get_etudiants_for_groupe(idGroupe):
     try:
         etudiants = UserGroupeService.get_etudiants_for_groupe(idGroupe)
@@ -62,6 +68,7 @@ def get_etudiants_for_groupe(idGroupe):
         return jsonify({'error': str(e)}),403
     
 @usergroupe_bp.route('/usergroupe/groupForStudent/<idEtudiant>', methods=['GET'])
+@jwt_required()
 def get_groupes_for_student(idEtudiant):
     try:
         groupes = UserGroupeService.get_groupes_for_student(idEtudiant)
@@ -73,6 +80,7 @@ def get_groupes_for_student(idEtudiant):
         return jsonify({'error': str(e)}),403
     
 @usergroupe_bp.route('/usergroupe/modify/<idStudent>/<newIdGroupe>/<idGroupe>', methods=['PUT'])
+@jwt_required()
 def update_student_group(idStudent, newIdGroupe, idGroupe):
     try:
         result = UserGroupeService.update_student_group(idStudent, newIdGroupe, idGroupe)
@@ -85,6 +93,7 @@ def update_student_group(idStudent, newIdGroupe, idGroupe):
         return jsonify({'error': str(e)}), 403
     
 @usergroupe_bp.route('/usergroupe/migrate', methods=['POST'])
+@jwt_required()
 def migrate_promo() :
     try:
         data = request.json

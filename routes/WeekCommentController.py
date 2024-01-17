@@ -1,10 +1,12 @@
 from flask import Blueprint, jsonify, request
 from services.WeekCommentService import WeekCommentService
+from flask_jwt_extended import (jwt_required, create_access_token, get_jwt_identity)
 
 week_comment_bp = Blueprint('comment', __name__)
 
 
 @week_comment_bp.route('/week/comments', methods=['GET'])
+@jwt_required()
 def get_all_week_comments():
 
     try:
@@ -19,6 +21,7 @@ def get_all_week_comments():
         return jsonify({'error': str(e)}),403
     
 @week_comment_bp.route('/week/comment/<id>', methods=['GET'])
+@jwt_required()
 def get_comment(id):
     try:
         # Récupérer toutes les abscences d'un étudiant
@@ -34,6 +37,7 @@ def get_comment(id):
     
 
 @week_comment_bp.route('/week/comment', methods=['POST'])
+@jwt_required()
 def create_comment():
     data = request.json
 
@@ -48,6 +52,7 @@ def create_comment():
         return jsonify({'error': str(e)}),403
     
 @week_comment_bp.route('/week/comment/<id>', methods=['DELETE'])
+@jwt_required()
 def delete_comment(id):
     try: 
         comment = WeekCommentService.delete_comment(id)
@@ -60,6 +65,7 @@ def delete_comment(id):
     
 
 @week_comment_bp.route('/week/comment/<id>', methods=['PUT'])
+@jwt_required()
 def update_comment(id):
     data = request.json
     if 'id' in data:

@@ -1,11 +1,13 @@
 from flask import Blueprint, jsonify, request
 from services.StudentAbsencesCoursService import StudentAbsencesCoursService
+from flask_jwt_extended import (jwt_required, create_access_token, get_jwt_identity)
 
 studentAbsences_bp = Blueprint('studentAbsencesCours', __name__)
 
 
 
 @studentAbsences_bp.route('/studentAbsenceCours', methods=['POST'])
+@jwt_required()
 def add_student_absence_to_cours():
 
     idStudent = request.json["id_student"]
@@ -23,6 +25,7 @@ def add_student_absence_to_cours():
 
 
 @studentAbsences_bp.route('/studentAbsenceCours/getStudentByCours/<idCours>/<idStudent>', methods=['GET'])
+@jwt_required()
 def get_student_absences_by_cours(idCours,idStudent):
     
     try:
@@ -38,6 +41,7 @@ def get_student_absences_by_cours(idCours,idStudent):
 
 
 @studentAbsences_bp.route('/studentAbsenceCours/getCoursByStudent/<idStudent>/<idCours>', methods=['GET'])
+@jwt_required()
 def get_cours_by_student_absences(idCours,idStudent):
     
     try:
@@ -52,6 +56,7 @@ def get_cours_by_student_absences(idCours,idStudent):
 
 
 @studentAbsences_bp.route('/studentAbsenceCours/delete/<idStudent>/<idCours>', methods=['DELETE'])
+@jwt_required()
 def delete_absences_cours(idStudent,idCours):
     
     try:
