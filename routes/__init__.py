@@ -1,4 +1,5 @@
 from flask import Flask
+from .AffiliationRespEdtController import affiliationrespedt_bp
 from .AuthentificationController import auth_bp
 from .CoursController import cours_bp
 from .UserController import user_bp
@@ -26,5 +27,6 @@ def register_routes(app):
     app.register_blueprint(student_bp)
     app.register_blueprint(week_comment_bp)
     app.register_blueprint(usergroupe_bp)
+    app.register_blueprint(affiliationrespedt_bp)
 
 # Exportez la fonction pour l'utiliser dans app.py
