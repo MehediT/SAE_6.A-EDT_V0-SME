@@ -67,7 +67,7 @@ def delete_affiliate_respedt_to_promo(idResp):
     
 @affiliationrespedt_bp.route('/affiliateRespEdt/delete/<idResp>/<idPromo>', methods=['DELETE'])
 @jwt_required()
-def delete_affiliate_respedt_to_promo(idResp, idPromo):
+def delete_affiliate_respedt_and_promo(idResp, idPromo):
     
     try:
         # Associer un respEdt à une promo
