@@ -11,6 +11,7 @@ from flask import abort
 responsable_edt_bp = Blueprint('responsable_edt', __name__)
 
 @responsable_edt_bp.route('/responsables', methods=['GET'])
+@jwt_required()
 def get_all_responsable_edt():
     try:
         responsables_edt = ResponsableEdtService.get_all_responsable_edt()
@@ -24,6 +25,7 @@ def get_all_responsable_edt():
 
 
 @responsable_edt_bp.route('/responsable/<id>', methods=['GET'])
+@jwt_required()
 def get_by_responsable_edt(id):
     try:
         # Récupérer un enseignant avec son ID
@@ -38,6 +40,7 @@ def get_by_responsable_edt(id):
         return jsonify({'error': str(e)}),403
 
 @responsable_edt_bp.route('/responsable', methods=['POST'])
+@jwt_required()
 def create_responsable():
     data = request.json
     try:
@@ -53,6 +56,7 @@ def create_responsable():
         abort(500, {'error': str(e)})
 
 @responsable_edt_bp.route('/responsable/<id>', methods=['DELETE'])
+@jwt_required()
 def delete_responsable(id):
     try:
         responsable_edt = ResponsableEdtService.delete_responsable_edt(id)
@@ -65,6 +69,7 @@ def delete_responsable(id):
         return jsonify({'error': str(e)}),403
     
 @responsable_edt_bp.route('/responsable/<id>', methods=['PUT'])
+@jwt_required()
 def update_responsable_edt(id):
     data = request.json
     if 'id' in data:

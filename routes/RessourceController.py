@@ -2,10 +2,12 @@ from xml.dom import NotFoundErr
 from flask import Blueprint, jsonify, request
 from services.RessourcesService import RessourcesService
 from flask import abort
+from flask_jwt_extended import (jwt_required, create_access_token, get_jwt_identity)
 
 ressource_bp = Blueprint('ressource', __name__)
 
 @ressource_bp.route('/ressources', methods=['GET'])
+@jwt_required()
 def get_all_ressources():
 
     try:
@@ -17,6 +19,7 @@ def get_all_ressources():
         return jsonify({'error': str(e)}),403
     
 @ressource_bp.route('/ressource/<initial>', methods=['GET'])
+@jwt_required()
 def get_ressource(initial):
     try:
         ressource = RessourcesService.get_resource_by_initial(initial) 
@@ -28,6 +31,7 @@ def get_ressource(initial):
         return jsonify({'error': str(e)}),403
 
 @ressource_bp.route('/ressource', methods=['POST'])
+@jwt_required()
 def create_ressource():
     data = request.json
 
@@ -49,6 +53,7 @@ def create_ressource():
 
     
 @ressource_bp.route('/ressource/<initial>', methods=['DELETE'])
+@jwt_required()
 def delete_ressource(initial):
     try: 
         ressource = RessourcesService.delete_ressource(initial)
@@ -60,6 +65,7 @@ def delete_ressource(initial):
     
 
 @ressource_bp.route('/ressource/<initial>', methods=['PUT'])
+@jwt_required()
 def update_ressource(initial):
 
     data = request.json

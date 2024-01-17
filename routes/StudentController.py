@@ -11,6 +11,7 @@ from services.UserGroupeService import UserGroupeService
 student_bp = Blueprint('student', __name__)
 
 @student_bp.route('/students', methods=['GET'])
+@jwt_required()
 def get_all_students():
     try:
         students = StudentService.get_all_students()
@@ -24,6 +25,7 @@ def get_all_students():
 
 
 @student_bp.route('/student/<id>', methods=['GET'])
+@jwt_required()
 def get_by_student(id):
     try:
         # Récupérer un enseignant avec son ID
@@ -39,6 +41,7 @@ def get_by_student(id):
     
 
 @student_bp.route('/student', methods=['POST'])
+@jwt_required()
 def create_student():
     data = request.json
     try:
@@ -61,6 +64,7 @@ def create_student():
 
 
 @student_bp.route('/student/<id>', methods=['DELETE'])
+@jwt_required()
 def delete_student(id):
     try:
         student = StudentService.delete_student(id)
@@ -73,6 +77,7 @@ def delete_student(id):
         return jsonify({'error': str(e)}),403
     
 @student_bp.route('/student/<id>', methods=['PUT'])
+@jwt_required()
 def update_student(id):
     data = request.json
     if 'id' in data:
@@ -88,6 +93,7 @@ def update_student(id):
         return jsonify({'error': str(e)}),403
     
 @student_bp.route('/students/groupe/<idGroupe>', methods=['GET'])
+@jwt_required()
 def get_all_students_by_group(idGroupe):
     try:
         groups = GroupeService.get_tree(idGroupe)

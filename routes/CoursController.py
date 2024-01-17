@@ -24,6 +24,7 @@ def get_all_courses():
         return jsonify({'error': str(e)}),403
     
 @cours_bp.route('/course/<id>', methods=['GET'])
+@jwt_required()
 def get_course(id):
     try:
         course = CoursService.get_course_by_id(id) 
@@ -36,6 +37,7 @@ def get_course(id):
     
 
 @cours_bp.route('/course', methods=['POST'])
+@jwt_required()
 def create_course():
     data = request.json
 
@@ -56,6 +58,7 @@ def create_course():
     
 
 @cours_bp.route('/course/<id>', methods=['DELETE'])
+@jwt_required()
 def delete_course(id):
     try: 
         course = CoursService.delete_course(id)
@@ -67,6 +70,7 @@ def delete_course(id):
     
 
 @cours_bp.route('/course/<id>', methods=['PUT'])
+@jwt_required()
 def update_course(id):
     data = request.json
     if 'id' in data:
@@ -91,6 +95,7 @@ def update_course(id):
     
 
 @cours_bp.route('/courses/publish', methods=['PUT'])
+@jwt_required()
 def publish_all():
 
     try:
@@ -102,6 +107,7 @@ def publish_all():
         return jsonify({'error': str(e)}),403
 
 @cours_bp.route('/courses/cancel', methods=['DELETE'])
+@jwt_required()
 def cancel_all():
 
     try:
@@ -114,6 +120,7 @@ def cancel_all():
 
 
 @cours_bp.route('/courses/paste', methods=['POST']) 
+@jwt_required()
 def paste_all():
     data = request.json
 
@@ -125,7 +132,8 @@ def paste_all():
 
         return jsonify({'error': str(e)}),403
     
-@cours_bp.route('/courses/duplicate', methods=['POST']) 
+@cours_bp.route('/courses/duplicate', methods=['POST'])
+@jwt_required() 
 def duplicate_all():
     data = request.json
 
@@ -138,6 +146,7 @@ def duplicate_all():
         return jsonify({'error': str(e)}),403
     
 @cours_bp.route('/courses/stats/<id_teacher>', methods=['GET'])
+@jwt_required()
 def get_stats_teacher(id_teacher):
     try:
         courses = CoursService.get_courses_by_teacher(id_teacher)

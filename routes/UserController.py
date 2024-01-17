@@ -10,6 +10,7 @@ user_bp = Blueprint('user', __name__)
 
 
 @user_bp.route('/user', methods=['POST'])
+@jwt_required()
 def create_user():
     username = request.json.get('username')
     password = request.json.get('password')
@@ -25,6 +26,7 @@ def create_user():
     
 
 @user_bp.route('/users', methods=['GET'])
+@jwt_required()
 def get_all_user():
     try:
         users = UserService.get_all_users()
@@ -35,6 +37,7 @@ def get_all_user():
     
 
 @user_bp.route('/user/<id>', methods=['GET'])
+@jwt_required()
 def get_by_idUser(id):
     try:
         user = UserService.get_by_id(id)
@@ -46,6 +49,7 @@ def get_by_idUser(id):
     
 
 @user_bp.route('/user/<id>', methods=['DELETE'])
+@jwt_required()
 def delete_user(id):
     try:
         user = UserService.get_by_id(id)
@@ -58,6 +62,7 @@ def delete_user(id):
     
 
 @user_bp.route('/user/<id>', methods=['PUT'])
+@jwt_required()
 def update_user(id):
     data = request.json
     if 'id' in data:
