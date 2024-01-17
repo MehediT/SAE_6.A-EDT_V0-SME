@@ -1,6 +1,7 @@
 from database.config import db
 from models.relations.affiliation_resp_edt import affiliation_resp_edt
 from models.Promotion import Promotion
+from services.ResponsableEdtService import ResponsableEdtService
 
 class AffiliationRespEdtService:
 
@@ -23,7 +24,7 @@ class AffiliationRespEdtService:
 
       result = query.all()
       respedts = [id_resp for id_resp, id_promo in result]
-
+      respedts = [ResponsableEdtService.get_by_id(id_resp) for id_resp in respedts]
       return respedts
   
   @staticmethod
