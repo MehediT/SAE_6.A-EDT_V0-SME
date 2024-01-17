@@ -53,13 +53,13 @@ def get_respedt_for_promo(idPromo):
         return jsonify({'error': str(e)}),403
 
 
-@affiliationrespedt_bp.route('/affiliateRespEdt/delete/<idResp>', methods=['DELETE'])
+@affiliationrespedt_bp.route('/affiliateRespEdt/delete/<idResp>/<idPromo>', methods=['DELETE'])
 @jwt_required()
-def delete_affiliate_respedt_to_promo(idResp):
+def delete_affiliate_respedt_to_promo(idResp, idPromo):
     
     try:
         # Associer un respEdt à une promo
-        affiliate_respEdt = AffiliationRespEdtService.delete_respEdt_promo(idResp)
+        affiliate_respEdt = AffiliationRespEdtService.delete_respEdt_promo(idResp, idPromo)
 
         return jsonify({"message": "RespEdtPromo supprimé du groupe avec succès"}), 200
     except Exception as e:

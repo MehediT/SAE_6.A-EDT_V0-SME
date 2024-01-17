@@ -39,12 +39,12 @@ class AffiliationRespEdtService:
       return promos
   
   @staticmethod
-  def delete_respEdt_promo(idResp):
+  def delete_respEdt_promo(idResp, idPromo):
         try:
             # Use delete() directly on the association table
             db.session.query(affiliation_resp_edt).filter(
                 (affiliation_resp_edt.c.id_resp == idResp) &
-                (affiliation_resp_edt.c.id_promo == Promotion.id)
+                (affiliation_resp_edt.c.id_promo == idPromo)
             ).delete(synchronize_session=False)
 
             db.session.commit()
