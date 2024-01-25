@@ -82,7 +82,6 @@ class GroupeService:
     @staticmethod
     def get_tree(id):
         group = Groupe.query.get(id)
-        print(group)
         
         result = [group.id]
         children = GroupeService.get_children(id)

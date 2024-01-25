@@ -1,7 +1,3 @@
-from flask import Blueprint, jsonify, request
-from flask_jwt_extended import (jwt_required, create_access_token, get_jwt_identity)
-from services.UserGroupeService import UserGroupeService
-
 # Importation des modules nécessaires
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import (jwt_required, create_access_token, get_jwt_identity)

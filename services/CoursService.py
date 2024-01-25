@@ -19,7 +19,6 @@ class CoursService:
     def create_course(data):
         resp, code = CoursService.can_create_course(**data)
         if code >= 400:
-            print(resp)
             return resp, code
 
         course = Cours(**data)
@@ -46,12 +45,10 @@ class CoursService:
 
         if 'date_min' in args:
             date_start = datetime.strptime(args["date_min"], '%Y-%m-%d')
-            print(date_start)
             query = query.filter(Cours.end_time >= date_start)
 
         if 'date_max' in args:
             date_end = datetime.strptime(args["date_max"], '%Y-%m-%d') + timedelta(days=1)
-            print(date_end)
             query = query.filter(Cours.start_time < date_end)
 
         # if publish:
@@ -277,13 +274,11 @@ class CoursService:
 
         course = Cours.query.filter(Cours.id == courseId).first()
         
-        print(course.start_time, course.end_time, course.id_group)
         if course:
             result = []
             for group in groupsToDuplicateTo:
                 new_course = course.duplicate()
 
-                print(new_course.start_time, new_course.end_time, new_course.id_group), 
                 new_course.id_group = group
                 new_course.is_published = 0
 
