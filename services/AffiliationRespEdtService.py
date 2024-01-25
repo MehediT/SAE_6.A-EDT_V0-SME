@@ -39,6 +39,7 @@ class AffiliationRespEdtService:
 
       return promos
   
+  # Delete all the affiliations of a respedt
   @staticmethod
   def delete_respEdt_promo(idResp):
         try:
@@ -53,7 +54,7 @@ class AffiliationRespEdtService:
             db.session.rollback()
             raise e
         
-
+  # Delete a specific affiliation of a respedt
   @staticmethod
   def delete_respEdt_and_promo(idResp, idPromo):
         try:

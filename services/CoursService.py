@@ -265,7 +265,7 @@ class CoursService:
         db.session.commit()
         return result
     
-    
+    # Duplique un cours dans les groupes spécifiés
     @staticmethod
     def duplicate(courseId, groupsToDuplicateTo, **kwargs):
 
@@ -298,6 +298,7 @@ class CoursService:
         else:
             return {"Aucun cours avec cet id !"},404
 
+    # Récupère tous les cours d'un enseignant
     @staticmethod
     def get_courses_by_teacher(id_user):
         try:
