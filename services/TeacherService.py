@@ -27,11 +27,12 @@ class TeacherService:
     def get_by_id(id):
         return Teacher.query.filter_by(id_teacher=id).first()
     
+    # Récupère un enseignant par son identifiant utilisateur
     @staticmethod
     def get_by_user_id(id):
         return Teacher.query.filter_by(id_user=id).first()
     
-
+    # Supprime un enseignant par son identifiant
     @staticmethod
     def delete_teacher(id):
         teacher = Teacher.query.filter_by(id_teacher=id).first()

@@ -69,6 +69,7 @@ class GroupeService:
 
         return result
     
+    # Récupère les parents d'un groupe spécifié sous forme de liste
     def get_parents_list(id_group):
         group = Groupe.query.get(id_group)
         result = []
@@ -81,7 +82,6 @@ class GroupeService:
     @staticmethod
     def get_tree(id):
         group = Groupe.query.get(id)
-        print(group)
         
         result = [group.id]
         children = GroupeService.get_children(id)

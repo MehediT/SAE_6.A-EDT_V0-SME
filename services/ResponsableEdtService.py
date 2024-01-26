@@ -27,9 +27,7 @@ class ResponsableEdtService():
     # Récupère un responsable d'emploi du temps par l'identifiant de l'utilisateur associé
     @staticmethod
     def get_by_userId(userId):
-        print(userId)
         respedt = ResponsableEdt.query.filter_by(id_staff=userId).first()
-        print(respedt)
         return respedt
     
     # Récupère les promotions associées à un responsable d'emploi du temps

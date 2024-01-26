@@ -27,10 +27,12 @@ class UserGroupeService:
         # Commit the changes to the database
         db.session.commit()
 
+    # Vérifie qu'un étudiant fait partie d'un groupe
     @staticmethod
     def get_groupe_etudiant(idStudent,idGroupe):
         return student_course_association.query.filter_by(idStudent=idStudent).filter_by(idGroupe=idGroupe).first()
 
+    # Récupère les groupes d'un étudiant
     @staticmethod
     def get_groupes_for_student(idStudent):
         query = db.session.query(student_course_association).filter_by(id_student=idStudent)
@@ -48,10 +50,12 @@ class UserGroupeService:
 
         return groupes_tree_list
 
+    # Vérifie qu'un groupe possède bien un étudiant
     @staticmethod
     def get_etudiant_by_groupe(idGroupe, idStudent):
         return student_course_association.query.filter_by(idGroupe=idGroupe).filter_by(idStudent=idStudent).all()
 
+    # Modifie le groupe d'un étudiant
     @staticmethod
     def update_student_group(student_id, new_group_id, old_group_id):
         try:
@@ -79,6 +83,7 @@ class UserGroupeService:
     #       db.session.rollback()
     #       raise e
 
+    # Supprime les groupes auxquels un étudiant fait partie
     @staticmethod
     def delete_user_groupe(idStudent):
         try:
@@ -105,6 +110,7 @@ class UserGroupeService:
 
     #   return etudiants_list
 
+    # Récupère les étudiants d'un groupe
     @staticmethod
     def get_etudiants_for_groupe(idGroupe):
         query = db.session.query(
@@ -127,6 +133,7 @@ class UserGroupeService:
     #   user_groupe_to_modify.idGroupe = idGroupe
     #   db.session.commit()
 
+    # Migre des étudiants d'une promotion à une autre
     @staticmethod
     def update_promo_etudiants(idEtudiants, idAncPromo, idNvPromo, idResp):
         # Get the old promotion

@@ -14,15 +14,16 @@ class StudentAbsencesCoursService:
     # Commit the changes to the database
     db.session.commit()
 
+  # Réccupère l'absence d'un étudiant à un cours
   @staticmethod
   def get_student_absences_by_cours(idStudent,idCours):
     return student_absences_cours.query.filter_by(id_student=idStudent).filter_by(id_cours=idCours).all()
-
+  # Récupère les cours auxquels un étudiant est absent
   @staticmethod
   def get_cours_by_student_absences(idStudent,idCours):
     return student_absences_cours.query.filter_by(id_cours=idCours).filter_by(id_student=idStudent).all()
 
-
+  # Supprime l'absence d'un étudiant à un cours
   @staticmethod
   def delete_absences_cours(idStudent,idCours):
     absences_delete = student_absences_cours.filter_by(id_student=idStudent).filter_by(id_cours=idCours).first()
