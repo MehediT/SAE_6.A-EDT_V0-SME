@@ -162,8 +162,11 @@ def paste_all():
     try:
         #Collage des cours.
         courses = CoursService.paste(**data)
-        courses_dict = [course.to_dict() for course in courses]
-        return jsonify(courses_dict),200
+        if isinstance(courses[0], Cours):
+            courses_dict = [course.to_dict() for course in courses]
+            return jsonify(courses_dict),200
+        else:
+            return jsonify(courses[0]),409
     except Exception as e:
         # Si une erreur s'est produite, retourne un message d'erreur.
         return jsonify({'error': str(e)}),403
