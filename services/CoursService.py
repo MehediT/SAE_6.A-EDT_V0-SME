@@ -238,6 +238,7 @@ class CoursService:
 
         days_diff = (start_time_attempt - start_time).days
         end_time_attempt = end_time + timedelta(days=days_diff)
+            
 
         groups = GroupeService.get_tree(id_group)
 
@@ -250,16 +251,35 @@ class CoursService:
 
         result = []
         for group in groups:
-            courses = Cours.query.filter_by(id_group=group).filter(Cours.is_published != 2).filter(and_(Cours.end_time >= start_time, Cours.start_time < end_time)).all()
+            courses = Cours.query.filter_by(id_group=group).filter(and_(Cours.end_time >= start_time, Cours.start_time < end_time)).all()
             for course in courses:
+
                 new_course = course.duplicate()
                 new_course.start_time = course.start_time + timedelta(days=days_diff)
                 new_course.end_time = course.end_time + timedelta(days=days_diff)
                 new_course.is_published = 0
+
                 if not (new_course.start_time >= sat_date and new_course.end_time <= sun_date):
-                    course, code = CoursService.create_course(new_course.to_dict())
-                    if(code == 200):
-                        result.append(course)
+                    resp, code = CoursService.can_create_course(start_time=new_course.start_time, end_time=new_course.end_time, id_group=new_course.id_group, name_salle=new_course.name_salle, id_enseignant=new_course.id_enseignant, id_cours=new_course.id)
+
+                    if code == 200:
+                        db.session.add(new_course)
+                        result.append(new_course)
+                    else:
+
+                        if "salle" in resp['error']:
+                            new_course.name_salle = None
+                            db.session.add(new_course)
+                            result.append(new_course)
+
+                        if "professeur" in resp['error']:
+                            new_course.id_enseignant = None
+                            db.session.add(new_course)
+                            result.append(new_course)
+                            
+                        else:
+                            return resp, code
+        db.session.commit()
         return result
     
     # Duplique un cours dans les groupes spécifiés

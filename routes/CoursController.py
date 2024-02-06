@@ -2,6 +2,7 @@
 from flask import Blueprint, jsonify, send_from_directory, request
 from services.UserService import UserService
 from models.User import User
+from models.Cours import Cours
 from functools import wraps
 from flask_jwt_extended import (jwt_required, create_access_token, get_jwt_identity)
 from services.CoursService import CoursService
