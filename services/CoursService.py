@@ -257,9 +257,9 @@ class CoursService:
                 new_course.end_time = course.end_time + timedelta(days=days_diff)
                 new_course.is_published = 0
                 if not (new_course.start_time >= sat_date and new_course.end_time <= sun_date):
-                    db.session.add(new_course)
-                    result.append(new_course)
-        db.session.commit()
+                    course, code = CoursService.create_course(new_course.to_dict())
+                    if(code == 200):
+                        result.append(course)
         return result
     
     # Duplique un cours dans les groupes spécifiés
