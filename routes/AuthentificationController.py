@@ -2,6 +2,7 @@
 from flask import Blueprint
 from flask_jwt_extended import (create_access_token)
 from flask import Flask, request, jsonify
+from database.config import db
 
 # Importation de UserService et du modèle User
 from services.UserService import UserService
@@ -47,3 +48,22 @@ def login():
     else:
         # Si aucun utilisateur n'a été trouvé ou si le mot de passe était incorrect, retourne un message d'échec d'authentification.
         return {'message': 'Authentification échouée'}, 401
+    
+@auth_bp.route('/auth/changepasswd', methods=['PUT'])
+def changepasswd():
+    username = request.json.get('username')
+    password = request.json.get('password')
+    newpassword = request.json.get('newPasswd')
+
+    user = UserService.get_by_username(username)
+    if (user is not None):
+        if (user.check_password(password)):
+            try :
+                user.set_password(newpassword)
+                db.session.commit()
+                return jsonify({'message': "Le mot de passe à bien été modifié"}), 200
+            except Exception as e :
+                return jsonify({'error': str(e)}), 403
+    else:
+        # Si aucun utilisateur n'a été trouvé ou si le mot de passe était incorrect, retourne un message d'échec d'authentification.
+        return {'message': 'Authentification échouée'}, 401     
