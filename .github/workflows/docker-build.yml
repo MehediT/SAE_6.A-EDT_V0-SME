@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      IMAGE_NAME: cgrosjeanfr/courroux_backend:latest
+      IMAGE_NAME: ismaelargence/courroux_backend:latest
 
     steps:
       - name: Checkout Repository
