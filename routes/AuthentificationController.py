@@ -66,4 +66,16 @@ def changepasswd():
                 return jsonify({'error': str(e)}), 403
     else:
         # Si aucun utilisateur n'a été trouvé ou si le mot de passe était incorrect, retourne un message d'échec d'authentification.
-        return {'message': 'Authentification échouée'}, 401     
+        return {'message': 'Authentification échouée'}, 401    
+
+@auth_bp.route('/auth/verifpasswd', methods=['POST'])
+def verifpasswd():
+    username = request.json.get('username')
+    password = request.json.get('password')
+
+    user = UserService.get_by_username(username)
+    if (user is not None):
+        if (user.check_password(password)):
+            return jsonify({'message': "Le mot de passe est le bon"}), 200
+        else :
+            return jsonify({'error': 'mauvais mot de passe'}), 403
