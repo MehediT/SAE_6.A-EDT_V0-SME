@@ -12,8 +12,7 @@ from flask_cors import CORS
 load_dotenv()
 
 def create_app():
-    
-    
+
     app = Flask(__name__)
 
     configure_database(app)
