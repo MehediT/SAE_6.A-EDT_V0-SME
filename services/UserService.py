@@ -51,3 +51,10 @@ class UserService:
         user.lastname = lastname
         db.session.commit()
         return user
+    
+    @staticmethod
+    def get_user_role_by_id(user_id):
+        user = User.query.get(user_id)
+        if user:
+            return user.role
+        return None
