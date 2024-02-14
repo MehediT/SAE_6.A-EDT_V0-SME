@@ -14,7 +14,8 @@ dataCours = [
     "initial_ressource" : "R5A05",
     "id_group":2,
     "id_enseignant":1,
-    "name_salle":"A2-05"
+    "name_salle":"A2-05",
+    "is_published":1
   },
 
   {
@@ -23,7 +24,8 @@ dataCours = [
     "initial_ressource" : "R5A05",
     "id_group":5,
     "id_enseignant":1,
-    "name_salle":"B1-09"
+    "name_salle":"B1-09",
+    "is_published":1
   },
 
   {
@@ -31,7 +33,9 @@ dataCours = [
     "end_time" : "2023-12-13 14:55:00",
     "initial_ressource" : "R5A05",
     "id_group":4,
-    "id_enseignant":1
+    "id_enseignant":1,
+    "name_salle":"B1-09",
+    "is_published":1
   }
 ]
 

@@ -1,4 +1,4 @@
-from operator import and_, or_
+from sqlalchemy import and_, or_
 from models.Teacher import Teacher
 
 from services.UserGroupeService import UserGroupeService
@@ -135,7 +135,7 @@ class CoursService:
     
     # Vérifie si un cours peut être créé avec les paramètres spécifiés
     @staticmethod
-    def can_create_course(start_time, end_time, id_group, name_salle = None, id_enseignant = None,id_cours= None,   **kwargs):
+    def can_create_course(start_time, end_time, id_group, name_salle, id_enseignant, id_cours= None,   **kwargs):
 
         if type(start_time) != str:
             start_time = start_time.strftime("%Y-%m-%d %H:%M:%S")
@@ -157,38 +157,56 @@ class CoursService:
 
         for group in group_depends:
 
-            if not id_cours:
+            if id_cours==None:
                 query = Cours.query
             else:
                 query = Cours.query.filter(Cours.id != id_cours).filter(Cours.is_published != 2)
 
             current_group = GroupeService.get_groupe_by_id(group)
             #Si un cours est déjà prévu entre start_time et end_time
-            courses = query.filter_by(id_group=group).filter(and_(Cours.start_time >= start_time, Cours.start_time < end_time)).all()
-            if len(courses) > 0: return {"error" :f"Le groupe {current_group.name} à déjà cours !"}, 409
-            courses = query.filter_by(id_group=group).filter(and_(Cours.end_time > start_time, Cours.end_time <= end_time)).all()
-            if len(courses) > 0: return {"error" :f"Le groupe {current_group.name} à déjà cours !"}, 409
-            courses = query.filter_by(id_group=group).filter(and_(Cours.start_time <= start_time, Cours.end_time >= end_time)).all()
-            if len(courses) > 0: return {"error" :f"Le groupe {current_group.name} à déjà cours !"}, 409
+            courses = query.filter(Cours.id_group==group).filter(and_(Cours.start_time >= start_time, Cours.start_time < end_time)).all()
+ 
+            if len(courses) > 0: 
+                return {"error" :f"Le groupe {current_group.name} à déjà cours !"}, 409
+            
+            courses = query.filter(Cours.id_group==group).filter(and_(Cours.end_time > start_time, Cours.end_time <= end_time)).all()
 
-            courses = query.filter_by(id_group=group).filter(and_(Cours.start_time == start_time, Cours.end_time == end_time)).all()
-            if len(courses) > 0: return {"error" :f"Le groupe {current_group.name} à déjà cours !"}, 409
+            if len(courses) > 0:
+                return {"error" :f"Le groupe {current_group.name} à déjà cours !"}, 409
+            
+            courses = query.filter(Cours.id_group==group).filter(and_(Cours.start_time <= start_time, Cours.end_time >= end_time)).all()
+
+            if len(courses) > 0:
+                return {"error" :f"Le groupe {current_group.name} à déjà cours !"}, 409
+
+            courses = query.filter(Cours.id_group==group).filter(and_(Cours.start_time == start_time, Cours.end_time == end_time)).all()
+
+            if len(courses) > 0:
+                return {"error" :f"Le groupe {current_group.name} à déjà cours !"}, 409
 
             #Si une salle est déjà prise entre start_time et end_time
-            if name_salle:
-                courses = query.filter_by(name_salle=name_salle).filter(Cours.start_time > start_time).filter(Cours.start_time < end_time).all()
-                if len(courses) > 0: return {"error" :"Cette salle est déjà prise"},409
+            if name_salle!=None:
+                courses = query.filter(Cours.name_salle==name_salle).filter(and_(Cours.start_time > start_time, Cours.start_time < end_time)).all()
 
-                courses = query.filter_by(name_salle=name_salle).filter(Cours.end_time > start_time).filter(Cours.end_time < end_time).all()
-                if len(courses) > 0: return {"error" :"Cette salle est déjà prise"},409
+                if len(courses) > 0: 
+                    return {"error" :"Cette salle est déjà prise"},410
+
+                courses = query.filter(Cours.name_salle==name_salle).filter(and_(Cours.end_time > start_time, Cours.end_time < end_time)).all()
+
+                if len(courses) > 0: 
+                    return {"error" :"Cette salle est déjà prise"},410
 
 
-            if id_enseignant:
-                courses = query.filter_by(id_enseignant=id_enseignant).filter(Cours.start_time > start_time).filter(Cours.start_time < end_time).all()
-                if len(courses) > 0: warning = "Attention ! Ce professeur à déjà un cours dans cette plage horaire"
+            if id_enseignant!=None:
+                courses = query.filter(Cours.id_enseignant==id_enseignant).filter(and_(Cours.start_time > start_time, Cours.start_time < end_time)).all()
 
-                courses = query.filter_by(id_enseignant=id_enseignant).filter(Cours.end_time > start_time).filter(Cours.end_time < end_time).all()
-                if len(courses) > 0: warning = "Attention ! Ce professeur à déjà un cours dans cette plage horaire"
+                if len(courses) > 0:
+                    warning = "Attention ! Ce professeur à déjà un cours dans cette plage horaire"
+
+                courses = query.filter(Cours.id_enseignant==id_enseignant).filter(and_(Cours.end_time > start_time, Cours.end_time < end_time)).all()
+
+                if len(courses) > 0:
+                    warning = "Attention ! Ce professeur à déjà un cours dans cette plage horaire"
 
 
         if warning != "":
@@ -242,33 +260,42 @@ class CoursService:
 
         groups = GroupeService.get_tree(id_group)
 
-        for group in groups:
-            overlapping_courses = Cours.query.filter_by(id_group=group).filter(and_(Cours.end_time >= start_time_attempt, Cours.start_time < end_time_attempt)).all()
-            if overlapping_courses:
-                for course in overlapping_courses:
-                    course.is_published = 2
-                db.session.commit()
+        # for group in groups:
+        #     overlapping_courses = Cours.query.filter_by(id_group=group).filter(and_(Cours.end_time >= start_time_attempt, Cours.start_time < end_time_attempt)).all()
+        #     if len(overlapping_courses)>0:
+        #         for course in overlapping_courses:
+        #             course.is_published = 2
+        #         db.session.commit()
 
         result = []
         for group in groups:
-            courses = Cours.query.filter_by(id_group=group).filter(and_(Cours.end_time >= start_time, Cours.start_time < end_time)).all()
+            courses = Cours.query.filter(Cours.id_group==group).filter(and_(Cours.end_time >= start_time, Cours.start_time < end_time)).all()
             for course in courses:
 
                 new_course = course.duplicate()
                 new_course.start_time = course.start_time + timedelta(days=days_diff)
-                new_course.end_time = course.end_time + timedelta(days=days_diff)
+                new_course.end_time = new_course.end_time + timedelta(days=days_diff)
                 new_course.is_published = 0
 
                 if not (new_course.start_time >= sat_date and new_course.end_time <= sun_date):
-                    course, code = CoursService.create_course(new_course.to_dict())
-                    print(course, code)
-                    if(code == 410):
-                        new_course.name_salle = None
-                    if(code == 201):
-                        new_course.id_enseignant = None
-                    if(code == 409):
-                        return course, code
+
+                    overlapping_courses = Cours.query.filter(and_(Cours.end_time >= new_course.start_time, Cours.start_time < new_course.end_time)).all()
                     
+                    if(len(overlapping_courses) > 0):
+
+                        if(overlapping_courses[0].name_salle == new_course.name_salle):
+                            print("new_course", new_course)
+                            new_course.name_salle = None
+
+                        if(overlapping_courses[0].id_enseignant == new_course.id_enseignant):
+                            print("new_course", new_course)
+                            new_course.id_enseignant = None
+
+                        if(overlapping_courses[0].id_group == new_course.id_group):
+                            current_group = GroupeService.get_groupe_by_id(group)
+                            return {"error" :f"Le groupe {current_group.name} à déjà cours !"}, 409
+                    
+                    db.session.add(new_course)
                     result.append(new_course)
             db.session.commit()
         return result
