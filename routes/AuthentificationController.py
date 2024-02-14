@@ -1,6 +1,7 @@
 # Importation des modules nécessaires de flask
 from flask import Blueprint
 from flask_jwt_extended import (create_access_token)
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask import Flask, request, jsonify
 
 # Importation de UserService et du modèle User
@@ -47,3 +48,16 @@ def login():
     else:
         # Si aucun utilisateur n'a été trouvé ou si le mot de passe était incorrect, retourne un message d'échec d'authentification.
         return {'message': 'Authentification échouée'}, 401
+    
+
+
+@auth_bp.route('/auth/role', methods=['GET'])
+@jwt_required()
+def get_user_role():
+    current_user_id = get_jwt_identity()
+    user_role = UserService.get_user_role_by_id(current_user_id)
+
+    if user_role:
+        return jsonify({'role': user_role}), 200
+    else:
+        return jsonify({'role': None}), 403
