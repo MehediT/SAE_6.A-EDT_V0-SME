@@ -281,6 +281,7 @@ class CoursService:
 
                     overlapping_courses = Cours.query.filter(and_(Cours.end_time >= new_course.start_time, Cours.start_time < new_course.end_time)).all()
                     
+                    
                     if(len(overlapping_courses) > 0):
 
                         if(overlapping_courses[0].name_salle == new_course.name_salle):
