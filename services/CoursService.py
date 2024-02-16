@@ -186,21 +186,21 @@ class CoursService:
 
             #Si une salle est déjà prise entre start_time et end_time
             if name_salle!=None:
-                courses = query.filter(Cours.name_salle==name_salle).filter(and_(Cours.start_time > start_time, Cours.start_time < end_time)).all()
+                courses = query.filter_by(name_salle=name_salle).filter(and_(Cours.start_time < end_time, Cours.end_time > start_time)).all()
 
-                if len(courses) > 0: 
-                    return {"error" :"Cette salle est déjà prise"},410
+                if len(courses) > 0: return {"error" :"Cette salle est déjà prise entre ces horaires"},409
+
 
                 courses = query.filter(Cours.name_salle==name_salle).filter(and_(Cours.end_time > start_time, Cours.end_time < end_time)).all()
 
                 if len(courses) > 0: 
-                    return {"error" :"Cette salle est déjà prise"},410
+                    return {"error" :"Cette salle est déjà prise"},409
 
 
             if id_enseignant!=None:
-                courses = query.filter(Cours.id_enseignant==id_enseignant).filter(and_(Cours.start_time > start_time, Cours.start_time < end_time)).all()
+                courses = query.filter_by(id_enseignant=id_enseignant).filter(and_(Cours.start_time < end_time, Cours.end_time > start_time)).all()
 
-                if len(courses) > 0:
+                if len(courses) > 0: 
                     warning = "Attention ! Ce professeur à déjà un cours dans cette plage horaire"
 
                 courses = query.filter(Cours.id_enseignant==id_enseignant).filter(and_(Cours.end_time > start_time, Cours.end_time < end_time)).all()
