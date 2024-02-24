@@ -102,8 +102,7 @@ class CoursService:
     @staticmethod
     def update_course(id, start_time, end_time, initial_ressource, id_group, name_salle = None,id_enseignant= None, evaluation= False, **kwargs):
         course = Cours.query.get(id)
-
-
+        #if(kwargs.get('isInDraft') == False):
         resp, code = CoursService.can_create_course(start_time=start_time, end_time=end_time, id_group=id_group, name_salle=name_salle, id_enseignant=id_enseignant, id_cours=id)
         if code >= 400:
             return resp, code

@@ -21,7 +21,8 @@ def get_all_courses():
         user : User = UserService.get_by_id(current_user)
 
         # Récupération de tous les cours pour cet utilisateur.
-        courses = CoursService.get_all_courses(request.args, user=user )   
+        courses = CoursService.get_all_courses(request.args, user=user)   
+        print(request.args)
 
         # Conversion des cours en dictionnaires pour la réponse JSON.
         ressources_dict = [course.to_dict() for course in courses]
@@ -100,6 +101,7 @@ def delete_course(id):
 def update_course(id):
     #Récupération des données de la requête.
     data = request.json
+    isInDraft = data['isInDraft']
     #Suppression de l'id dans les données.
     if 'id' in data:
         del data['id']
