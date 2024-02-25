@@ -23,6 +23,19 @@ class PromotionService:
     def get_promo_by_id(id_promo):
         return Promotion.query.filter_by(id_promo=id_promo).first()
     
+    # Récupère une promotion par son année scolaire
+    @staticmethod
+    def get_promo_by_year(year):
+        return Promotion.query.filter_by(year=year).all()
+    
+    @staticmethod
+    def get_promo_activated():
+        return Promotion.query.filter_by(activated=True).all()
+    
+    @staticmethod
+    def get_promo_not_activated():
+        return Promotion.query.filter_by(activated=False).all()
+    
     # Supprime une promotion de la base de données par son identifiant
     @staticmethod
     def delete_promo(id_promo):

@@ -19,13 +19,13 @@ dataGroupes = [
   {
     'niveau' : 3,
     'name' : 'Groupe B1',
-    'id_group_parent' : 4
+    'id_group_parent' : 5
   },
 
   {
     'niveau' : 3,
     'name' : 'Groupe B2',
-    'id_group_parent' : 4
+    'id_group_parent' : 5
   },
 
   {
@@ -43,7 +43,7 @@ dataGroupes = [
   {
     'niveau' : 2,
     'name' : 'Groupe A2',
-    'id_group_parent' : 5
+    'id_group_parent' : 6
   }
 ]
 
