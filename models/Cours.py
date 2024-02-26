@@ -53,7 +53,7 @@ class Cours(db.Model):
             'name_salle': self.name_salle,
             'appelEffectue': self.appelEffectue,
             'is_published': self.is_published,
-            'evaluation': self.evaluation
+            'evaluation': self.evaluation,
         }
     def duplicate(self):
         # Créer une nouvelle instance de la classe avec les mêmes attributs
