@@ -4,26 +4,17 @@ from services.ResponsableEdtService import ResponsableEdtService
 
 
 dataRespEDT = [
-
   {
-      'name' : 'Philippe',
-      'lastname' : 'Bonnot',
-      'username' : 'philippe_bonnot1',
-      'password' : 'philippe1234'
+    'name' : 'Sihem',
+    'lastname' : 'Belabbes',
+    'username' : 'sbellabes',
+    'password' : 'sihem1234'
   },
-
   {
-      'name' : 'Sandrine',
-      'lastname' : 'Bonjour',
-      'username' : 'sandrine_bonjour',
-      'password' : 'sandrine1234'
-  },
-
-    {
-      'name' : 'Boit',
-      'lastname' : 'deleau',
-      'username' : 'boit_deleau',
-      'password' : 'boit1234'
+    'name' : 'Anne',
+    'lastname' : 'Ricordeau',
+    'username' : 'aricordeau',
+    'password' : 'anne1234'
   }
 ]
 

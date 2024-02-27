@@ -6,24 +6,17 @@ from services.TeacherService import TeacherService
 dataTeacher = [
 
     {
-        'name' : 'Philippe',
-        'lastname' : 'Bonnot',
-        'username' : 'philippe_bonnot',
-        'password' : 'philippe1234'
+      'name' : 'Nedra',
+      'lastname' : 'Nauwynck',
+      'username' : 'nnauwynck',
+      'password' : 'nedra1234'
     },
 
     {
-        'name' : 'Jeremy',
-        'lastname' : 'Marcinkowski',
-        'username' : 'jeremy_marcinkowski',
-        'password' : 'jeremy1234'
-    },
-
-    {
-        'name' : 'Philippe',
-        'lastname' : 'Bonnet',
-        'username' : 'philippe_bonnet',
-        'password' : 'philippe21234'
+      'name' : 'Philippe',
+      'lastname' : 'Bonnot',
+      'username' : 'pbonnot',
+      'password' : 'philippe1234'
     }
 ]
 

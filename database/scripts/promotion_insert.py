@@ -23,11 +23,10 @@ dataPromotions = [
   },
 
   {
-      'niveau' : 4,
-      'year' : 2023,
-      'name' : 'BUT INFO S4'
+    'niveau' : 4,
+    'year' : 2023,
+    'name' : 'BUT INFO S4'
   }
-
 ]
 
 for promotion in dataPromotions:
