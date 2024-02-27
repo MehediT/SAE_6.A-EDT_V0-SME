@@ -11,7 +11,7 @@ class Promotion(Groupe):
     # Niveau du semestre (exemple pour le BUT INFORMATIQUE Semestre 5 : 5)    
     niveau = db.Column(db.Integer, nullable=False)
     year = db.Column(db.Integer, nullable=False)
-    activated = db.Column(db.Boolean, default=True, nullable=False)
+    activated = db.Column(db.Boolean, nullable=False)
 
     
 
