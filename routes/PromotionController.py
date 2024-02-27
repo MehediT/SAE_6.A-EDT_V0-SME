@@ -105,6 +105,8 @@ def create_promotion():
     try:
         # Récupérer les données de la requête
         data = request.json
+
+        print("hnduehd",data)
         # Créer une promotion avec les données récupérées et la retourner
         promotion = PromotionService.create_promo(data)
         return jsonify(promotion.to_dict()), 200
