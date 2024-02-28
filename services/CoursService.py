@@ -292,9 +292,12 @@ class CoursService:
                             print("new_course", new_course)
                             new_course.id_enseignant = None
 
-                        if(overlapping_courses[0].id_group == new_course.id_group):
-                            current_group = GroupeService.get_groupe_by_id(group)
-                            return {"error" :f"Le groupe {current_group.name} à déjà cours !"}, 409
+                        group_tree_of_new_course = GroupeService.get_tree(new_course.id_group)
+                        print(group_tree_of_new_course)
+                        for group_t in group_tree_of_new_course:
+                            if(overlapping_courses[0].id_group == group_t):
+                                group_of_new_course = GroupeService.get_groupe_by_id(new_course.id_group)
+                                return {"error" :f"Le groupe {group_of_new_course.name} à déjà cours !"}, 409
                     
                     db.session.add(new_course)
                     result.append(new_course)
