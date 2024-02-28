@@ -55,3 +55,13 @@ class PromotionService:
         db.session.commit()
         return promo
     
+    @staticmethod
+    def deactivate_promo(id_promo):
+        promo = Promotion.query.filter_by(id_promo=id_promo).first()
+        if promo.activated:
+            promo.activated = False
+        else:
+            promo.activated = True
+        db.session.commit()
+        return promo
+    

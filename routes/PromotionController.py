@@ -159,3 +159,18 @@ def update_promotion(id):
     except Exception as e:
         # En cas d'erreur, renvoyez un message d'erreur
         return jsonify({'error': str(e)}),403
+    
+@promotion_bp.route('/promotion/deactivate/<id>', methods=['PUT'])
+@jwt_required()
+def deactivate_promotion(id):
+    try:
+        # Mettre à jour la promotion avec l'id spécifié
+        promotion = PromotionService.deactivate_promo(id)
+        #Si la promotion n'existe pas, renvoyer une erreur 404
+        if not promotion:
+            return jsonify({'error': 'Promotion not found'}),404
+        #Sinon, retourner la promotion
+        return jsonify(promotion.to_dict()),200
+    except Exception as e:
+        # En cas d'erreur, renvoyez un message d'erreur
+        return jsonify({'error': str(e)}),403
