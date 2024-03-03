@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import (jwt_required, create_access_token, get_jwt_identity)
 
-from services import AffRessourcePromoService
+from services.AffRessourcePromoService import AffRessourcePromoService
 
 affiliationressourcepromo_bp = Blueprint('affiliationressourcepromo_bp', __name__)
 
@@ -14,7 +14,7 @@ def affiliate_resssource_to_promo():
     
     try:
         # Appel du service pour associer le responsable à la promotion.
-        affiliate_respEdt = AffRessourcePromoService.affiliation_ressource_promo(idRessource, idPromo)
+        AffRessourcePromoService.affiliate_ressource_to_promo(idRessource, idPromo)
 
         # Si l'association a réussi, retourne un message de succès.
         return jsonify({"message": "RespEdtPromo ajouté au groupe avec succès"}),200
@@ -27,16 +27,16 @@ def affiliate_resssource_to_promo():
 def get_ressources_by_promo(idPromo):
     try:
         ressources = AffRessourcePromoService.get_ressources_by_promo(idPromo)
-        return jsonify(ressources), 200
+        return jsonify([ressource.to_dict() for ressource in ressources]), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 403
 
-@affiliationressourcepromo_bp.route('/getPromoByRessource/<int:idRessource>', methods=['GET'])
+@affiliationressourcepromo_bp.route('/getPromoByRessource/<string:idRessource>', methods=['GET'])
 @jwt_required()
 def get_promo_by_ressource(idRessource):
     try:
         promotions = AffRessourcePromoService.get_promo_by_ressource(idRessource)
-        return jsonify(promotions), 200
+        return jsonify([promotion.to_dict() for promotion in promotions]), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 403
 

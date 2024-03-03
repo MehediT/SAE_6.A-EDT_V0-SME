@@ -5,10 +5,11 @@ from services.RessourcesService import RessourcesService
 
 dataRessources = [
     {
-        'initial' : '',
-        'name' : '',
-        'id_promo' : '',
-    }
+    'initial' : 'R5A08',
+    'name' : 'Qualite de dev',
+    'id_promo' : 2,
+    'color':'0D3978'
+    },
 ]
 
 
