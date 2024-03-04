@@ -1,9 +1,10 @@
 from sqlalchemy import update
-from models import Promotion
+from models.Promotion import Promotion
 from models.Groupe import Groupe
 from models.User import User
 from models.Student import Student
 from services.AffiliationRespEdtService import AffiliationRespEdtService
+from services.AffRessourcePromoService import AffRessourcePromoService
 from services.GroupeService import GroupeService
 from database.config import db
 from models.relations.user_groupe import student_course_association
@@ -139,6 +140,13 @@ class UserGroupeService:
         # Get the old promotion
         old_promo = PromotionService.get_promo_by_id(idAncPromo)
         new_promo = PromotionService.get_promo_by_id(idNvPromo)
+
+        # Récupère les ressources associés à la promo de l'année d'avant et les associes à la nouvelle promo
+        promosAnneeAvant = PromotionService.get_promo_by_year(new_promo.year - 1)
+        for oldPromo in promosAnneeAvant:
+            if oldPromo.niveau == new_promo.niveau:
+                print(oldPromo.niveau == new_promo.niveau)
+                AffRessourcePromoService.change_promotion_for_all_resources_in_promo(oldPromo.id_promo, new_promo.id_promo)
 
         # Get the groups of the old promotion
         groups_id_of_old_promo = GroupeService.get_tree(idAncPromo)

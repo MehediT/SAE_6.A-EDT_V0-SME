@@ -11,6 +11,12 @@ dataPromotions = [
   },
 
   {
+    'niveau' : 4,
+    'year' : 2022,
+    'name' : 'BUT INFO S4'
+  },
+
+  {
     'niveau' : 2,
     'year' : 2023,
     'name' : 'BUT GACO S2'
