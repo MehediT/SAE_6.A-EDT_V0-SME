@@ -135,6 +135,13 @@ class UserGroupeService:
     #   db.session.commit()
 
     # Migre des étudiants d'une promotion à une autre
+
+    @staticmethod
+    def obtenir_mot_apres_but(chaine):
+        mots = chaine.split()
+        indice_but = mots.index("BUT")
+        return mots[indice_but + 1]
+
     @staticmethod
     def update_promo_etudiants(idAncPromo, idNvPromo):
         # Get the old promotion
@@ -145,8 +152,12 @@ class UserGroupeService:
         promosAnneeAvant = PromotionService.get_promo_by_year(new_promo.year - 1)
         for oldPromo in promosAnneeAvant:
             if oldPromo.niveau == new_promo.niveau:
-                print(oldPromo.niveau == new_promo.niveau)
-                AffRessourcePromoService.change_promotion_for_all_resources_in_promo(oldPromo.id_promo, new_promo.id_promo)
+                
+                oldPromoGroupName = UserGroupeService.obtenir_mot_apres_but(GroupeService.get_groupe_by_id(oldPromo.id_groupe).name)
+                newPromoGroupName = UserGroupeService.obtenir_mot_apres_but(GroupeService.get_groupe_by_id(new_promo.id_groupe).name)
+
+                if oldPromoGroupName == newPromoGroupName:
+                    AffRessourcePromoService.change_promotion_for_all_resources_in_promo(oldPromo.id_promo, new_promo.id_promo)
 
         # Get the groups of the old promotion
         groups_id_of_old_promo = GroupeService.get_tree(idAncPromo)
