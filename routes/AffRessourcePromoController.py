@@ -48,6 +48,6 @@ def delete_affiliation():
     idPromo = data.get('id_promo')
     try:
         AffRessourcePromoService.delete_affiliation(idRessource, idPromo)
-        return jsonify({'message': 'Affiliation deleted successfully'}), 200
+        return jsonify({'message': 'L\'affiliation à bien été supprimé'}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 403

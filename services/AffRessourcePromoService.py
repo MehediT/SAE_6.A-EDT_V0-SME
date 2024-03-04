@@ -29,8 +29,12 @@ class AffRessourcePromoService:
     
     @staticmethod
     def delete_affiliation(idRessource, idPromo):
-        affiliation_ressource_promo.delete().where(
-            (affiliation_ressource_promo.c.id_ressource == idRessource) &
-            (affiliation_ressource_promo.c.id_promo == idPromo)
-        )
-        db.session.commit()
+        try:
+            db.session.query(affiliation_ressource_promo).filter(
+                (affiliation_ressource_promo.c.initial == idRessource) &
+                (affiliation_ressource_promo.c.id_promo == idPromo)
+            ).delete(synchronize_session=False)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            raise e
