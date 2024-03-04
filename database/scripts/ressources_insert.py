@@ -3,7 +3,14 @@ from database.config import db
 from services.RessourcesService import RessourcesService
 
 
-dataRessources = []
+dataRessources = [
+    {
+    'initial' : 'R5A08',
+    'name' : 'Qualite de dev',
+    'id_promo' : 2,
+    'color':'0D3978'
+    },
+]
 
 
 for ressource in dataRessources:
