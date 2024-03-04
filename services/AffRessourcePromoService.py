@@ -38,3 +38,22 @@ class AffRessourcePromoService:
         except Exception as e:
             db.session.rollback()
             raise e
+        
+    @staticmethod
+    def change_promotion_for_all_resources_in_promo(oldPromoId, newPromoId):
+        try:
+            # Obtenir les ressources affiliées à l'ancienne promotion
+            query = db.session.query(affiliation_ressource_promo).filter_by(id_promo=oldPromoId)
+            result = query.all()
+
+            # Mettre à jour les affiliations avec la nouvelle promotion
+            for initial, id_promo in result:
+                db.session.query(affiliation_ressource_promo).filter(
+                    (affiliation_ressource_promo.c.initial == initial) &
+                    (affiliation_ressource_promo.c.id_promo == oldPromoId)
+                ).update({affiliation_ressource_promo.c.id_promo: newPromoId}, synchronize_session=False)
+            
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            raise e

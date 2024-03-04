@@ -51,3 +51,12 @@ def delete_affiliation():
         return jsonify({'message': 'L\'affiliation à bien été supprimé'}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 403
+    
+@affiliationressourcepromo_bp.route('/migrerRessources/<int:oldPromoId>/<int:newPromoId>', methods=['PUT'])
+@jwt_required()
+def change_promotion_for_all_resources(oldPromoId, newPromoId):
+    try:
+        AffRessourcePromoService.change_promotion_for_all_resources_in_promo(oldPromoId, newPromoId)
+        return jsonify({'message': 'La promotion de toutes les ressources affiliées a été modifiée avec succès'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 403
