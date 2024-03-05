@@ -23,6 +23,19 @@ class PromotionService:
     def get_promo_by_id(id_promo):
         return Promotion.query.filter_by(id_promo=id_promo).first()
     
+    # Récupère une promotion par son année scolaire
+    @staticmethod
+    def get_promo_by_year(year):
+        return Promotion.query.filter_by(year=year).all()
+    
+    @staticmethod
+    def get_promo_activated():
+        return Promotion.query.filter_by(activated=True).all()
+    
+    @staticmethod
+    def get_promo_not_activated():
+        return Promotion.query.filter_by(activated=False).all()
+    
     # Supprime une promotion de la base de données par son identifiant
     @staticmethod
     def delete_promo(id_promo):
@@ -39,6 +52,16 @@ class PromotionService:
         promo.niveau = niveau
         promo.id_resp = id_resp
 
+        db.session.commit()
+        return promo
+    
+    @staticmethod
+    def deactivate_promo(id_promo):
+        promo = Promotion.query.filter_by(id_promo=id_promo).first()
+        if promo.activated:
+            promo.activated = False
+        else:
+            promo.activated = True
         db.session.commit()
         return promo
     

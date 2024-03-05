@@ -59,6 +59,46 @@ def create_room():
     except Exception as e:
         # Si une erreur s'est produite, retourne un message d'erreur.
         abort(500, {'error': str(e)})
+        
+# Définition d'une route pour créer un ensemble de salles à partir d'un fichier CSV.
+# Cette fonction sera appelée lorsqu'une requête POST est faite à '/salles/csv'.
+@salle_bp.route('/salles/csv', methods=['POST'])
+@jwt_required()
+def create_room_from_csv():
+    # Récupération du fichier CSV de la requête.
+    data = request.json
+    successfully_created = 0
+    for i in range (len(data)):
+        nombrepc = 0
+        if len(data[i]) == 2:
+            name = data[i][0]
+            if data[i][1] != "":
+                if "pc" in data[i][1].strip():
+                    nombrepc = int(data[i][1].strip().split("pc")[0])    
+                else:
+                    name = name + " " + data[i][1]
+            
+            
+            existing_salle = SalleService.get_salle_by_name(name)
+            if existing_salle is not None:
+                print(f"La salle {name} existe déjà")
+                continue
+    
+            salle_data = {
+                'name': name,
+                'ordi': nombrepc,
+                'tableauNumerique': 0,
+                'videoProjecteur': 0
+            }
+            
+            SalleService.create_salle(salle_data)
+            
+            successfully_created += 1
+    
+    if successfully_created > 0:
+        return jsonify({'message': f'{successfully_created} salles créées avec succès'}), 200
+    else:
+        return jsonify({'message': 'Aucune salle créée'}), 200
 
 # Définition d'une route pour supprimer une salle spécifique par son nom. 
 # Cette fonction sera appelée lorsqu'une requête DELETE est faite à '/salle/<name>'.

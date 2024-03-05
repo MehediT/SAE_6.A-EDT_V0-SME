@@ -6,9 +6,14 @@ class RessourcesService:
     # Crée une nouvelle ressource avec les données fournies
     @staticmethod
     def create_resource(data):
-        ressource = Ressources(**data)
-        db.session.add(ressource)
-        db.session.commit()
+        from services.AffRessourcePromoService import AffRessourcePromoService
+        try:
+            ressource = Ressources(**data)
+            db.session.add(ressource)
+            db.session.commit()
+        except Exception as e:
+            return None
+        AffRessourcePromoService.affiliate_ressource_to_promo(data.get('initial'), data.get('id_promo'))
         return ressource
     
     # Récupère une ressource par son identifiant initial

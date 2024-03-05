@@ -2,6 +2,7 @@
 from flask import Blueprint, jsonify, send_from_directory, request
 from services.UserService import UserService
 from models.User import User
+from models.Cours import Cours
 from functools import wraps
 from flask_jwt_extended import (jwt_required, create_access_token, get_jwt_identity)
 from services.CoursService import CoursService
@@ -20,7 +21,8 @@ def get_all_courses():
         user : User = UserService.get_by_id(current_user)
 
         # Récupération de tous les cours pour cet utilisateur.
-        courses = CoursService.get_all_courses(request.args, user=user )   
+        courses = CoursService.get_all_courses(request.args, user=user)   
+        print(request.args)
 
         # Conversion des cours en dictionnaires pour la réponse JSON.
         ressources_dict = [course.to_dict() for course in courses]
@@ -99,6 +101,7 @@ def delete_course(id):
 def update_course(id):
     #Récupération des données de la requête.
     data = request.json
+    isInDraft = data['isInDraft']
     #Suppression de l'id dans les données.
     if 'id' in data:
         del data['id']
@@ -161,8 +164,11 @@ def paste_all():
     try:
         #Collage des cours.
         courses = CoursService.paste(**data)
-        courses_dict = [course.to_dict() for course in courses]
-        return jsonify(courses_dict),200
+        if isinstance(courses[0], Cours):
+            courses_dict = [course.to_dict() for course in courses]
+            return jsonify(courses_dict),200
+        else:
+            return jsonify(courses[0]),409
     except Exception as e:
         # Si une erreur s'est produite, retourne un message d'erreur.
         return jsonify({'error': str(e)}),403

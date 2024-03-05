@@ -1,9 +1,10 @@
 from sqlalchemy import update
-from models import Promotion
+from models.Promotion import Promotion
 from models.Groupe import Groupe
 from models.User import User
 from models.Student import Student
 from services.AffiliationRespEdtService import AffiliationRespEdtService
+from services.AffRessourcePromoService import AffRessourcePromoService
 from services.GroupeService import GroupeService
 from database.config import db
 from models.relations.user_groupe import student_course_association
@@ -134,22 +135,29 @@ class UserGroupeService:
     #   db.session.commit()
 
     # Migre des étudiants d'une promotion à une autre
+
     @staticmethod
-    def update_promo_etudiants(idEtudiants, idAncPromo, idNvPromo, idResp):
+    def obtenir_mot_apres_but(chaine):
+        mots = chaine.split()
+        indice_but = mots.index("BUT")
+        return mots[indice_but + 1]
+
+    @staticmethod
+    def update_promo_etudiants(idAncPromo, idNvPromo):
         # Get the old promotion
         old_promo = PromotionService.get_promo_by_id(idAncPromo)
-        new_promo_to_copy = PromotionService.get_promo_by_id(idNvPromo)
+        new_promo = PromotionService.get_promo_by_id(idNvPromo)
 
-        datePromo = {
-            "name": new_promo_to_copy.name,
-            "niveau": new_promo_to_copy.niveau,
-            "id_resp": idResp,
-        }
+        # Récupère les ressources associés à la promo de l'année d'avant et les associes à la nouvelle promo
+        promosAnneeAvant = PromotionService.get_promo_by_year(new_promo.year - 1)
+        for oldPromo in promosAnneeAvant:
+            if oldPromo.niveau == new_promo.niveau:
+                
+                oldPromoGroupName = UserGroupeService.obtenir_mot_apres_but(GroupeService.get_groupe_by_id(oldPromo.id_groupe).name)
+                newPromoGroupName = UserGroupeService.obtenir_mot_apres_but(GroupeService.get_groupe_by_id(new_promo.id_groupe).name)
 
-        # Create a new promotion with the same name as the new promotion
-        new_promo = PromotionService.create_promo(datePromo)
-        db.session.add(new_promo)
-        db.session.commit()
+                if oldPromoGroupName == newPromoGroupName:
+                    AffRessourcePromoService.change_promotion_for_all_resources_in_promo(oldPromo.id_promo, new_promo.id_promo)
 
         # Get the groups of the old promotion
         groups_id_of_old_promo = GroupeService.get_tree(idAncPromo)
@@ -158,10 +166,10 @@ class UserGroupeService:
             group_to_copy = GroupeService.get_groupe_by_id(group)
             groups_of_old_promo.append(group_to_copy)
 
-
         td = []
         tp = []
-        # Duplicate the groups and assign them to the new promotion
+
+        # Différencier les groupes TD et TP
         for group in groups_of_old_promo:
             if group.id_group_parent is not None and len(GroupeService.get_children(group.id)['children'])>0:
                 td.append(group)
@@ -170,32 +178,26 @@ class UserGroupeService:
 
         for group in td:
             GroupeService.create_groupe({"name":group.name, "id_group_parent":new_promo.id_groupe})
-            id = Groupe.query.order_by(Groupe.id.desc()).first()
+            new_td = Groupe.query.order_by(Groupe.id.desc()).first()
+
+            students_of_td = UserGroupeService.get_etudiants_for_groupe(group.id)
+
+            for student in students_of_td:
+                UserGroupeService.update_student_group(student['id_student'], new_td.id, group.id)  
+
             
             for group2 in tp:
                 if group2.id_group_parent == group.id:
-                    new_group=group2.duplicate()
-                    new_group.id_group_parent=id.id
-                    db.session.add(new_group)  
+                    new_tp=group2.duplicate()
+                    new_tp.id_group_parent=new_td.id
+                    db.session.add(new_tp)
                     
-                    for student in idEtudiants:
-                        user_group = UserGroupeService.get_groupes_for_student(student)
+                students_of_tp = UserGroupeService.get_etudiants_for_groupe(group2.id)
 
-                        for user in user_group:
-                            if user == group2.id:
-                                UserGroupeService.update_student_group(student, new_group.id, group2.id)
-                            db.session.commit()
+                for student in students_of_tp:
+                    UserGroupeService.update_student_group(student['id_student'], new_tp.id, group2.id)
         
                         
         db.session.commit()
 
-        return GroupeService.get_tree(new_promo.id_groupe)
-       
-    
-
-
-
-
-        
-        
-    
+        return GroupeService.get_tree(new_promo.id_groupe)  

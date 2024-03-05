@@ -45,6 +45,58 @@ def get_promotion_by_id(id):
         # db.session.rollback()
         return jsonify({'error': str(e)}),403
 
+#Définition d'une route pour récuperer une promotion par son année
+#Cette fonction sera appelée lorsqu'une requête GET est faite à '/promotion/<year>'.
+@promotion_bp.route('/promotion/<year>', methods=['GET'])
+@jwt_required()
+def get_promotion_by_year(year):
+    
+        try:
+            # Récupérer les promotions avec l'année spécifiée
+            promotion = PromotionService.get_promo_by_year(year)   
+    
+            #Si la promotion n'existe pas, renvoyer une erreur 404
+            if not promotion:
+                return jsonify({'error': 'Promotion not found'}),404
+            #Sinon, retourner la promotion
+            return jsonify(promotion.to_dict()),200
+        except Exception as e:
+            # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
+            # db.session.rollback()
+            return jsonify({'error': str(e)}),403
+
+#Définition d'une route pour récuperer les promotions activées
+#Cette fonction sera appelée lorsqu'une requête GET est faite à '/promotion/activated'.
+@promotion_bp.route('/promotion/activated', methods=['GET'])
+@jwt_required()
+def get_promotion_activated():
+    try:
+        # Récupérer les promotions activées
+        promotions = PromotionService.get_promo_activated()
+        #Retourne un tableau de dictionnaires représentant les promotions
+        promotions_dict = [promotion.to_dict() for promotion in promotions]
+        return jsonify(promotions_dict),200
+    except Exception as e:
+        # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
+        # db.session.rollback()
+        return jsonify({'error': str(e)}),403
+
+#Définition d'une route pour récuperer les promotions désactivées
+#Cette fonction sera appelée lorsqu'une requête GET est faite à '/promotion/deactivated'.
+@promotion_bp.route('/promotion/deactivated', methods=['GET'])
+@jwt_required()
+def get_promotion_not_activated():
+    try:
+        # Récupérer les promotions activées
+        promotions = PromotionService.get_promo_not_activated()
+        #Retourne un tableau de dictionnaires représentant les promotions
+        promotions_dict = [promotion.to_dict() for promotion in promotions]
+        return jsonify(promotions_dict),200
+    except Exception as e:
+        # En cas d'erreur, annulez la transaction et renvoyez un message d'erreur
+        # db.session.rollback()
+        return jsonify({'error': str(e)}),403
+    
 #Définition d'une route pour créer une promotion
 #Cette fonction sera appelée lorsqu'une requête POST est faite à '/promotion'.
 @promotion_bp.route('/promotion', methods=['POST'])
@@ -53,6 +105,8 @@ def create_promotion():
     try:
         # Récupérer les données de la requête
         data = request.json
+
+        print("hnduehd",data)
         # Créer une promotion avec les données récupérées et la retourner
         promotion = PromotionService.create_promo(data)
         return jsonify(promotion.to_dict()), 200
@@ -97,6 +151,21 @@ def update_promotion(id):
 
         # Mettre à jour la promotion avec l'id spécifié
         promotion = PromotionService.update_promo(id=id, **data)
+        #Si la promotion n'existe pas, renvoyer une erreur 404
+        if not promotion:
+            return jsonify({'error': 'Promotion not found'}),404
+        #Sinon, retourner la promotion
+        return jsonify(promotion.to_dict()),200
+    except Exception as e:
+        # En cas d'erreur, renvoyez un message d'erreur
+        return jsonify({'error': str(e)}),403
+    
+@promotion_bp.route('/promotion/deactivate/<id>', methods=['PUT'])
+@jwt_required()
+def deactivate_promotion(id):
+    try:
+        # Mettre à jour la promotion avec l'id spécifié
+        promotion = PromotionService.deactivate_promo(id)
         #Si la promotion n'existe pas, renvoyer une erreur 404
         if not promotion:
             return jsonify({'error': 'Promotion not found'}),404
