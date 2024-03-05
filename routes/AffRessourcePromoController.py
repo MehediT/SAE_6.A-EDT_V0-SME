@@ -40,12 +40,9 @@ def get_promo_by_ressource(idRessource):
     except Exception as e:
         return jsonify({'error': str(e)}), 403
 
-@affiliationressourcepromo_bp.route('/deleteAffiliation', methods=['DELETE'])
+@affiliationressourcepromo_bp.route('/deleteAffiliation/<int:idPromo>/<string:idRessource>', methods=['DELETE'])
 @jwt_required()
-def delete_affiliation():
-    data = request.json
-    idRessource = data.get('id_ressource')
-    idPromo = data.get('id_promo')
+def delete_affiliation(idPromo, idRessource):
     try:
         AffRessourcePromoService.delete_affiliation(idRessource, idPromo)
         return jsonify({'message': 'L\'affiliation à bien été supprimé'}), 200
