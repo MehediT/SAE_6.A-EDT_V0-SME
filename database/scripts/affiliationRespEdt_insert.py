@@ -3,7 +3,12 @@ from database.config import db
 from services.AffiliationRespEdtService import AffiliationRespEdtService
 
 
-dataAffiliationRespEdt = []
+dataAffiliationRespEdt = [
+    {
+        "id_resp": 1,
+        "id_promo": 1
+    }
+]
 
 
 for respEdt in dataAffiliationRespEdt:

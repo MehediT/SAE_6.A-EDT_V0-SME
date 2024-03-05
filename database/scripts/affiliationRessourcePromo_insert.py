@@ -4,12 +4,48 @@ from services.AffRessourcePromoService import AffRessourcePromoService
 
 data = [
     {
-        "id_ressource" : "R5A08",
-        "id_promo" : 1
+        "id_ressource" : "R3-01",
+        "idPromo" : 1
+    },
+    {
+        "id_ressource" : "R3-02",
+        "idPromo" : 1
+    },
+    {
+        "id_ressource" : "R3-03",
+        "idPromo" : 1
+    },
+    {
+        "id_ressource" : "R3-04",
+        "idPromo" : 1
+    },
+    {
+        "id_ressource" : "R3-05",
+        "idPromo" : 1
+    },
+    {
+        "id_ressource" : "R3-06",
+        "idPromo" : 1
+    },
+    {
+        "id_ressource" : "R3-07",
+        "idPromo" : 1
+    },
+    {
+        "id_ressource" : "R3-08",
+        "idPromo" : 1
+    },
+    {
+        "id_ressource" : "R3-09",
+        "idPromo" : 1
+    },
+    {
+        "id_ressource" : "R3-10",
+        "idPromo" : 1
     }
 ]
 
 for aff in data:
-    initial = data["id_ressource"]
-    id_promo = data["id_promo"]
-    AffRessourcePromoService.affiliate_ressource_to_promo(initial, id_promo)
+    initial = aff["id_ressource"]
+    idPromo = aff["idPromo"]
+    AffRessourcePromoService.affiliate_ressource_to_promo(initial, idPromo)

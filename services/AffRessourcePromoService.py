@@ -7,6 +7,7 @@ class AffRessourcePromoService:
 
     @staticmethod
     def affiliate_ressource_to_promo(idRessource, idPromo):
+        print(f"Affiliating resource {idRessource} with promo {idPromo}")
         asso = affiliation_ressource_promo.insert().values(initial = idRessource, id_promo = idPromo)
         db.session.execute(asso)
         db.session.commit()
