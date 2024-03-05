@@ -18,7 +18,6 @@ class Staff(User):
 
     # Convertit l'objet Staff en un dictionnaire
     def to_dict(self):
-        print("here")
         return {
             'id': self.id,
             'initial': self.initial,
