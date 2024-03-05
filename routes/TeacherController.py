@@ -5,6 +5,8 @@ from functools import wraps
 from flask_jwt_extended import (jwt_required, create_access_token, get_jwt_identity)
 from flask import abort
 
+from services.UserService import UserService
+
 
 # Création d'un nouveau Blueprint. C'est une façon d'organiser les routes dans Flask.
 teacher_bp = Blueprint('teacher', __name__)
@@ -52,6 +54,48 @@ def create_teacher():
     except Exception as e:
         # En cas d'erreur, retourne un message d'erreur.
         abort(500, {'error': str(e)})
+        
+# Définition d'une route pour créer un ensemble d'enseigants à partir d'un fichier CSV.
+# Cette fonction sera appelée lorsqu'une requête POST est faite à '/teachers/csv'.
+@teacher_bp.route('/teachers/csv', methods=['POST'])
+@jwt_required()
+def create_teacher_from_csv():
+    # Récupération du fichier CSV de la requête.
+    data = request.json
+    successfully_created = 0
+    for i in range (len(data)):
+        if len(data[i]) == 3:
+            last_name = data[i][0]
+            name = data[i][1]
+            initials = data[i][2]
+            
+            username = name[0].lower() + last_name.lower()
+            password = username + "1234"
+            
+            existing_teacher = UserService.get_by_username(username)
+            if existing_teacher is not None:
+                print(f"A teacher with the username {username} already exists. Skipping.")
+                continue
+            
+            teacher_data = {
+                "username": username,
+                "password": password,
+                "role": "ROLE_TEACHER",
+                "name": name,
+                "lastname": last_name,
+                "initials": initials,
+                "activated": True
+            }
+        
+            TeacherService.create_teacher(teacher_data)
+            
+            successfully_created += 1
+    
+            
+    if successfully_created > 0:
+        return jsonify({'message': 'Successfully created ' + str(successfully_created) + ' teachers.'}), 200
+    else:
+        return jsonify({'error': 'Invalid data'}), 403
 
 # Définition d'une route pour supprimer un enseignant spécifique par son ID. 
 # Cette fonction sera appelée lorsqu'une requête DELETE est faite à '/teacher/<id>'.
