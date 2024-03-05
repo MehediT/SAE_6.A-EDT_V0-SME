@@ -7,7 +7,7 @@ dataRespEDT = [
   {
     'name' : 'Sihem',
     'lastname' : 'Belabbes',
-    'username' : 'sbellabes',
+    'username' : 'sbelabbes',
     'password' : 'sihem1234'
   },
   {
