@@ -279,9 +279,10 @@ class CoursService:
 
                 if not (new_course.start_time >= sat_date and new_course.end_time <= sun_date):
 
-                    overlapping_courses = Cours.query.filter(and_(Cours.end_time >= new_course.start_time, Cours.start_time < new_course.end_time)).all()
+                    overlapping_courses = Cours.query.filter(and_(Cours.end_time > new_course.start_time, Cours.start_time < new_course.end_time)).all()
                     
-                    
+                    print("Nouveau cours : ", new_course.start_time, new_course.end_time, new_course.id_group)
+                    print("Cours chevauchants : ", [(c.start_time, c.end_time, c.id_group) for c in overlapping_courses])
                     if(len(overlapping_courses) > 0):
 
                         if(overlapping_courses[0].name_salle == new_course.name_salle):
